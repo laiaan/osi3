@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>♠ GAME — ACTION</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: #050505;
+        color: white;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+    /* CRONÒMETRE GEGANT */
+    #timer {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32vw;
+        font-weight: 900;
+        color: rgba(255,255,255,0.07);
+        z-index: 0;
+        pointer-events: none;
+        user-select: none;
+    }
+    #game {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 25px;
+        text-align: center;
+    }
+    .top {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        letter-spacing: 2px;
+        color: #aaa;
+    }
+    h1 {
+        font-size: 18px;
+        letter-spacing: 5px;
+        margin-bottom: 35px;
+    }
+    #instruction {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 35px;
+        max-width: 700px;
+    }
+    #options {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        width: 100%;
+        max-width: 500px;
+    }
+    .option {
+        flex: 1;
+        min-height: 120px;
+        border: 2px solid rgba(255,255,255,0.6);
+        background: rgba(255,255,255,0.05);
+        color: white;
+        font-size: 24px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.15s;
+    }
+    .option:hover {
+        background: rgba(255,255,255,0.15);
+        transform: scale(1.03);
+    }
+    .option:active {
+        transform: scale(0.97);
+    }
+    #startScreen,
+    #endScreen {
+        position: relative;
+        z-index: 5;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+        text-align: center;
+        background: #050505;
+    }
+    #startScreen h2,
+    #endScreen h2 {
+        font-size: 30px;
+        letter-spacing: 6px;
+        margin-bottom: 20px;
+    }
+    .sub {
+        color: #999;
+        max-width: 500px;
+        line-height: 1.6;
+        margin-bottom: 35px;
+    }
+    .mainButton {
+        padding: 16px 35px;
+        background: white;
+        color: black;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: 2px;
+    }
+    .mainButton:hover {
+        transform: scale(1.04);
+    }
+    .hidden {
+        display: none !important;
+    }
+    .correct {
+        border-color: #6cff8d !important;
+        background: rgba(108,255,141,0.15) !important;
+    }
+    .wrong {
+        border-color: #ff4f4f !important;
+        background: rgba(255,79,79,0.15) !important;
+    }
+    #message {
+        height: 25px;
+        margin-top: 20px;
+        font-size: 14px;
+        letter-spacing: 2px;
+    }
+    @media (max-width: 600px) {
+        #timer {
+            font-size: 45vw;
+        }
+        #instruction {
+            font-size: 20px;
+        }
+        .option {
+            min-height: 100px;
+            font-size: 20px;
+        }
+    }
+</style>
+</head>
+<body>
+<!-- PANTALLA INICIAL -->
+<div id="startScreen">
+    <h2>♠ GAME</h2>
+    <p class="sub">
+        ACCIÓ
+        <br><br>
+        No tens gaire temps per pensar.
+        <br>
+        Observa. Decideix. Reacciona.
+        <br><br>
+        <strong>TIME LIMIT: 60 SECONDS</strong>
+    </p>
+    <button class="mainButton" onclick="startGame()">
+        START GAME
+    </button>
+</div>
+<!-- JOC -->
+<div id="game" class="hidden">
+    <div class="top">
+        <span>♠ ACTION</span>
+        <span>ROUND <span id="round">1</span>/10</span>
+    </div>
+    <div id="timer">60</div>
+    <h1>♠ PICARS</h1>
+    <div id="instruction">
+        PREPARA'T
+    </div>
+    <div id="options"></div>
+    <div id="message"></div>
+</div>
+<!-- FINAL -->
+<div id="endScreen" class="hidden">
+    <h2 id="endTitle">GAME OVER</h2>
+    <p class="sub" id="endText"></p>
+    <button class="mainButton" onclick="location.reload()">
+        RETRY
+    </button>
+</div>
+<script>
+let timeLeft = 60;
+let timerInterval;
+let currentRound = 0;
+let correctAnswers = 0;
+const totalRounds = 10;
+const neededCorrect = 8;
+const rounds = [
+    {
+        instruction: "CLICA EL SÍMBOLIC NEGRE",
+        options: ["♠", "♥"],
+        correct: 0
+    },
+    {
+        instruction: "CLICA EL COR",
+        options: ["♣", "♥"],
+        correct: 1
+    },
+    {
+        instruction: "NO CLIQUIS EL DIAMANT",
+        options: ["♦", "♠"],
+        correct: 1
+    },
+    {
+        instruction: "CLICA EL SÍMBOL DE L'ESQUERRA",
+        options: ["♣", "♥"],
+        correct: 0
+    },
+    {
+        instruction: "CLICA EL QUE NO ÉS NEGRE",
+        options: ["♠", "♥"],
+        correct: 1
+    },
+    {
+        instruction: "CLICA EL SÍMBOL DE LA DRETA",
+        options: ["♦", "♣"],
+        correct: 1
+    },
+    {
+        instruction: "NO CLIQUIS EL COR",
+        options: ["♥", "♠"],
+        correct: 1
+    },
+    {
+        instruction: "CLICA EL PRIMER SÍMBOL",
+        options: ["♠", "♦"],
+        correct: 0
+    },
+    {
+        instruction: "CLICA EL QUE NO ÉS UN PAL",
+        options: ["⚡", "♣"],
+        correct: 0
+    },
+    {
+        instruction: "ÚLTIMA RONDA — CLÍCA EL DIAMANT",
+        options: ["♦", "♠"],
+        correct: 0
+    }
+];
+function startGame() {
+    document.getElementById("startScreen").classList.add("hidden");
+    document.getElementById("game").classList.remove("hidden");
+    timeLeft = 60;
+    currentRound = 0;
+    correctAnswers = 0;
+    document.getElementById("timer").textContent = timeLeft;
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").textContent = timeLeft;
+        if (timeLeft <= 0) {
+            finishGame(false);
+        }
+    }, 1000);
+    showRound();
+}
+function showRound() {
+    if (currentRound >= totalRounds) {
+        finishGame(correctAnswers >= neededCorrect);
+        return;
+    }
+    const round = rounds[currentRound];
+    document.getElementById("round").textContent = currentRound + 1;
+    document.getElementById("instruction").textContent = round.instruction;
+    const optionsContainer = document.getElementById("options");
+    optionsContainer.innerHTML = "";
+    round.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.className = "option";
+        button.textContent = option;
+        button.onclick = () => answer(index, button);
+        optionsContainer.appendChild(button);
+    });
+}
+function answer(selected, button) {
+    const round = rounds[currentRound];
+    const buttons = document.querySelectorAll(".option");
+    buttons.forEach(btn => {
+        btn.disabled = true;
+    });
+    if (selected === round.correct) {
+        correctAnswers++;
+        button.classList.add("correct");
+        document.getElementById("message").textContent = "CORRECT";
+    } else {
+        button.classList.add("wrong");
+        document.getElementById("message").textContent = "WRONG";
+    }
+    currentRound++;
+    setTimeout(() => {
+        document.getElementById("message").textContent = "";
+        showRound();
+    }, 500);
+}
+function finishGame(success) {
+    clearInterval(timerInterval);
+    document.getElementById("game").classList.add("hidden");
+    document.getElementById("endScreen").classList.remove("hidden");
+    if (success) {
+        document.getElementById("endTitle").textContent = "♠ GAME CLEAR";
+        document.getElementById("endText").innerHTML =
+            "PROVA SUPERADA.<br><br>" +
+            "<strong>" + correctAnswers + " / " + totalRounds + "</strong> CORRECTES<br><br>" +
+            "TIME REMAINING: " + timeLeft;
+    } else {
+        document.getElementById("endTitle").textContent = "♠ GAME OVER";
+        document.getElementById("endText").innerHTML =
+            "NO HAS SUPERAT LA PROVA.<br><br>" +
+            "CORRECTES: " + correctAnswers + " / " + totalRounds;
+    }
+}
+</script>
+</body>
+</html>
