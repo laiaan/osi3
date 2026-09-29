@@ -1,1303 +1,861 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>♠ GAME — BORDERLAND</title>
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: #050505;
-    color: #ffffff;
-    font-family: Arial, Helvetica, sans-serif;
-    overflow: hidden;
-}
-
-/* =========================================================
-   CRONÒMETRE GEGANT
-========================================================= */
-
-#timer {
-    position: fixed;
-    inset: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 34vw;
-    font-weight: 900;
-    letter-spacing: -0.07em;
-
-    color: rgba(255,255,255,0.065);
-
-    pointer-events: none;
-    user-select: none;
-
-    z-index: 0;
-
-    transition: color 0.2s;
-}
-
-/* =========================================================
-   PANTALLES
-========================================================= */
-
-.screen {
-    position: relative;
-    z-index: 5;
-
-    width: 100%;
-    height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    padding: 25px;
-
-    text-align: center;
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* =========================================================
-   INICI
-========================================================= */
-
-#startScreen {
-    background: #050505;
-}
-
-.cardSymbol {
-    font-size: 55px;
-    margin-bottom: 15px;
-}
-
-.title {
-    font-size: 31px;
-    letter-spacing: 8px;
-    font-weight: 800;
-    margin: 0 0 12px 0;
-}
-
-.subtitle {
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: #777;
-}
-
-.description {
-    max-width: 430px;
-    margin: 35px 0;
-    line-height: 1.8;
-    color: #aaa;
-    font-size: 14px;
-}
-
-.startButton {
-    background: white;
-    color: black;
-
-    border: none;
-    border-radius: 5px;
-
-    padding: 16px 38px;
-
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 3px;
-
-    cursor: pointer;
-}
-
-.startButton:active {
-    transform: scale(0.96);
-}
-
-/* =========================================================
-   JOC
-========================================================= */
-
-#game {
-    position: relative;
-    z-index: 2;
-
-    width: 100%;
-    height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    padding: 25px;
-
-    text-align: center;
-}
-
-.topBar {
-    position: absolute;
-
-    top: 20px;
-    left: 20px;
-    right: 20px;
-
-    display: flex;
-    justify-content: space-between;
-
-    font-size: 11px;
-    letter-spacing: 2px;
-
-    color: #666;
-}
-
-.topBar strong {
-    color: white;
-}
-
-.gameHeader {
-    font-size: 12px;
-    letter-spacing: 6px;
-    color: #aaa;
-
-    margin-bottom: 10px;
-}
-
-.gameTitle {
-    font-size: 24px;
-    letter-spacing: 5px;
-
-    margin-bottom: 7px;
-}
-
-.roundInfo {
-    font-size: 10px;
-    letter-spacing: 3px;
-
-    color: #555;
-
-    margin-bottom: 22px;
-}
-
-/* =========================================================
-   INSTRUCCIÓ / REGLA
-========================================================= */
-
-.ruleBox {
-    max-width: 600px;
-
-    min-height: 105px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    margin-bottom: 20px;
-}
-
-.ruleLabel {
-    font-size: 9px;
-    letter-spacing: 4px;
-
-    color: #555;
-
-    margin-bottom: 10px;
-}
-
-.instruction {
-    font-size: 20px;
-    font-weight: 700;
-
-    line-height: 1.45;
-
-    max-width: 620px;
-}
-
-/* =========================================================
-   PORTES
-========================================================= */
-
-.doors {
-    display: flex;
-
-    gap: 18px;
-
-    width: 100%;
-    max-width: 560px;
-}
-
-.door {
-    position: relative;
-
-    flex: 1;
-
-    min-height: 180px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,0.07),
-            rgba(255,255,255,0.015)
-        );
-
-    border: 1px solid rgba(255,255,255,0.32);
-
-    border-radius: 8px;
-
-    color: white;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.12s,
-        background 0.12s,
-        border-color 0.12s;
-}
-
-.door:hover {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,0.13),
-            rgba(255,255,255,0.03)
-        );
-
-    border-color: rgba(255,255,255,0.7);
-
-    transform: translateY(-3px);
-}
-
-.door:active {
-    transform: scale(0.97);
-}
-
-.doorNumber {
-    position: absolute;
-
-    top: 13px;
-    left: 15px;
-
-    font-size: 9px;
-    letter-spacing: 2px;
-
-    color: #555;
-}
-
-.doorMain {
-    font-size: 27px;
-    font-weight: 800;
-
-    margin-top: 12px;
-}
-
-.doorSub {
-    margin-top: 13px;
-
-    font-size: 10px;
-    letter-spacing: 2px;
-
-    color: #777;
-}
-
-/* =========================================================
-   RESULTAT TEMPORAL
-========================================================= */
-
-#resultFlash {
-    position: fixed;
-    inset: 0;
-
-    z-index: 20;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    pointer-events: none;
-
-    background: rgba(0,0,0,0.45);
-
-    opacity: 0;
-
-    transition: opacity 0.12s;
-}
-
-#resultFlash.show {
-    opacity: 1;
-}
-
-#resultText {
-    font-size: 28px;
-    letter-spacing: 7px;
-    font-weight: 800;
-}
-
-/* =========================================================
-   FINAL
-========================================================= */
-
-#endScreen {
-    background: #050505;
-}
-
-.endSymbol {
-    font-size: 50px;
-    margin-bottom: 20px;
-}
-
-.endTitle {
-    font-size: 30px;
-    letter-spacing: 7px;
-
-    margin-bottom: 20px;
-}
-
-.endText {
-    color: #888;
-
-    line-height: 1.8;
-
-    font-size: 13px;
-}
-
-.retryButton {
-    margin-top: 30px;
-
-    background: white;
-    color: black;
-
-    border: none;
-    border-radius: 5px;
-
-    padding: 14px 30px;
-
-    font-weight: 800;
-    letter-spacing: 2px;
-
-    cursor: pointer;
-}
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-    #timer {
-        font-size: 45vw;
-    }
-
-    .title {
-        font-size: 25px;
-        letter-spacing: 6px;
-    }
-
-    .gameTitle {
-        font-size: 20px;
-    }
-
-    .instruction {
-        font-size: 17px;
-    }
-
-    .door {
-        min-height: 150px;
-    }
-
-    .doorMain {
-        font-size: 22px;
-    }
-
-    .doors {
-        gap: 12px;
-    }
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GAME 03 - JACK OF HEARTS</title>
+    <style>
+        /* =========================================================
+           ESTILS GLOBALS I CINEMATOGRÀFICS
+        ========================================================= */
+        :root {
+            --bg-color: #030303;
+            --text-main: #e0e0e0;
+            --text-muted: #666;
+            --accent-red: #c90000;
+            --accent-glow: rgba(201, 0, 0, 0.6);
+            --border-dark: #222;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Efecte Scanlines (CRT) i Vignette */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+            pointer-events: none;
+            z-index: 998;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+            z-index: 10;
+        }
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .hidden { display: none !important; }
+
+        /* =========================================================
+           ANIMACIONS
+        ========================================================= */
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+        .glitch-text { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite; color: var(--accent-red); }
+        
+        @keyframes pulseRed {
+            0% { text-shadow: 0 0 5px var(--accent-red); color: var(--text-main); }
+            50% { text-shadow: 0 0 20px var(--accent-red); color: var(--accent-red); }
+            100% { text-shadow: 0 0 5px var(--accent-red); color: var(--text-main); }
+        }
+        .pulse-timer { animation: pulseRed 1s infinite; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* =========================================================
+           PANTALLA INTRO
+        ========================================================= */
+        #intro-screen { justify-content: center; align-items: center; text-align: center; background: #000; z-index: 100; }
+        .intro-title { font-size: 2rem; letter-spacing: 5px; margin-bottom: 10px; }
+        .intro-subtitle { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 40px; letter-spacing: 2px; }
+        .intro-rules { font-size: 0.9rem; line-height: 2; margin-bottom: 50px; color: #aaa; }
+        .btn-enter {
+            background: transparent; color: var(--accent-red);
+            border: 1px solid var(--accent-red); padding: 15px 40px;
+            font-family: inherit; font-size: 1.2rem; letter-spacing: 3px;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .btn-enter:hover { background: var(--accent-red); color: #000; box-shadow: 0 0 15px var(--accent-red); }
+        
+        .heart-flicker { display: inline-block; animation: glitch 3s infinite; }
+
+        /* =========================================================
+           HUD I SALA PRINCIPAL
+        ========================================================= */
+        .hud {
+            position: absolute; top: 0; left: 0; width: 100%;
+            padding: 15px 20px; display: flex; justify-content: space-between;
+            border-bottom: 1px solid var(--border-dark);
+            background: rgba(0,0,0,0.8); z-index: 50;
+        }
+        .hud-title { font-size: 0.9rem; letter-spacing: 2px; color: var(--text-muted); }
+        .hud-timer { font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; }
+
+        #main-room { padding-top: 70px; padding-bottom: 80px; height: 100%; }
+        
+        .grid-characters {
+            display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+            gap: 15px; padding: 20px; height: 100%; max-width: 800px; margin: 0 auto;
+        }
+
+        .char-card {
+            background-color: #111; border: 1px solid var(--border-dark);
+            position: relative; overflow: hidden; cursor: pointer;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            transition: border-color 0.3s, transform 0.2s;
+        }
+        .char-card:active { transform: scale(0.98); }
+        .char-card:hover { border-color: #444; }
+        
+        .char-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            filter: grayscale(100%) brightness(40%) contrast(120%);
+            transition: all 0.5s;
+        }
+        .char-card:hover .char-bg { filter: grayscale(80%) brightness(60%) contrast(110%); }
+
+        .char-info {
+            position: relative; z-index: 2; padding: 15px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9) 80%);
+        }
+        .char-name { font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; }
+        .char-claim { font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; }
+        .char-claim span { color: #fff; font-size: 1rem; }
+
+        .btn-decision-main {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #000; border: 1px solid var(--accent-red); color: var(--accent-red);
+            padding: 12px 30px; font-family: inherit; letter-spacing: 2px; cursor: pointer;
+            z-index: 50; width: 80%; max-width: 300px; transition: all 0.3s;
+        }
+        .btn-decision-main:hover { background: var(--accent-red); color: #000; }
+
+        /* =========================================================
+           PANTALLA DETALL PERSONATGE (ACCIONS)
+        ========================================================= */
+        #detail-screen { background: #000; }
+        .detail-header { position: relative; height: 40vh; overflow: hidden; }
+        .detail-bg {
+            width: 100%; height: 100%; background-size: cover; background-position: center;
+            filter: grayscale(100%) brightness(30%);
+        }
+        .detail-title-box {
+            position: absolute; bottom: 20px; left: 20px;
+        }
+        .detail-title { font-size: 2rem; letter-spacing: 3px; text-transform: uppercase; }
+        .detail-subtitle { font-size: 0.9rem; color: var(--text-muted); }
+
+        .action-menu { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .btn-action {
+            background: #0a0a0a; border: 1px solid #333; color: #ccc;
+            padding: 15px; text-align: left; font-family: inherit; font-size: 1rem;
+            letter-spacing: 1px; cursor: pointer; display: flex; justify-content: space-between;
+        }
+        .btn-action.used { border-color: var(--text-muted); color: var(--text-muted); }
+        .btn-action.locked { opacity: 0.4; cursor: not-allowed; border-color: var(--accent-red); }
+        .btn-action:active:not(.locked) { background: #222; }
+
+        .btn-back { margin-top: 20px; background: transparent; border: none; color: #888; font-family: inherit; font-size: 0.9rem; text-decoration: underline; cursor: pointer; text-align: left; }
+
+        /* =========================================================
+           SUB-PANTALLES D'ACCIÓ
+        ========================================================= */
+        .sub-screen {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.95); z-index: 60; display: flex; flex-direction: column;
+            padding: 20px; padding-top: 70px;
+        }
+        .sub-header { font-size: 0.8rem; color: var(--accent-red); letter-spacing: 2px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;}
+        
+        /* Observation */
+        #obs-content { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; line-height: 1.6; text-align: center; font-style: italic; color: #ddd; }
+        .btn-next { background: #222; border: 1px solid #555; color: #fff; padding: 15px; font-family: inherit; cursor: pointer; width: 100%; margin-top: 20px;}
+
+        /* Question */
+        .q-list { display: flex; flex-direction: column; gap: 10px; }
+        .btn-question { background: transparent; border: 1px solid #333; color: #aaa; padding: 12px; text-align: left; font-family: inherit; font-size: 0.9rem; cursor: pointer; }
+        .btn-question:active { background: #222; }
+        #q-dialog { flex:1; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+        .dialog-marcel { color: #888; font-size: 0.9rem; }
+        .dialog-char { color: #fff; font-size: 1.1rem; line-height: 1.5; border-left: 2px solid var(--accent-red); padding-left: 15px; }
+
+        /* Investigation */
+        #inv-terminal { flex: 1; overflow-y: auto; font-size: 0.9rem; color: #0f0; line-height: 1.8; padding: 10px; background: #050505; border: 1px solid #222; }
+        .terminal-line { margin-bottom: 10px; opacity: 0; animation: fadeIn 0.1s forwards; }
+        .terminal-line::before { content: "> "; color: #005500; }
+
+        /* =========================================================
+           PANTALLA DECISIÓ FINAL
+        ========================================================= */
+        #decision-screen { padding: 30px 20px; justify-content: center; background: #050505; z-index: 80;}
+        .dec-section { margin-bottom: 40px; }
+        .dec-title { font-size: 1rem; color: #888; margin-bottom: 15px; text-align: center; letter-spacing: 2px;}
+        
+        .dec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .dec-btn { background: #111; border: 1px solid #333; color: #ccc; padding: 15px; font-family: inherit; font-size: 1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
+        .dec-btn.selected { background: #fff; color: #000; border-color: #fff; font-weight: bold; }
+        
+        .btn-submit-dec { background: var(--accent-red); color: #000; border: none; padding: 15px; width: 100%; font-family: inherit; font-size: 1.2rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; opacity: 0.5; pointer-events: none; transition: opacity 0.3s; }
+        .btn-submit-dec.ready { opacity: 1; pointer-events: auto; }
+        .btn-cancel { background: transparent; color: #666; border: none; padding: 15px; width: 100%; font-family: inherit; cursor: pointer; margin-top: 10px; text-decoration: underline;}
+
+        /* =========================================================
+           PANTALLES DRAMÀTIQUES I FINALS
+        ========================================================= */
+        .full-center { position: absolute; top:0; left:0; width:100%; height:100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; z-index: 100; text-align: center; padding: 20px;}
+        
+        #dramatic-screen h1 { color: var(--accent-red); font-size: 3rem; margin-bottom: 20px; letter-spacing: 5px; }
+        #dramatic-screen p { color: #aaa; font-size: 1.2rem; letter-spacing: 2px; }
+        
+        #game-clear-screen h1 { color: #fff; font-size: 2.5rem; letter-spacing: 5px; margin-bottom: 10px; }
+        #game-clear-screen .big-suit { font-size: 5rem; color: var(--accent-red); margin: 20px 0; animation: fadeIn 2s; }
+        #game-clear-screen p { color: #888; font-size: 1rem; line-height: 1.5; margin-bottom: 30px;}
+        .subtle-hint { font-size: 0.8rem; color: #444; letter-spacing: 2px; margin-top: 40px; }
+
+        #game-over-screen h1 { color: var(--accent-red); font-size: 3rem; letter-spacing: 5px; }
+        .btn-restart { margin-top: 40px; background: transparent; border: 1px solid #555; color: #888; padding: 10px 30px; font-family: inherit; cursor: pointer; }
+    </style>
 </head>
-
-
 <body>
 
-
-<!-- ======================================================
-     PANTALLA INICIAL
-======================================================= -->
-
-<div id="startScreen" class="screen">
-
-    <div class="cardSymbol">♠</div>
-
-    <h1 class="title">BORDERLAND</h1>
-
-    <div class="subtitle">
-        GAME 3
+    <!-- HUD (Sempre visible excepte intro/finals) -->
+    <div id="hud" class="hud hidden">
+        <div class="hud-title">JACK OF HEARTS</div>
+        <div id="timer-display" class="hud-timer">15:00</div>
     </div>
 
-    <div class="description">
-
-        <strong>♠ ACTION</strong>
-
-        <br><br>
-
-        Una porta et permet continuar.
-        <br>
-        L'altra acaba el joc.
-
-        <br><br>
-
-        Les regles canviaran.
-        <br>
-        El temps no.
-
-        <br><br>
-
-        <strong>VISA: 60 SECONDS</strong>
-
-    </div>
-
-    <button
-        class="startButton"
-        onclick="startGame()"
-    >
-        ENTER GAME
-    </button>
-
-</div>
-
-
-<!-- ======================================================
-     JOC
-======================================================= -->
-
-<div id="game" class="hidden">
-
-    <div class="topBar">
-
-        <span>
-            PLAYER:
-            <strong>MARCEL</strong>
-        </span>
-
-        <span>
-            ♠ GAME
-        </span>
-
-    </div>
-
-
-    <div id="timer">
-        60
-    </div>
-
-
-    <div class="gameHeader">
-        VISA
-    </div>
-
-    <div class="gameTitle">
-        ♠ ACTION
-    </div>
-
-    <div
-        id="roundInfo"
-        class="roundInfo"
-    >
-        GAME 1 / 15
-    </div>
-
-
-    <div class="ruleBox">
-
-        <div
-            id="ruleLabel"
-            class="ruleLabel"
-        >
-            RULE
+    <!-- PANTALLA 1: INTRO -->
+    <div id="intro-screen" class="screen active">
+        <div class="intro-title glitch-text">GAME 03</div>
+        <div class="intro-subtitle">JACK OF HEARTS <span class="heart-flicker">♥</span></div>
+        <div class="intro-rules">
+            ONE TRUTH.<br>
+            THREE LIES.<br>
+            FIFTEEN MINUTES.
         </div>
+        <button class="btn-enter" onclick="startGame()">ENTER GAME</button>
+    </div>
 
-        <div
-            id="instruction"
-            class="instruction"
-        >
-            PREPARA'T
+    <!-- PANTALLA 2: SALA PRINCIPAL -->
+    <div id="main-room" class="screen">
+        <div class="grid-characters">
+            <div class="char-card" onclick="openCharacter('chishiya')">
+                <div class="char-bg" style="background-image: url('https://static.wikia.nocookie.net/aliceinborderland/images/2/23/Chishiya_Netflix.jpg'); background-color: #222;"></div>
+                <div class="char-info">
+                    <div class="char-name">Chishiya</div>
+                    <div class="char-claim">Diu: <span>♣</span></div>
+                </div>
+            </div>
+            <div class="char-card" onclick="openCharacter('arisu')">
+                <div class="char-bg" style="background-image: url('https://static.wikia.nocookie.net/aliceinborderland/images/b/b3/Arisu_Netflix.jpg'); background-color: #332;"></div>
+                <div class="char-info">
+                    <div class="char-name">Arisu</div>
+                    <div class="char-claim">Diu: <span>♦</span></div>
+                </div>
+            </div>
+            <div class="char-card" onclick="openCharacter('kuina')">
+                <div class="char-bg" style="background-image: url('https://static.wikia.nocookie.net/aliceinborderland/images/e/ea/Kuina_Netflix.jpg'); background-color: #232;"></div>
+                <div class="char-info">
+                    <div class="char-name">Kuina</div>
+                    <div class="char-claim">Diu: <span>♠</span></div>
+                </div>
+            </div>
+            <div class="char-card" onclick="openCharacter('usagi')">
+                <div class="char-bg" style="background-image: url('https://static.wikia.nocookie.net/aliceinborderland/images/4/4b/Usagi_Netflix.jpg'); background-color: #223;"></div>
+                <div class="char-info">
+                    <div class="char-name">Usagi</div>
+                    <div class="char-claim">Diu: <span>♥</span></div>
+                </div>
+            </div>
         </div>
-
+        <button class="btn-decision-main" onclick="openDecision()">FINAL DECISION</button>
     </div>
 
-
-    <div
-        id="doors"
-        class="doors"
-    >
-
-    </div>
-
-</div>
-
-
-<!-- ======================================================
-     FLASH RESULTAT
-======================================================= -->
-
-<div
-    id="resultFlash"
->
-
-    <div
-        id="resultText"
-    >
-    </div>
-
-</div>
-
-
-<!-- ======================================================
-     FINAL
-======================================================= -->
-
-<div
-    id="endScreen"
-    class="screen hidden"
->
-
-    <div class="endSymbol">
-        ♠
-    </div>
-
-    <div
-        id="endTitle"
-        class="endTitle"
-    >
-        GAME OVER
-    </div>
-
-    <div
-        id="endText"
-        class="endText"
-    >
-    </div>
-
-    <button
-        class="retryButton"
-        onclick="location.reload()"
-    >
-        RETRY
-    </button>
-
-</div>
-
-
-<script>
-
-/* =========================================================
-   CONFIGURACIÓ
-========================================================= */
-
-const TOTAL_ROUNDS = 15;
-
-const NEEDED_CORRECT = 11;
-
-let currentRound = 0;
-
-let correctAnswers = 0;
-
-let timeLeft = 60;
-
-let timerInterval;
-
-let gameFinished = false;
-
-
-/* =========================================================
-   RONDES
-
-   Cada objecte conté:
-   - rule: text de la regla
-   - left: porta esquerra
-   - right: porta dreta
-   - correct: resposta correcta
-========================================================= */
-
-const rounds = [
-
-    /* ----------------------------------------------
-       FASE 1 — APRENENT LA LÒGICA
-    ---------------------------------------------- */
-
-    {
-        rule: "RULE 01",
-        instruction:
-            "EL CAMÍ SEGUR SEMPRE PORTA EL SÍMBOL MÉS ALT.",
-        left: {
-            main: "♠",
-            sub: "2"
-        },
-        right: {
-            main: "♣",
-            sub: "7"
-        },
-        correct: "right"
-    },
-
-    {
-        rule: "RULE 01",
-        instruction:
-            "EL CAMÍ SEGUR SEMPRE PORTA EL SÍMBOL MÉS ALT.",
-        left: {
-            main: "♥",
-            sub: "9"
-        },
-        right: {
-            main: "♦",
-            sub: "4"
-        },
-        correct: "left"
-    },
-
-    {
-        rule: "RULE 01",
-        instruction:
-            "EL CAMÍ SEGUR SEMPRE PORTA EL SÍMBOL MÉS ALT.",
-        left: {
-            main: "♦",
-            sub: "3"
-        },
-        right: {
-            main: "♠",
-            sub: "8"
-        },
-        correct: "right"
-    },
-
-
-    /* ----------------------------------------------
-       FASE 2 — CANVI DE REGLA
-    ---------------------------------------------- */
-
-    {
-        rule: "RULE 02",
-        instruction:
-            "LA REGLA HA CANVIAT. ARA, EL NOMBRE MÉS BAIX ÉS EL SEGUR.",
-        left: {
-            main: "♣",
-            sub: "2"
-        },
-        right: {
-            main: "♥",
-            sub: "8"
-        },
-        correct: "left"
-    },
-
-    {
-        rule: "RULE 02",
-        instruction:
-            "EL NOMBRE MÉS BAIX ÉS EL SEGUR.",
-        left: {
-            main: "♦",
-            sub: "6"
-        },
-        right: {
-            main: "♠",
-            sub: "1"
-        },
-        correct: "right"
-    },
-
-    {
-        rule: "RULE 02",
-        instruction:
-            "EL NOMBRE MÉS BAIX ÉS EL SEGUR.",
-        left: {
-            main: "♥",
-            sub: "3"
-        },
-        right: {
-            main: "♣",
-            sub: "5"
-        },
-        correct: "left"
-    },
-
-
-    /* ----------------------------------------------
-       FASE 3 — LA REGLA ES COMPLICA
-    ---------------------------------------------- */
-
-    {
-        rule: "RULE 03",
-        instruction:
-            "NOU CANVI. EL SEGUR ÉS EL NOMBRE PARELL MÉS ALT.",
-        left: {
-            main: "♠",
-            sub: "7"
-        },
-        right: {
-            main: "♦",
-            sub: "8"
-        },
-        correct: "right"
-    },
-
-    {
-        rule: "RULE 03",
-        instruction:
-            "EL NOMBRE PARELL MÉS ALT ÉS EL SEGUR.",
-        left: {
-            main: "♣",
-            sub: "10"
-        },
-        right: {
-            main: "♥",
-            sub: "6"
-        },
-        correct: "left"
-    },
-
-    {
-        rule: "RULE 03",
-        instruction:
-            "EL NOMBRE PARELL MÉS ALT ÉS EL SEGUR.",
-        left: {
-            main: "♥",
-            sub: "5"
-        },
-        right: {
-            main: "♠",
-            sub: "2"
-        },
-        correct: "right"
-    },
-
-
-    /* ----------------------------------------------
-       FASE 4 — DUES CONDICIONS
-    ---------------------------------------------- */
-
-    {
-        rule: "RULE 04",
-        instruction:
-            "EL SEGUR HA DE SER PARELL I BLANC.",
-        left: {
-            main: "♠",
-            sub: "4"
-        },
-        right: {
-            main: "♣",
-            sub: "7"
-        },
-        correct: "left"
-    },
-
-    {
-        rule: "RULE 04",
-        instruction:
-            "EL SEGUR HA DE SER PARELL I BLANC.",
-        left: {
-            main: "♥",
-            sub: "9"
-        },
-        right: {
-            main: "♦",
-            sub: "6"
-        },
-        correct: "right"
-    },
-
-    {
-        rule: "RULE 04",
-        instruction:
-            "EL SEGUR HA DE SER PARELL I BLANC.",
-        left: {
-            main: "♣",
-            sub: "8"
-        },
-        right: {
-            main: "♠",
-            sub: "3"
-        },
-        correct: "left"
-    },
-
-
-    /* ----------------------------------------------
-       FASE 5 — FINAL
-
-       Ara no repetim tota la regla.
-       Ha de recordar l'última mecànica.
-    ---------------------------------------------- */
-
-    {
-        rule: "FINAL",
-        instruction:
-            "RECORDA QUÈ HAS APRÈS. EL TEMPS S'ACABA.",
-        left: {
-            main: "♥",
-            sub: "4"
-        },
-        right: {
-            main: "♠",
-            sub: "9"
-        },
-        correct: "left"
-    },
-
-    {
-        rule: "FINAL",
-        instruction:
-            "NO HI HA NOVA REGLA. CONFIA EN LA TEVA MEMÒRIA.",
-        left: {
-            main: "♦",
-            sub: "2"
-        },
-        right: {
-            main: "♣",
-            sub: "6"
-        },
-        correct: "left"
-    },
-
-    {
-        rule: "FINAL",
-        instruction:
-            "ÚLTIMA PORTA. DECIDEIX.",
-        left: {
-            main: "♠",
-            sub: "8"
-        },
-        right: {
-            main: "♥",
-            sub: "5"
-        },
-        correct: "left"
-    }
-
-];
-
-
-/* =========================================================
-   INICIAR JOC
-========================================================= */
-
-function startGame() {
-
-    document
-        .getElementById("startScreen")
-        .classList
-        .add("hidden");
-
-    document
-        .getElementById("game")
-        .classList
-        .remove("hidden");
-
-    currentRound = 0;
-
-    correctAnswers = 0;
-
-    timeLeft = 60;
-
-    gameFinished = false;
-
-    document
-        .getElementById("timer")
-        .textContent = timeLeft;
-
-    timerInterval = setInterval(
-        updateTimer,
-        1000
-    );
-
-    showRound();
-}
-
-
-/* =========================================================
-   CRONÒMETRE
-========================================================= */
-
-function updateTimer() {
-
-    if (gameFinished) {
-        return;
-    }
-
-    timeLeft--;
-
-    document
-        .getElementById("timer")
-        .textContent = timeLeft;
-
-
-    /* Quan queda poc temps,
-       el cronòmetre es fa més visible. */
-
-    if (timeLeft <= 10) {
-
-        document
-            .getElementById("timer")
-            .style.color =
-            "rgba(255,255,255,0.13)";
-
-    }
-
-
-    if (timeLeft <= 0) {
-
-        finishGame(false);
-
-    }
-
-}
-
-
-/* =========================================================
-   MOSTRAR RONDA
-========================================================= */
-
-function showRound() {
-
-    if (gameFinished) {
-        return;
-    }
-
-
-    if (currentRound >= TOTAL_ROUNDS) {
-
-        finishGame(
-            correctAnswers >= NEEDED_CORRECT
-        );
-
-        return;
-    }
-
-
-    const round =
-        rounds[currentRound];
-
-
-    document
-        .getElementById("roundInfo")
-        .textContent =
-        "GAME " +
-        (currentRound + 1) +
-        " / " +
-        TOTAL_ROUNDS;
-
-
-    document
-        .getElementById("ruleLabel")
-        .textContent =
-        round.rule;
-
-
-    document
-        .getElementById("instruction")
-        .textContent =
-        round.instruction;
-
-
-    const doors =
-        document.getElementById("doors");
-
-
-    doors.innerHTML = "";
-
-
-    /* PORTA ESQUERRA */
-
-    const leftDoor =
-        createDoor(
-            "A",
-            round.left,
-            "left"
-        );
-
-
-    /* PORTA DRETA */
-
-    const rightDoor =
-        createDoor(
-            "B",
-            round.right,
-            "right"
-        );
-
-
-    doors.appendChild(leftDoor);
-
-    doors.appendChild(rightDoor);
-
-}
-
-
-/* =========================================================
-   CREAR PORTA
-========================================================= */
-
-function createDoor(
-    number,
-    data,
-    position
-) {
-
-    const button =
-        document.createElement("button");
-
-    button.className = "door";
-
-
-    button.innerHTML = `
-
-        <div class="doorNumber">
-            DOOR ${number}
+    <!-- PANTALLA 3: DETALL PERSONATGE -->
+    <div id="detail-screen" class="screen">
+        <div class="detail-header">
+            <div id="detail-bg" class="detail-bg"></div>
+            <div class="detail-title-box">
+                <div id="detail-name" class="detail-title">NOM</div>
+                <div id="detail-claim" class="detail-subtitle">Diu: <span></span></div>
+            </div>
         </div>
-
-        <div class="doorMain">
-            ${data.main}
+        <div class="action-menu">
+            <button id="btn-obs" class="btn-action" onclick="triggerAction('obs')">👁 OBSERVATION <span id="st-obs"></span></button>
+            <button id="btn-que" class="btn-action" onclick="triggerAction('que')">💬 QUESTION <span id="st-que"></span></button>
+            <button id="btn-inv" class="btn-action" onclick="triggerAction('inv')">🔎 INVESTIGATION <span id="st-inv"></span></button>
+            <button class="btn-back" onclick="closeCharacter()">← TORNAR A LA SALA</button>
         </div>
+    </div>
 
-        <div class="doorSub">
-            ${data.sub}
+    <!-- SUB-PANTALLA: OBSERVATION -->
+    <div id="action-obs-screen" class="screen sub-screen hidden">
+        <div class="sub-header">CAMERA FOCUS // LIVE RECORD</div>
+        <div id="obs-content"></div>
+        <button id="obs-next-btn" class="btn-next" onclick="nextObservation()">NEXT</button>
+    </div>
+
+    <!-- SUB-PANTALLA: QUESTION -->
+    <div id="action-que-screen" class="screen sub-screen hidden">
+        <div class="sub-header">INTERROGATION PROTOCOL</div>
+        <div id="q-list-container" class="q-list"></div>
+        <div id="q-dialog" class="hidden">
+            <div id="dialog-marcel" class="dialog-marcel"></div>
+            <div id="dialog-char" class="dialog-char"></div>
         </div>
+        <button id="q-close-btn" class="btn-next hidden" onclick="closeSubScreen()">CLOSE</button>
+    </div>
 
-    `;
+    <!-- SUB-PANTALLA: INVESTIGATION -->
+    <div id="action-inv-screen" class="screen sub-screen hidden">
+        <div class="sub-header">EVIDENCE FILE // DECRYPTING</div>
+        <div id="inv-terminal"></div>
+        <button id="inv-close-btn" class="btn-next hidden" onclick="closeSubScreen()">CLOSE</button>
+    </div>
 
+    <!-- PANTALLA DECISIÓ FINAL -->
+    <div id="decision-screen" class="screen hidden">
+        <div class="dec-section">
+            <div class="dec-title">WHO TELLS THE TRUTH?</div>
+            <div class="dec-grid">
+                <button class="dec-btn btn-truth" onclick="selectTruth('chishiya')">CHISHIYA</button>
+                <button class="dec-btn btn-truth" onclick="selectTruth('arisu')">ARISU</button>
+                <button class="dec-btn btn-truth" onclick="selectTruth('kuina')">KUINA</button>
+                <button class="dec-btn btn-truth" onclick="selectTruth('usagi')">USAGI</button>
+            </div>
+        </div>
+        <div class="dec-section">
+            <div class="dec-title">YOUR SUIT</div>
+            <div class="dec-grid">
+                <button class="dec-btn btn-suit" onclick="selectSuit('♥')">♥ HEARTS</button>
+                <button class="dec-btn btn-suit" onclick="selectSuit('♦')">♦ DIAMONDS</button>
+                <button class="dec-btn btn-suit" onclick="selectSuit('♣')">♣ CLUBS</button>
+                <button class="dec-btn btn-suit" onclick="selectSuit('♠')">♠ SPADES</button>
+            </div>
+        </div>
+        <button id="btn-submit-dec" class="btn-submit-dec" onclick="submitDecision()">SUBMIT</button>
+        <button class="btn-cancel" onclick="closeDecision()">CANCEL·LAR</button>
+    </div>
 
-    button.onclick = function() {
+    <!-- PANTALLES DRAMÀTIQUES I FINALS -->
+    <div id="dramatic-screen" class="full-center hidden">
+        <h1 class="glitch-text">INCORRECT</h1>
+        <p>Però encara no has perdut.</p>
+        <p style="margin-top: 30px; font-weight: bold; color: #fff;">ÚLTIMA OPORTUNITAT</p>
+    </div>
 
-        answer(
-            position,
-            button
-        );
+    <div id="game-clear-screen" class="full-center hidden">
+        <div style="color: #0f0; font-size: 1.2rem; letter-spacing: 3px; margin-bottom: 20px;">CORRECT</div>
+        <h1>GAME CLEAR</h1>
+        <div class="big-suit">♥</div>
+        <p>USAGI WAS TELLING THE TRUTH</p>
+        <p style="margin-top: 15px;">Has descobert qui no necessitava que hi confiessis.</p>
+        <div class="subtle-hint">TIME WAS NEVER ON YOUR SIDE.</div>
+    </div>
 
-    };
+    <div id="game-over-screen" class="full-center hidden">
+        <h1 id="go-title" class="glitch-text">GAME OVER</h1>
+        <div style="font-size: 3rem; color: #333; margin: 20px 0;">♥</div>
+        <button class="btn-restart" onclick="location.reload()">RESTART</button>
+    </div>
 
+    <!-- SCRIPTS -->
+    <script>
+        /* =========================================================
+           DADES DELS PERSONATGES I HISTÒRIA
+        ========================================================= */
+        const db = {
+            chishiya: {
+                id: 'chishiya', name: 'Chishiya', claim: '♣', img: 'https://static.wikia.nocookie.net/aliceinborderland/images/2/23/Chishiya_Netflix.jpg',
+                obs: [
+                    "Chishiya roman assegut i aparentment tranquil.",
+                    "Quan Arisu parla, el mira.",
+                    "Quan Usagi diu ♥, mira breument el seu collar i després Marcel. No mostra sorpresa evident.",
+                    "Sembla més interessat en les reaccions que en les paraules.",
+                    "Fa un petit somriure subtil.",
+                    "Quan Marcel es mostra confós, no l’ajuda directament."
+                ],
+                que: [
+                    { q: "Per què t’hauria de creure?", a: "No ho facis.<br><br>Si necessites que et convenci, probablement no sóc la persona que hauries d’escollir." },
+                    { q: "Qui et sembla més sospitós?", a: "No és la pregunta correcta.<br><br>Hauries de preguntar-te qui necessita que desconfiïs dels altres." },
+                    { q: "Estàs segur que és ♣?", a: "Sí.<br><br>Ho he vist." },
+                    { q: "Què estàs intentant fer?", a: "Que decideixis tu.<br><br>Si et dic què has de pensar, ja no serà la teva decisió." }
+                ],
+                inv: [
+                    "Ha mantingut ♣ des del principi.",
+                    "No ha preguntat als altres quin pal han vist.",
+                    "Presta molta atenció a les reaccions dels altres.",
+                    "Quan se’l pressiona, tendeix a redirigir la conversa.",
+                    "Evita donar explicacions fàcilment contrastables.",
+                    "En diversos moments dirigeix l’atenció de Marcel cap als altres.",
+                    "No s’han detectat canvis en la seva versió."
+                ]
+            },
+            arisu: {
+                id: 'arisu', name: 'Arisu', claim: '♦', img: 'https://static.wikia.nocookie.net/aliceinborderland/images/b/b3/Arisu_Netflix.jpg',
+                obs: [
+                    "Quan Chishiya parla, Arisu sembla que vol intervenir.",
+                    "Obre la boca però s’atura. Diu 'No, res.'",
+                    "Quan Kuina parla, mira a terra. Es frega les mans.",
+                    "Quan Usagi diu ♥, la mira durant uns segons i després aparta la mirada."
+                ],
+                que: [
+                    { q: "Per què estàs tan nerviós?", a: "Perquè si t’equivoques, et maten.<br><br>I perquè sé que jo podria estar en la teva situació." },
+                    { q: "Estàs segur que és ♦?", a: "Sí.<br><br>Sí. Ho he vist." },
+                    { q: "Has canviat d’opinió en algun moment?", a: "No.<br><br>Bé… no sobre el que he vist." },
+                    { q: "Què creus que està passant aquí?", a: "Que algú està intentant semblar més segur del que és.<br><br>I no sé si ho fa perquè menteix o perquè té por." }
+                ],
+                inv: [
+                    "Abans de respondre, ha començat dues frases i n’ha interromput una.",
+                    "Ha demanat que li repetissin una pregunta.",
+                    "Ha observat les reaccions abans de contestar.",
+                    "Quan se li pregunta directament pel seu pal, respon sense vacil·lar.",
+                    "En explicar un moment anterior, corregeix una paraula abans de continuar:",
+                    " > 'Quan he entrat, he vist el teu collar.'",
+                    " > 'Quan ens han posat els collars...'",
+                    " > CORRECCIÓ: 'Quan ens han fet mirar els collars.'",
+                    "No s’han detectat canvis en la seva versió ♦."
+                ]
+            },
+            kuina: {
+                id: 'kuina', name: 'Kuina', claim: '♠', img: 'https://static.wikia.nocookie.net/aliceinborderland/images/e/ea/Kuina_Netflix.jpg',
+                obs: [
+                    "Quan Arisu està nerviós, Kuina el mira.",
+                    "Quan Chishiya domina la conversa, Kuina es concentra en Marcel.",
+                    "Quan Marcel sembla bloquejat, fa un petit gest per tranquil·litzar-lo.",
+                    "Somriu lleument. No intenta interrompre.",
+                    "Sembla més preocupada per l’estat emocional de Marcel que per les respostes."
+                ],
+                que: [
+                    { q: "Per què hauria de confiar en tu?", a: "No hauries de fer-ho. No perquè jo estigui mentint. Perquè no em coneixes.<br><br>Però si vols saber què faria jo… miraria qui canvia més la seva història." },
+                    { q: "Qui et sembla més sospitós?", a: "Chishiya.<br><br>Perquè sembla que ja sap què faràs abans que ho facis." },
+                    { q: "Què creus que està fent Arisu?", a: "Intentant no equivocar-se.<br><br>No sé si això el fa més o menys fiable." },
+                    { q: "Estàs segura que és ♠?", a: "Sí. Completament.<br><br>Això sí que ho tinc clar." }
+                ],
+                inv: [
+                    "Abans de començar ha preguntat a Arisu si tothom estava bé.",
+                    "Durant el joc intenta reduir la tensió quan algú sembla nerviós.",
+                    "Quan Chishiya domina la conversa, deixa de participar durant uns instants.",
+                    "Mai canvia ♠.",
+                    "Abans de començar havia preguntat a Arisu què faria si algú estigués mentint."
+                ]
+            },
+            usagi: {
+                id: 'usagi', name: 'Usagi', claim: '♥', img: 'https://static.wikia.nocookie.net/aliceinborderland/images/4/4b/Usagi_Netflix.jpg',
+                obs: [
+                    "No intervé mentre els altres parlen.",
+                    "Mira breument Arisu quan diu ♦. Observa Chishiya quan parla.",
+                    "No mostra una reacció exagerada a Kuina.",
+                    "Quan Marcel sembla confós, fa un petit pas enrere. No intenta acostar-se ni convèncer-lo.",
+                    "Mira el collar de Marcel durant uns segons i després torna a mirar-lo als ulls.",
+                    "Quan se li demana una segona confirmació, triga uns segons més."
+                ],
+                que: [
+                    { q: "Per què hauria de creure’t?", a: "No ho hauries de fer perquè t’ho digui jo.<br><br>Mira què fa cadascú i decideix-ho tu." },
+                    { q: "Qui et sembla més difícil de llegir?", a: "Chishiya.<br><br>Però això no vol dir que estigui mentint." },
+                    { q: "Qui et sembla més nerviós?", a: "Arisu.<br><br>Però estar nerviós no vol dir que menteixi." },
+                    { q: "I Kuina?", a: "Està intentant que estiguis tranquil.<br><br>No sé si això és perquè diu la veritat o perquè vol que hi confiïs." }
+                ],
+                inv: [
+                    "Ha mantingut ♥ des del principi.",
+                    "Respon les preguntes directament.",
+                    "No intenta canviar l’opinió de Marcel sobre els altres.",
+                    "Quan un altre jugador és qüestionat, no el defensa ni l’acusa.",
+                    "Quan se li demana confirmar una resposta, no afegeix informació que no pot saber.",
+                    "La seva resposta continua sent ♥.",
+                    "En una segona confirmació tarda uns segons més."
+                ]
+            }
+        };
 
-    return button;
-}
+        /* =========================================================
+           ESTAT DEL JOC
+        ========================================================= */
+        let timer = 900; // 15 minuts
+        let timerInterval;
+        let isSecondChance = false;
+        let gameEnded = false;
+        let currentChar = null;
 
+        // Guarda l'estat d'accions (true = utilitzat)
+        let state = {
+            chishiya: { obs: false, que: false, inv: false, lastQIndex: null },
+            arisu:    { obs: false, que: false, inv: false, lastQIndex: null },
+            kuina:    { obs: false, que: false, inv: false, lastQIndex: null },
+            usagi:    { obs: false, que: false, inv: false, lastQIndex: null }
+        };
 
-/* =========================================================
-   RESPONDRE
-========================================================= */
+        let selectedTruth = null;
+        let selectedSuit = null;
 
-function answer(
-    selected,
-    button
-) {
+        // Variables per les seqüències
+        let obsIndex = 0;
+        let invTimeouts = [];
 
-    if (gameFinished) {
-        return;
-    }
-
-
-    const round =
-        rounds[currentRound];
-
-
-    const allDoors =
-        document.querySelectorAll(".door");
-
-
-    allDoors.forEach(
-        door => {
-            door.disabled = true;
+        /* =========================================================
+           CORE FUNCTIONS (Navegació i Temps)
+        ========================================================= */
+        function get(id) { return document.getElementById(id); }
+        
+        function switchScreen(idToShow) {
+            document.querySelectorAll('.screen').forEach(s => {
+                if(!s.classList.contains('hidden')) s.classList.remove('active');
+            });
+            setTimeout(() => {
+                document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+                get(idToShow).classList.remove('hidden');
+                setTimeout(() => get(idToShow).classList.add('active'), 50);
+            }, 300); // Temps de transició css
         }
-    );
 
-
-    const correct =
-        selected === round.correct;
-
-
-    if (correct) {
-
-        correctAnswers++;
-
-        showFlash("SAFE");
-
-    } else {
-
-        showFlash("...");
-
-    }
-
-
-    currentRound++;
-
-
-    /*
-       No mostrem "WRONG".
-
-       Marcel només sap que ha triat una porta
-       i immediatament apareix el següent game.
-
-       Això evita que pugui aprendre la resposta
-       a partir del feedback.
-    */
-
-    setTimeout(
-        function() {
-
-            hideFlash();
-
-            showRound();
-
-        },
-        350
-    );
-
-}
-
-
-/* =========================================================
-   FLASH
-========================================================= */
-
-function showFlash(text) {
-
-    const flash =
-        document.getElementById(
-            "resultFlash"
-        );
-
-    const result =
-        document.getElementById(
-            "resultText"
-        );
-
-
-    result.textContent = text;
-
-    flash.classList.add("show");
-
-}
-
-
-function hideFlash() {
-
-    document
-        .getElementById("resultFlash")
-        .classList
-        .remove("show");
-
-}
-
-
-/* =========================================================
-   FINAL
-========================================================= */
-
-function finishGame(success) {
-
-    if (gameFinished) {
-        return;
-    }
-
-
-    gameFinished = true;
-
-
-    clearInterval(timerInterval);
-
-
-    document
-        .getElementById("game")
-        .classList
-        .add("hidden");
-
-
-    document
-        .getElementById("endScreen")
-        .classList
-        .remove("hidden");
-
-
-    if (success) {
-
-        document
-            .getElementById("endTitle")
-            .textContent =
-            "GAME CLEAR";
-
-
-        document
-            .getElementById("endText")
-            .innerHTML = `
-
-                <strong>VISA EXTENDED.</strong>
-
-                <br><br>
-
-                ${correctAnswers}
-                / ${TOTAL_ROUNDS}
-                SAFE DECISIONS
-
-                <br><br>
-
-                TIME REMAINING:
-                <strong>
-                    ${timeLeft}
-                </strong>
-
-                <br><br>
-
-                YOU MAY CONTINUE.
-
-            `;
-
-    } else {
-
-        document
-            .getElementById("endTitle")
-            .textContent =
-            "GAME OVER";
-
-
-        document
-            .getElementById("endText")
-            .innerHTML = `
-
-                YOUR VISA HAS EXPIRED.
-
-                <br><br>
-
-                SAFE DECISIONS:
-                <strong>
-                    ${correctAnswers}
-                    / ${TOTAL_ROUNDS}
-                </strong>
-
-                <br><br>
-
-                THE BORDERLAND
-                DOES NOT WAIT.
-
-            `;
-
-    }
-
-}
-
-</script>
-
+        function startGame() {
+            switchScreen('main-room');
+            get('hud').classList.remove('hidden');
+            startTimer();
+        }
+
+        function formatTime(s) {
+            let m = Math.floor(s / 60);
+            let sec = s % 60;
+            return (m < 10 ? '0' : '') + m + ":" + (sec < 10 ? '0' : '') + sec;
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimerUI();
+            timerInterval = setInterval(() => {
+                if(gameEnded) return;
+                timer--;
+                updateTimerUI();
+                if(timer <= 0) {
+                    clearInterval(timerInterval);
+                    triggerGameOver("TIME'S UP");
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI() {
+            const td = get('timer-display');
+            td.innerText = formatTime(timer);
+            
+            if(timer <= 300 && !isSecondChance) { // 5 mins
+                td.style.color = 'var(--accent-red)';
+            }
+            if(timer <= 30) {
+                td.classList.add('pulse-timer');
+            } else {
+                td.classList.remove('pulse-timer');
+            }
+        }
+
+        /* =========================================================
+           INTERACCIÓ AMB PERSONATGES
+        ========================================================= */
+        function openCharacter(id) {
+            if(gameEnded) return;
+            currentChar = id;
+            const c = db[id];
+            
+            get('detail-bg').style.backgroundImage = `url('${c.img}')`;
+            get('detail-name').innerText = c.name;
+            get('detail-claim').innerHTML = `Diu: <span>${c.claim}</span>`;
+            
+            updateActionButtons();
+            switchScreen('detail-screen');
+        }
+
+        function updateActionButtons() {
+            const cState = state[currentChar];
+            
+            const setupBtn = (type) => {
+                const btn = get(`btn-${type}`);
+                const span = get(`st-${type}`);
+                btn.className = 'btn-action';
+                
+                if(cState[type]) {
+                    btn.classList.add('used');
+                    span.innerText = '[ REVISAR ]';
+                } else if(isSecondChance) {
+                    btn.classList.add('locked');
+                    span.innerText = '[ LOCKED ]';
+                } else {
+                    span.innerText = '';
+                }
+            };
+            
+            setupBtn('obs'); setupBtn('que'); setupBtn('inv');
+        }
+
+        function closeCharacter() {
+            switchScreen('main-room');
+            currentChar = null;
+        }
+
+        function triggerAction(type) {
+            if(isSecondChance && !state[currentChar][type]) return; // Blocat si no es va desbloquejar abans
+            
+            if(type === 'obs') runObservation();
+            if(type === 'que') runQuestion();
+            if(type === 'inv') runInvestigation();
+        }
+
+        function closeSubScreen() {
+            // Neteja timeouts del dossier
+            invTimeouts.forEach(t => clearTimeout(t));
+            invTimeouts = [];
+            
+            get('action-obs-screen').classList.add('hidden');
+            get('action-que-screen').classList.add('hidden');
+            get('action-inv-screen').classList.add('hidden');
+            
+            updateActionButtons();
+        }
+
+        /* --- OBSERVE --- */
+        function runObservation() {
+            state[currentChar].obs = true;
+            obsIndex = 0;
+            get('action-obs-screen').classList.remove('hidden');
+            showObservationLine();
+        }
+        
+        function showObservationLine() {
+            const data = db[currentChar].obs;
+            get('obs-content').innerText = data[obsIndex];
+            
+            const btn = get('obs-next-btn');
+            if(obsIndex >= data.length - 1) {
+                btn.innerText = "CLOSE";
+                btn.onclick = closeSubScreen;
+            } else {
+                btn.innerText = "NEXT";
+                btn.onclick = nextObservation;
+            }
+        }
+        
+        function nextObservation() {
+            obsIndex++;
+            showObservationLine();
+        }
+
+        /* --- QUESTION --- */
+        function runQuestion() {
+            get('action-que-screen').classList.remove('hidden');
+            
+            const qList = get('q-list-container');
+            const dialogBox = get('q-dialog');
+            const closeBtn = get('q-close-btn');
+            
+            qList.innerHTML = '';
+            
+            // Si ja estava usat, mostrem directament el diàleg gravat
+            if(state[currentChar].que && state[currentChar].lastQIndex !== null) {
+                qList.classList.add('hidden');
+                dialogBox.classList.remove('hidden');
+                closeBtn.classList.remove('hidden');
+                const qData = db[currentChar].que[state[currentChar].lastQIndex];
+                get('dialog-marcel').innerText = ">> " + qData.q;
+                get('dialog-char').innerHTML = qData.a;
+                return;
+            }
+
+            // Si és nou
+            qList.classList.remove('hidden');
+            dialogBox.classList.add('hidden');
+            closeBtn.classList.add('hidden');
+            
+            db[currentChar].que.forEach((item, index) => {
+                let btn = document.createElement('button');
+                btn.className = 'btn-question';
+                btn.innerText = "> " + item.q;
+                btn.onclick = () => selectQuestion(index);
+                qList.appendChild(btn);
+            });
+        }
+        
+        function selectQuestion(index) {
+            state[currentChar].que = true;
+            state[currentChar].lastQIndex = index;
+            
+            get('q-list-container').classList.add('hidden');
+            const dialogBox = get('q-dialog');
+            dialogBox.classList.remove('hidden');
+            
+            const qData = db[currentChar].que[index];
+            get('dialog-marcel').innerText = ">> " + qData.q;
+            get('dialog-char').innerHTML = ""; 
+            
+            setTimeout(() => {
+                get('dialog-char').innerHTML = qData.a;
+                get('q-close-btn').classList.remove('hidden');
+            }, 800);
+        }
+
+        /* --- INVESTIGATION --- */
+        function runInvestigation() {
+            state[currentChar].inv = true;
+            get('action-inv-screen').classList.remove('hidden');
+            
+            const term = get('inv-terminal');
+            term.innerHTML = '';
+            get('inv-close-btn').classList.add('hidden');
+            
+            const data = db[currentChar].inv;
+            
+            // Si ja ho va veure o és segona oportunitat, apareix de cop
+            if(isSecondChance) {
+                data.forEach(line => {
+                    let p = document.createElement('div');
+                    p.className = 'terminal-line';
+                    p.style.opacity = 1;
+                    p.innerText = line;
+                    term.appendChild(p);
+                });
+                get('inv-close-btn').classList.remove('hidden');
+                return;
+            }
+
+            // Efecte màquina d'escriure / registre de terminal
+            let delay = 500;
+            data.forEach((line, i) => {
+                let to = setTimeout(() => {
+                    let p = document.createElement('div');
+                    p.className = 'terminal-line';
+                    p.innerText = line;
+                    term.appendChild(p);
+                    term.scrollTop = term.scrollHeight;
+                    
+                    if(i === data.length - 1) {
+                        setTimeout(() => get('inv-close-btn').classList.remove('hidden'), 500);
+                    }
+                }, delay);
+                invTimeouts.push(to);
+                delay += 1000 + Math.random() * 800; // temps variable entre línies
+            });
+        }
+
+        /* =========================================================
+           DECISIÓ FINAL
+        ========================================================= */
+        function openDecision() {
+            switchScreen('decision-screen');
+        }
+        
+        function closeDecision() {
+            switchScreen('main-room');
+        }
+
+        function selectTruth(charId) {
+            document.querySelectorAll('.btn-truth').forEach(b => b.classList.remove('selected'));
+            event.target.classList.add('selected');
+            selectedTruth = charId;
+            checkSubmitReady();
+        }
+
+        function selectSuit(suit) {
+            document.querySelectorAll('.btn-suit').forEach(b => b.classList.remove('selected'));
+            event.target.classList.add('selected');
+            selectedSuit = suit;
+            checkSubmitReady();
+        }
+
+        function checkSubmitReady() {
+            const btn = get('btn-submit-dec');
+            if(selectedTruth && selectedSuit) {
+                btn.classList.add('ready');
+            }
+        }
+
+        function submitDecision() {
+            if(!selectedTruth || !selectedSuit) return;
+            
+            // LÒGICA DE VALIDACIÓ
+            // Usagi diu la veritat i Marcel porta ♥
+            if(selectedTruth === 'usagi' && selectedSuit === '♥') {
+                triggerGameClear();
+            } else {
+                if(!isSecondChance) {
+                    triggerSecondChance();
+                } else {
+                    triggerGameOver("GAME OVER");
+                }
+            }
+        }
+
+        /* =========================================================
+           FINAL SEQUENCES
+        ========================================================= */
+        function triggerSecondChance() {
+            isSecondChance = true;
+            
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            get('hud').classList.add('hidden');
+            
+            const ds = get('dramatic-screen');
+            ds.classList.remove('hidden');
+            
+            // Després d'uns segons, torna a la sala principal amb el rellotge a 2:00
+            setTimeout(() => {
+                ds.classList.add('hidden');
+                timer = 120; // 2 minuts
+                get('hud').classList.remove('hidden');
+                switchScreen('main-room');
+                
+                // Reseteja UI de decisió
+                selectedTruth = null; selectedSuit = null;
+                document.querySelectorAll('.dec-btn').forEach(b => b.classList.remove('selected'));
+                get('btn-submit-dec').classList.remove('ready');
+                
+            }, 5000);
+        }
+
+        function triggerGameClear() {
+            gameEnded = true;
+            clearInterval(timerInterval);
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            get('hud').classList.add('hidden');
+            get('game-clear-screen').classList.remove('hidden');
+        }
+
+        function triggerGameOver(msg) {
+            gameEnded = true;
+            clearInterval(timerInterval);
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            get('hud').classList.add('hidden');
+            
+            get('go-title').innerText = msg;
+            get('game-over-screen').classList.remove('hidden');
+        }
+
+    </script>
 </body>
 </html>
