@@ -3,460 +3,1301 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>♠ GAME — ACTION</title>
+
+<title>♠ GAME — BORDERLAND</title>
+
 <style>
+
 * {
     box-sizing: border-box;
 }
+
+html,
 body {
     margin: 0;
-    min-height: 100vh;
+    padding: 0;
+    width: 100%;
+    height: 100%;
     background: #050505;
-    color: white;
-    font-family: Arial, sans-serif;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
     overflow: hidden;
 }
-/* CRONÒMETRE GEGANT */
+
+/* =========================================================
+   CRONÒMETRE GEGANT
+========================================================= */
+
 #timer {
     position: fixed;
     inset: 0;
+
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 31vw;
+    justify-content: center;
+
+    font-size: 34vw;
     font-weight: 900;
+    letter-spacing: -0.07em;
+
     color: rgba(255,255,255,0.065);
-    z-index: 0;
+
     pointer-events: none;
     user-select: none;
-    letter-spacing: -15px;
+
+    z-index: 0;
+
+    transition: color 0.2s;
 }
-#game {
-    position: relative;
-    z-index: 2;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 25px;
-    text-align: center;
-}
-.top {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    letter-spacing: 2px;
-    color: #888;
-}
-#round {
-    color: white;
-}
-h1 {
-    font-size: 17px;
-    letter-spacing: 6px;
-    margin-bottom: 22px;
-}
-#ruleNumber {
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: #666;
-    margin-bottom: 12px;
-}
-#instruction {
-    font-size: 21px;
-    font-weight: bold;
-    line-height: 1.4;
-    max-width: 650px;
-    min-height: 65px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#options {
-    display: flex;
-    gap: 18px;
-    justify-content: center;
-    width: 100%;
-    max-width: 550px;
-    margin-top: 28px;
-}
-.option {
-    flex: 1;
-    min-height: 135px;
-    border: 2px solid rgba(255,255,255,0.55);
-    background: rgba(255,255,255,0.035);
-    color: white;
-    font-size: 25px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.12s;
-    padding: 15px;
-}
-.option:hover {
-    background: rgba(255,255,255,0.11);
-}
-.option:active {
-    transform: scale(0.96);
-}
-.option.correct {
-    border-color: white;
-    background: rgba(255,255,255,0.15);
-}
-.option.wrong {
-    border-color: #777;
-    background: rgba(255,255,255,0.02);
-}
-#startScreen,
-#endScreen {
+
+/* =========================================================
+   PANTALLES
+========================================================= */
+
+.screen {
     position: relative;
     z-index: 5;
-    min-height: 100vh;
+
+    width: 100%;
+    height: 100vh;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px;
+
+    padding: 25px;
+
     text-align: center;
-    background: #050505;
 }
-#startScreen h2,
-#endScreen h2 {
-    font-size: 30px;
-    letter-spacing: 6px;
-    margin-bottom: 20px;
-}
-.sub {
-    color: #999;
-    max-width: 520px;
-    line-height: 1.7;
-    margin-bottom: 35px;
-}
-.mainButton {
-    padding: 16px 35px;
-    background: white;
-    color: black;
-    border: none;
-    border-radius: 7px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    letter-spacing: 2px;
-}
-.mainButton:hover {
-    transform: scale(1.04);
-}
+
 .hidden {
     display: none !important;
 }
-#transition {
-    position: fixed;
-    inset: 0;
-    z-index: 10;
+
+/* =========================================================
+   INICI
+========================================================= */
+
+#startScreen {
     background: #050505;
+}
+
+.cardSymbol {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.title {
+    font-size: 31px;
+    letter-spacing: 8px;
+    font-weight: 800;
+    margin: 0 0 12px 0;
+}
+
+.subtitle {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #777;
+}
+
+.description {
+    max-width: 430px;
+    margin: 35px 0;
+    line-height: 1.8;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.startButton {
+    background: white;
+    color: black;
+
+    border: none;
+    border-radius: 5px;
+
+    padding: 16px 38px;
+
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 3px;
+
+    cursor: pointer;
+}
+
+.startButton:active {
+    transform: scale(0.96);
+}
+
+/* =========================================================
+   JOC
+========================================================= */
+
+#game {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    height: 100vh;
+
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    padding: 25px;
+
     text-align: center;
-    padding: 30px;
 }
-#transitionText {
-    font-size: 20px;
+
+.topBar {
+    position: absolute;
+
+    top: 20px;
+    left: 20px;
+    right: 20px;
+
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 11px;
+    letter-spacing: 2px;
+
+    color: #666;
+}
+
+.topBar strong {
+    color: white;
+}
+
+.gameHeader {
+    font-size: 12px;
+    letter-spacing: 6px;
+    color: #aaa;
+
+    margin-bottom: 10px;
+}
+
+.gameTitle {
+    font-size: 24px;
+    letter-spacing: 5px;
+
+    margin-bottom: 7px;
+}
+
+.roundInfo {
+    font-size: 10px;
     letter-spacing: 3px;
-    line-height: 1.7;
+
+    color: #555;
+
+    margin-bottom: 22px;
 }
+
+/* =========================================================
+   INSTRUCCIÓ / REGLA
+========================================================= */
+
+.ruleBox {
+    max-width: 600px;
+
+    min-height: 105px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 20px;
+}
+
+.ruleLabel {
+    font-size: 9px;
+    letter-spacing: 4px;
+
+    color: #555;
+
+    margin-bottom: 10px;
+}
+
+.instruction {
+    font-size: 20px;
+    font-weight: 700;
+
+    line-height: 1.45;
+
+    max-width: 620px;
+}
+
+/* =========================================================
+   PORTES
+========================================================= */
+
+.doors {
+    display: flex;
+
+    gap: 18px;
+
+    width: 100%;
+    max-width: 560px;
+}
+
+.door {
+    position: relative;
+
+    flex: 1;
+
+    min-height: 180px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.07),
+            rgba(255,255,255,0.015)
+        );
+
+    border: 1px solid rgba(255,255,255,0.32);
+
+    border-radius: 8px;
+
+    color: white;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.12s,
+        background 0.12s,
+        border-color 0.12s;
+}
+
+.door:hover {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.13),
+            rgba(255,255,255,0.03)
+        );
+
+    border-color: rgba(255,255,255,0.7);
+
+    transform: translateY(-3px);
+}
+
+.door:active {
+    transform: scale(0.97);
+}
+
+.doorNumber {
+    position: absolute;
+
+    top: 13px;
+    left: 15px;
+
+    font-size: 9px;
+    letter-spacing: 2px;
+
+    color: #555;
+}
+
+.doorMain {
+    font-size: 27px;
+    font-weight: 800;
+
+    margin-top: 12px;
+}
+
+.doorSub {
+    margin-top: 13px;
+
+    font-size: 10px;
+    letter-spacing: 2px;
+
+    color: #777;
+}
+
+/* =========================================================
+   RESULTAT TEMPORAL
+========================================================= */
+
+#resultFlash {
+    position: fixed;
+    inset: 0;
+
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    pointer-events: none;
+
+    background: rgba(0,0,0,0.45);
+
+    opacity: 0;
+
+    transition: opacity 0.12s;
+}
+
+#resultFlash.show {
+    opacity: 1;
+}
+
+#resultText {
+    font-size: 28px;
+    letter-spacing: 7px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   FINAL
+========================================================= */
+
+#endScreen {
+    background: #050505;
+}
+
+.endSymbol {
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+.endTitle {
+    font-size: 30px;
+    letter-spacing: 7px;
+
+    margin-bottom: 20px;
+}
+
+.endText {
+    color: #888;
+
+    line-height: 1.8;
+
+    font-size: 13px;
+}
+
+.retryButton {
+    margin-top: 30px;
+
+    background: white;
+    color: black;
+
+    border: none;
+    border-radius: 5px;
+
+    padding: 14px 30px;
+
+    font-weight: 800;
+    letter-spacing: 2px;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 600px) {
+
     #timer {
-        font-size: 43vw;
-        letter-spacing: -8px;
+        font-size: 45vw;
     }
-    #instruction {
-        font-size: 18px;
+
+    .title {
+        font-size: 25px;
+        letter-spacing: 6px;
     }
-    .option {
-        min-height: 115px;
-        font-size: 21px;
+
+    .gameTitle {
+        font-size: 20px;
     }
-    h1 {
-        font-size: 15px;
+
+    .instruction {
+        font-size: 17px;
+    }
+
+    .door {
+        min-height: 150px;
+    }
+
+    .doorMain {
+        font-size: 22px;
+    }
+
+    .doors {
+        gap: 12px;
     }
 }
+
 </style>
 </head>
+
+
 <body>
-<!-- PANTALLA INICIAL -->
-<div id="startScreen">
-    <h2>♠ GAME</h2>
-    <p class="sub">
-        <strong>ACTION</strong>
+
+
+<!-- ======================================================
+     PANTALLA INICIAL
+======================================================= -->
+
+<div id="startScreen" class="screen">
+
+    <div class="cardSymbol">♠</div>
+
+    <h1 class="title">BORDERLAND</h1>
+
+    <div class="subtitle">
+        GAME 3
+    </div>
+
+    <div class="description">
+
+        <strong>♠ ACTION</strong>
+
         <br><br>
-        No sempre tindràs temps per pensar.
+
+        Una porta et permet continuar.
         <br>
-        Les regles poden canviar.
+        L'altra acaba el joc.
+
         <br><br>
-        <strong>TIME LIMIT: 60 SECONDS</strong>
-    </p>
-    <button class="mainButton" onclick="startGame()">
-        START GAME
+
+        Les regles canviaran.
+        <br>
+        El temps no.
+
+        <br><br>
+
+        <strong>VISA: 60 SECONDS</strong>
+
+    </div>
+
+    <button
+        class="startButton"
+        onclick="startGame()"
+    >
+        ENTER GAME
     </button>
+
 </div>
-<!-- JOC -->
+
+
+<!-- ======================================================
+     JOC
+======================================================= -->
+
 <div id="game" class="hidden">
-    <div class="top">
-        <span>♠ ACTION</span>
-        <span>ROUND <span id="round">1</span>/15</span>
+
+    <div class="topBar">
+
+        <span>
+            PLAYER:
+            <strong>MARCEL</strong>
+        </span>
+
+        <span>
+            ♠ GAME
+        </span>
+
     </div>
-    <div id="timer">60</div>
-    <h1>♠ PICARS</h1>
-    <div id="ruleNumber">
-        RULE 01
+
+
+    <div id="timer">
+        60
     </div>
-    <div id="instruction">
-        PREPARA'T
+
+
+    <div class="gameHeader">
+        VISA
     </div>
-    <div id="options"></div>
+
+    <div class="gameTitle">
+        ♠ ACTION
+    </div>
+
+    <div
+        id="roundInfo"
+        class="roundInfo"
+    >
+        GAME 1 / 15
+    </div>
+
+
+    <div class="ruleBox">
+
+        <div
+            id="ruleLabel"
+            class="ruleLabel"
+        >
+            RULE
+        </div>
+
+        <div
+            id="instruction"
+            class="instruction"
+        >
+            PREPARA'T
+        </div>
+
+    </div>
+
+
+    <div
+        id="doors"
+        class="doors"
+    >
+
+    </div>
+
 </div>
-<!-- TRANSICIÓ -->
-<div id="transition" class="hidden">
-    <div id="transitionText"></div>
+
+
+<!-- ======================================================
+     FLASH RESULTAT
+======================================================= -->
+
+<div
+    id="resultFlash"
+>
+
+    <div
+        id="resultText"
+    >
+    </div>
+
 </div>
-<!-- FINAL -->
-<div id="endScreen" class="hidden">
-    <h2 id="endTitle">GAME OVER</h2>
-    <p class="sub" id="endText"></p>
-    <button class="mainButton" onclick="location.reload()">
+
+
+<!-- ======================================================
+     FINAL
+======================================================= -->
+
+<div
+    id="endScreen"
+    class="screen hidden"
+>
+
+    <div class="endSymbol">
+        ♠
+    </div>
+
+    <div
+        id="endTitle"
+        class="endTitle"
+    >
+        GAME OVER
+    </div>
+
+    <div
+        id="endText"
+        class="endText"
+    >
+    </div>
+
+    <button
+        class="retryButton"
+        onclick="location.reload()"
+    >
         RETRY
     </button>
+
 </div>
+
+
 <script>
-let timeLeft = 60;
-let timerInterval;
+
+/* =========================================================
+   CONFIGURACIÓ
+========================================================= */
+
+const TOTAL_ROUNDS = 15;
+
+const NEEDED_CORRECT = 11;
+
 let currentRound = 0;
+
 let correctAnswers = 0;
-const totalRounds = 15;
-const neededCorrect = 11;
-/*
-==================================================
-RONDES
-==================================================
-*/
+
+let timeLeft = 60;
+
+let timerInterval;
+
+let gameFinished = false;
+
+
+/* =========================================================
+   RONDES
+
+   Cada objecte conté:
+   - rule: text de la regla
+   - left: porta esquerra
+   - right: porta dreta
+   - correct: resposta correcta
+========================================================= */
+
 const rounds = [
-    // REGLA 1
+
+    /* ----------------------------------------------
+       FASE 1 — APRENENT LA LÒGICA
+    ---------------------------------------------- */
+
     {
         rule: "RULE 01",
-        instruction: "TRIA L'OPCIÓ QUE NO ÉS NEGRA",
-        options: ["♠", "♥"],
-        correct: 1
+        instruction:
+            "EL CAMÍ SEGUR SEMPRE PORTA EL SÍMBOL MÉS ALT.",
+        left: {
+            main: "♠",
+            sub: "2"
+        },
+        right: {
+            main: "♣",
+            sub: "7"
+        },
+        correct: "right"
     },
+
     {
         rule: "RULE 01",
-        instruction: "TRIA L'OPCIÓ QUE TÉ MENYS LLETRES",
-        options: ["PLAY", "GYM"],
-        correct: 1
+        instruction:
+            "EL CAMÍ SEGUR SEMPRE PORTA EL SÍMBOL MÉS ALT.",
+        left: {
+            main: "♥",
+            sub: "9"
+        },
+        right: {
+            main: "♦",
+            sub: "4"
+        },
+        correct: "left"
     },
+
     {
         rule: "RULE 01",
-        instruction: "TRIA EL QUE NO PERTANY AL GRUP",
-        options: ["⚽", "🧙"],
-        correct: 1
+        instruction:
+            "EL CAMÍ SEGUR SEMPRE PORTA EL SÍMBOL MÉS ALT.",
+        left: {
+            main: "♦",
+            sub: "3"
+        },
+        right: {
+            main: "♠",
+            sub: "8"
+        },
+        correct: "right"
     },
-    // CANVI DE REGLA
-    {
-        rule: "RULE 02 — NEW RULE",
-        instruction: "ARA TRIA L'OPCIÓ QUE COMPLEIX LA REGLA",
-        options: ["REAL MADRID", "BREAKING BAD"],
-        correct: 0
-    },
+
+
+    /* ----------------------------------------------
+       FASE 2 — CANVI DE REGLA
+    ---------------------------------------------- */
+
     {
         rule: "RULE 02",
-        instruction: "TRIA LA QUE TÉ MÉS LLETRES",
-        options: ["LOL", "HARRY POTTER"],
-        correct: 1
+        instruction:
+            "LA REGLA HA CANVIAT. ARA, EL NOMBRE MÉS BAIX ÉS EL SEGUR.",
+        left: {
+            main: "♣",
+            sub: "2"
+        },
+        right: {
+            main: "♥",
+            sub: "8"
+        },
+        correct: "left"
     },
+
     {
         rule: "RULE 02",
-        instruction: "TRIA L'OPCIÓ DE LA DRETA",
-        options: ["♣", "♦"],
-        correct: 1
+        instruction:
+            "EL NOMBRE MÉS BAIX ÉS EL SEGUR.",
+        left: {
+            main: "♦",
+            sub: "6"
+        },
+        right: {
+            main: "♠",
+            sub: "1"
+        },
+        correct: "right"
     },
-    // REGLA 3
+
     {
-        rule: "RULE 03 — NEW RULE",
-        instruction: "NO TRIA LA MÉS GRAN",
-        options: ["▲", "●"],
-        correct: 1
+        rule: "RULE 02",
+        instruction:
+            "EL NOMBRE MÉS BAIX ÉS EL SEGUR.",
+        left: {
+            main: "♥",
+            sub: "3"
+        },
+        right: {
+            main: "♣",
+            sub: "5"
+        },
+        correct: "left"
     },
+
+
+    /* ----------------------------------------------
+       FASE 3 — LA REGLA ES COMPLICA
+    ---------------------------------------------- */
+
     {
         rule: "RULE 03",
-        instruction: "TRIA LA QUE NO TÉ CAP LLETRA REPETIDA",
-        options: ["MARCEL", "LAIA"],
-        correct: 1
+        instruction:
+            "NOU CANVI. EL SEGUR ÉS EL NOMBRE PARELL MÉS ALT.",
+        left: {
+            main: "♠",
+            sub: "7"
+        },
+        right: {
+            main: "♦",
+            sub: "8"
+        },
+        correct: "right"
     },
+
     {
         rule: "RULE 03",
-        instruction: "TRIA LA QUE TÉ MÉS PARAULES",
-        options: ["REAL", "REAL MADRID"],
-        correct: 1
+        instruction:
+            "EL NOMBRE PARELL MÉS ALT ÉS EL SEGUR.",
+        left: {
+            main: "♣",
+            sub: "10"
+        },
+        right: {
+            main: "♥",
+            sub: "6"
+        },
+        correct: "left"
     },
-    // DOBLE CONDICIÓ
+
     {
-        rule: "RULE 04 — TWO CONDITIONS",
-        instruction: "TRIA LA QUE NO ÉS NEGRA I TÉ MÉS DE 3 LLETRES",
-        options: ["PLAY", "LOL"],
-        correct: 0
+        rule: "RULE 03",
+        instruction:
+            "EL NOMBRE PARELL MÉS ALT ÉS EL SEGUR.",
+        left: {
+            main: "♥",
+            sub: "5"
+        },
+        right: {
+            main: "♠",
+            sub: "2"
+        },
+        correct: "right"
     },
+
+
+    /* ----------------------------------------------
+       FASE 4 — DUES CONDICIONS
+    ---------------------------------------------- */
+
     {
         rule: "RULE 04",
-        instruction: "TRIA LA QUE ÉS MÉS CURTA I NO ÉS DE LA DRETA",
-        options: ["♠", "♥"],
-        correct: 0
+        instruction:
+            "EL SEGUR HA DE SER PARELL I BLANC.",
+        left: {
+            main: "♠",
+            sub: "4"
+        },
+        right: {
+            main: "♣",
+            sub: "7"
+        },
+        correct: "left"
     },
+
     {
         rule: "RULE 04",
-        instruction: "TRIA LA QUE TÉ MENYS PARAULES PERÒ MÉS LLETRES",
-        options: ["REAL MADRID", "BREAKING BAD"],
-        correct: 0
+        instruction:
+            "EL SEGUR HA DE SER PARELL I BLANC.",
+        left: {
+            main: "♥",
+            sub: "9"
+        },
+        right: {
+            main: "♦",
+            sub: "6"
+        },
+        correct: "right"
     },
-    // FASE FINAL
+
+    {
+        rule: "RULE 04",
+        instruction:
+            "EL SEGUR HA DE SER PARELL I BLANC.",
+        left: {
+            main: "♣",
+            sub: "8"
+        },
+        right: {
+            main: "♠",
+            sub: "3"
+        },
+        correct: "left"
+    },
+
+
+    /* ----------------------------------------------
+       FASE 5 — FINAL
+
+       Ara no repetim tota la regla.
+       Ha de recordar l'última mecànica.
+    ---------------------------------------------- */
+
     {
         rule: "FINAL",
-        instruction: "NO TRIA LA QUE ET SEMBLA MÉS IMPORTANT",
-        options: ["❤️", "🏆"],
-        correct: 0
+        instruction:
+            "RECORDA QUÈ HAS APRÈS. EL TEMPS S'ACABA.",
+        left: {
+            main: "♥",
+            sub: "4"
+        },
+        right: {
+            main: "♠",
+            sub: "9"
+        },
+        correct: "left"
     },
+
     {
         rule: "FINAL",
-        instruction: "TRIA L'ÚNICA OPCIÓ QUE NO COMPLEIX CAP DE LES DUES REGLES ANTERIORS",
-        options: ["♠", "♦"],
-        correct: 1
+        instruction:
+            "NO HI HA NOVA REGLA. CONFIA EN LA TEVA MEMÒRIA.",
+        left: {
+            main: "♦",
+            sub: "2"
+        },
+        right: {
+            main: "♣",
+            sub: "6"
+        },
+        correct: "left"
     },
+
     {
         rule: "FINAL",
-        instruction: "ÚLTIMA DECISIÓ. CONFIA EN EL QUE HAS APRÈS.",
-        options: ["STAY", "GO"],
-        correct: 1
+        instruction:
+            "ÚLTIMA PORTA. DECIDEIX.",
+        left: {
+            main: "♠",
+            sub: "8"
+        },
+        right: {
+            main: "♥",
+            sub: "5"
+        },
+        correct: "left"
     }
+
 ];
-/*
-==================================================
-INICIAR
-==================================================
-*/
+
+
+/* =========================================================
+   INICIAR JOC
+========================================================= */
+
 function startGame() {
-    document.getElementById("startScreen").classList.add("hidden");
-    document.getElementById("game").classList.remove("hidden");
-    timeLeft = 60;
+
+    document
+        .getElementById("startScreen")
+        .classList
+        .add("hidden");
+
+    document
+        .getElementById("game")
+        .classList
+        .remove("hidden");
+
     currentRound = 0;
+
     correctAnswers = 0;
-    document.getElementById("timer").textContent = timeLeft;
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        document.getElementById("timer").textContent = timeLeft;
-        if (timeLeft <= 0) {
-            finishGame(false);
-        }
-    }, 1000);
+
+    timeLeft = 60;
+
+    gameFinished = false;
+
+    document
+        .getElementById("timer")
+        .textContent = timeLeft;
+
+    timerInterval = setInterval(
+        updateTimer,
+        1000
+    );
+
     showRound();
 }
-/*
-==================================================
-MOSTRAR RONDA
-==================================================
-*/
-function showRound() {
-    if (currentRound >= totalRounds) {
-        finishGame(correctAnswers >= neededCorrect);
+
+
+/* =========================================================
+   CRONÒMETRE
+========================================================= */
+
+function updateTimer() {
+
+    if (gameFinished) {
         return;
     }
-    const round = rounds[currentRound];
-    document.getElementById("round").textContent =
-        currentRound + 1;
-    document.getElementById("ruleNumber").textContent =
+
+    timeLeft--;
+
+    document
+        .getElementById("timer")
+        .textContent = timeLeft;
+
+
+    /* Quan queda poc temps,
+       el cronòmetre es fa més visible. */
+
+    if (timeLeft <= 10) {
+
+        document
+            .getElementById("timer")
+            .style.color =
+            "rgba(255,255,255,0.13)";
+
+    }
+
+
+    if (timeLeft <= 0) {
+
+        finishGame(false);
+
+    }
+
+}
+
+
+/* =========================================================
+   MOSTRAR RONDA
+========================================================= */
+
+function showRound() {
+
+    if (gameFinished) {
+        return;
+    }
+
+
+    if (currentRound >= TOTAL_ROUNDS) {
+
+        finishGame(
+            correctAnswers >= NEEDED_CORRECT
+        );
+
+        return;
+    }
+
+
+    const round =
+        rounds[currentRound];
+
+
+    document
+        .getElementById("roundInfo")
+        .textContent =
+        "GAME " +
+        (currentRound + 1) +
+        " / " +
+        TOTAL_ROUNDS;
+
+
+    document
+        .getElementById("ruleLabel")
+        .textContent =
         round.rule;
-    document.getElementById("instruction").textContent =
+
+
+    document
+        .getElementById("instruction")
+        .textContent =
         round.instruction;
-    const optionsContainer =
-        document.getElementById("options");
-    optionsContainer.innerHTML = "";
-    round.options.forEach((option, index) => {
-        const button =
-            document.createElement("button");
-        button.className = "option";
-        button.textContent = option;
-        button.onclick = () => {
-            answer(index, button);
-        };
-        optionsContainer.appendChild(button);
-    });
+
+
+    const doors =
+        document.getElementById("doors");
+
+
+    doors.innerHTML = "";
+
+
+    /* PORTA ESQUERRA */
+
+    const leftDoor =
+        createDoor(
+            "A",
+            round.left,
+            "left"
+        );
+
+
+    /* PORTA DRETA */
+
+    const rightDoor =
+        createDoor(
+            "B",
+            round.right,
+            "right"
+        );
+
+
+    doors.appendChild(leftDoor);
+
+    doors.appendChild(rightDoor);
+
 }
-/*
-==================================================
-RESPONDRE
-==================================================
-*/
-function answer(selected, button) {
-    const round = rounds[currentRound];
-    const buttons =
-        document.querySelectorAll(".option");
-    buttons.forEach(btn => {
-        btn.disabled = true;
-    });
-    if (selected === round.correct) {
+
+
+/* =========================================================
+   CREAR PORTA
+========================================================= */
+
+function createDoor(
+    number,
+    data,
+    position
+) {
+
+    const button =
+        document.createElement("button");
+
+    button.className = "door";
+
+
+    button.innerHTML = `
+
+        <div class="doorNumber">
+            DOOR ${number}
+        </div>
+
+        <div class="doorMain">
+            ${data.main}
+        </div>
+
+        <div class="doorSub">
+            ${data.sub}
+        </div>
+
+    `;
+
+
+    button.onclick = function() {
+
+        answer(
+            position,
+            button
+        );
+
+    };
+
+
+    return button;
+}
+
+
+/* =========================================================
+   RESPONDRE
+========================================================= */
+
+function answer(
+    selected,
+    button
+) {
+
+    if (gameFinished) {
+        return;
+    }
+
+
+    const round =
+        rounds[currentRound];
+
+
+    const allDoors =
+        document.querySelectorAll(".door");
+
+
+    allDoors.forEach(
+        door => {
+            door.disabled = true;
+        }
+    );
+
+
+    const correct =
+        selected === round.correct;
+
+
+    if (correct) {
+
         correctAnswers++;
-        button.classList.add("correct");
+
+        showFlash("SAFE");
+
     } else {
-        button.classList.add("wrong");
+
+        showFlash("...");
+
     }
+
+
     currentRound++;
+
+
     /*
-    Petit retard perquè la resposta
-    no sigui instantània.
+       No mostrem "WRONG".
+
+       Marcel només sap que ha triat una porta
+       i immediatament apareix el següent game.
+
+       Això evita que pugui aprendre la resposta
+       a partir del feedback.
     */
-    setTimeout(() => {
-        showRound();
-    }, 280);
+
+    setTimeout(
+        function() {
+
+            hideFlash();
+
+            showRound();
+
+        },
+        350
+    );
+
 }
-/*
-==================================================
-FINAL
-==================================================
-*/
+
+
+/* =========================================================
+   FLASH
+========================================================= */
+
+function showFlash(text) {
+
+    const flash =
+        document.getElementById(
+            "resultFlash"
+        );
+
+    const result =
+        document.getElementById(
+            "resultText"
+        );
+
+
+    result.textContent = text;
+
+    flash.classList.add("show");
+
+}
+
+
+function hideFlash() {
+
+    document
+        .getElementById("resultFlash")
+        .classList
+        .remove("show");
+
+}
+
+
+/* =========================================================
+   FINAL
+========================================================= */
+
 function finishGame(success) {
-    clearInterval(timerInterval);
-    document.getElementById("game")
-        .classList.add("hidden");
-    document.getElementById("endScreen")
-        .classList.remove("hidden");
-    if (success) {
-        document.getElementById("endTitle")
-            .textContent = "♠ GAME CLEAR";
-        document.getElementById("endText").innerHTML =
-            "PROVA SUPERADA.<br><br>" +
-            "CORRECTES: <strong>" +
-            correctAnswers +
-            " / " +
-            totalRounds +
-            "</strong><br><br>" +
-            "TIME REMAINING: <strong>" +
-            timeLeft +
-            " SECONDS</strong>";
-    } else {
-        document.getElementById("endTitle")
-            .textContent = "♠ GAME OVER";
-        document.getElementById("endText").innerHTML =
-            "NO HAS SUPERAT LA PROVA.<br><br>" +
-            "CORRECTES: <strong>" +
-            correctAnswers +
-            " / " +
-            totalRounds +
-            "</strong><br><br>" +
-            "TIME RAN OUT.";
+
+    if (gameFinished) {
+        return;
     }
+
+
+    gameFinished = true;
+
+
+    clearInterval(timerInterval);
+
+
+    document
+        .getElementById("game")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("endScreen")
+        .classList
+        .remove("hidden");
+
+
+    if (success) {
+
+        document
+            .getElementById("endTitle")
+            .textContent =
+            "GAME CLEAR";
+
+
+        document
+            .getElementById("endText")
+            .innerHTML = `
+
+                <strong>VISA EXTENDED.</strong>
+
+                <br><br>
+
+                ${correctAnswers}
+                / ${TOTAL_ROUNDS}
+                SAFE DECISIONS
+
+                <br><br>
+
+                TIME REMAINING:
+                <strong>
+                    ${timeLeft}
+                </strong>
+
+                <br><br>
+
+                YOU MAY CONTINUE.
+
+            `;
+
+    } else {
+
+        document
+            .getElementById("endTitle")
+            .textContent =
+            "GAME OVER";
+
+
+        document
+            .getElementById("endText")
+            .innerHTML = `
+
+                YOUR VISA HAS EXPIRED.
+
+                <br><br>
+
+                SAFE DECISIONS:
+                <strong>
+                    ${correctAnswers}
+                    / ${TOTAL_ROUNDS}
+                </strong>
+
+                <br><br>
+
+                THE BORDERLAND
+                DOES NOT WAIT.
+
+            `;
+
+    }
+
 }
+
 </script>
+
 </body>
 </html>
