@@ -1,1793 +1,1062 @@
 /* =========================================================
-   JACK OF HEARTS — GAME 03
-   COMPLETE GAME LOGIC
+   GAME 03 — JACK OF HEARTS
    ========================================================= */
 
 const characters = {
-
   chishiya: {
     name: "CHISHIYA",
-    number: "PLAYER 01",
     suit: "♣",
-    image: "assets/chishiya.jpg",
+    suitName: "♣",
+    truth: false,
 
-    opening:
-      "És ♣. Ja tens quatre respostes. Una és correcta. No necessites que jo et faci la feina.",
+    opening: "És ♣. Ja tens quatre respostes. Una és correcta.",
 
-    observations: [
-      "Chishiya es manté assegut amb una calma gairebé absoluta. No sembla tenir pressa.",
-      "Quan Arisu dona la seva resposta, Chishiya el mira durant uns segons abans de tornar a mirar-te.",
-      "Quan Usagi diu ♥, Chishiya mira breument el seu collar i després et mira a tu. No sembla sorprès.",
-      "Quan algú parla, Chishiya sembla més interessat en la teva reacció que en la resposta mateixa."
+    observation: [
+      "Chishiya es manté tranquil mentre els altres parlen.",
+      "Quan Arisu respon, el mira abans de tornar la mirada cap a tu.",
+      "Quan Usagi diu ♥, mira breument el seu collar i després et mira a tu.",
+      "No mostra cap sorpresa clara davant de cap resposta."
     ],
 
-    questions: [
-      {
-        question: "Per què t'hauria de creure?",
-        answer:
-          "No ho facis. Si necessites que et convenci, probablement no sóc la persona que hauries d'escollir."
-      },
-      {
-        question: "Qui et sembla més sospitós?",
-        answer:
-          "No és la pregunta correcta. Hauries de preguntar-te qui necessita que desconfiïs dels altres."
-      },
-      {
-        question: "Estàs segur que és ♣?",
-        answer:
-          "Sí. Ho he vist."
-      },
-      {
-        question: "Què estàs intentant fer?",
-        answer:
-          "Que decideixis tu. Si et dic què has de pensar, ja no serà la teva decisió."
-      }
-    ],
+    questions: {
+      "Per què t’hauria de creure?": [
+        "No ho facis.",
+        "Si necessites que et convenci, probablement no sóc la persona que hauries d’escollir."
+      ],
+
+      "Qui et sembla més sospitós?": [
+        "No és la pregunta correcta.",
+        "Hauries de preguntar-te qui necessita que desconfiïs dels altres."
+      ],
+
+      "Estàs segur que és ♣?": [
+        "Sí.",
+        "Ho he vist."
+      ],
+
+      "Què estàs intentant fer?": [
+        "Que decideixis tu.",
+        "Si et dic què has de pensar, ja no serà la teva decisió."
+      ]
+    },
 
     investigation: [
-      "Chishiya ha mantingut la mateixa resposta des del principi: ♣.",
+      "Ha mantingut la mateixa resposta: ♣.",
       "No ha preguntat als altres quin pal han vist.",
-      "Ha prestat molta atenció a les reaccions dels altres jugadors.",
-      "Quan l'han pressionat, ha evitat donar explicacions que es poguessin comprovar directament.",
-      "En diverses ocasions ha desviat l'atenció cap als altres jugadors.",
-      "No ha modificat la seva resposta en cap moment.",
-      "No s'han detectat canvis en la seva versió."
+      "Ha prestat més atenció a les reaccions dels altres que a defensar la seva pròpia resposta.",
+      "Quan se l’ha pressionat, ha evitat donar explicacions que es puguin comprovar directament.",
+      "En diversos moments ha desviat l’atenció cap als altres jugadors.",
+      "No s’han detectat canvis en la seva versió."
     ]
   },
-
 
   arisu: {
     name: "ARISU",
-    number: "PLAYER 02",
     suit: "♦",
-    image: "assets/arisu.jpg",
+    suitName: "♦",
+    truth: false,
 
-    opening:
-      "És ♦. Ho sento. Sé que no és gaire útil dir-t'ho així, però és el que estic veient.",
+    opening: "És ♦. Ho sento. Sé que no és gaire útil dir-t’ho així, però és el que estic veient.",
 
-    observations: [
-      "Quan Chishiya acaba de parlar, Arisu sembla que vol intervenir. Obre la boca, però s'atura i acaba dient: «No, res.»",
-      "Quan Kuina parla, Arisu mira cap a terra i es frega les mans.",
-      "Quan Usagi diu ♥, Arisu la mira durant uns segons i després aparta la mirada.",
-      "Abans de respondre a algunes intervencions, sembla observar primer les reaccions dels altres."
+    observation: [
+      "Després que Chishiya parli, Arisu sembla que vol intervenir.",
+      "Obre la boca, però es deté i acaba dient: «No, res.»",
+      "Quan Kuina parla, mira a terra i es frega les mans.",
+      "Quan Usagi diu ♥, la mira durant un instant i després aparta la mirada."
     ],
 
-    questions: [
-      {
-        question: "Per què estàs tan nerviós?",
-        answer:
-          "Perquè si t'equivoques, et maten. I perquè sé que jo podria estar en la teva situació."
-      },
-      {
-        question: "Estàs segur que és ♦?",
-        answer:
-          "Sí. Sí. Ho he vist."
-      },
-      {
-        question: "Has canviat d'opinió en algun moment?",
-        answer:
-          "No. Bueno... no sobre el que he vist."
-      },
-      {
-        question: "Què creus que està passant aquí?",
-        answer:
-          "Que algú està intentant semblar més segur del que és. I no sé si ho fa perquè menteix o perquè té por."
-      }
-    ],
+    questions: {
+      "Per què estàs tan nerviós?": [
+        "Perquè si t’equivoques, et maten.",
+        "I perquè sé que jo podria estar en la teva situació."
+      ],
+
+      "Estàs segur que és ♦?": [
+        "Sí.",
+        "Sí. Ho he vist."
+      ],
+
+      "Has canviat d’opinió en algun moment?": [
+        "No.",
+        "Bueno... no sobre el que he vist."
+      ],
+
+      "Què creus que està passant aquí?": [
+        "Que algú està intentant semblar més segur del que és.",
+        "I no sé si ho fa perquè menteix o perquè té por."
+      ]
+    },
 
     investigation: [
-      "Abans de donar una resposta, Arisu ha començat dues frases i les ha interromput.",
-      "En una ocasió ha demanat que repetissin la pregunta.",
-      "Ha observat les reaccions dels altres abans de respondre diverses vegades.",
-      "Quan se li ha preguntat directament quin pal veia, ha respost sense dubtar.",
+      "Abans de respondre en un moment, ha començat dues frases i s’ha interromput.",
+      "Ha demanat que li repetissin una pregunta.",
+      "Ha observat les reaccions dels altres abans de respondre en diverses ocasions.",
+      "Quan se li ha preguntat directament pel seu pal, ha contestat sense dubtar.",
       "En explicar un moment anterior, ha corregit una paraula abans de continuar.",
-      "La seva resposta declarada continua sent ♦.",
-      "No s'ha detectat un canvi directe en la seva versió."
+      "No s’han detectat canvis en el pal que afirma haver vist: ♦."
     ]
   },
 
-
   kuina: {
     name: "KUINA",
-    number: "PLAYER 03",
     suit: "♠",
-    image: "assets/kuina.jpg",
+    suitName: "♠",
+    truth: false,
 
-    opening:
-      "És ♠. No sé si et servirà de res que t'ho digui, però és el que veig.",
+    opening: "És ♠. No sé si et servirà de res que t’ho digui, però és el que veig.",
 
-    observations: [
-      "Quan Arisu sembla nerviós, Kuina el mira durant uns instants.",
-      "Quan Chishiya domina la conversa, Kuina deixa de participar i centra la seva atenció en tu.",
-      "Quan sembles bloquejat, Kuina fa un petit gest per intentar calmar-te.",
-      "Quan els altres donen les seves respostes, no reacciona de manera especialment visible."
+    observation: [
+      "Quan Arisu sembla nerviós, Kuina el mira durant uns segons.",
+      "Quan Chishiya domina la conversa, Kuina deixa de participar i observa.",
+      "Quan tu sembles bloquejat, fa un petit gest per tranquil·litzar-te.",
+      "No mostra una reacció forta davant de les diferents respostes."
     ],
 
-    questions: [
-      {
-        question: "Per què hauria de confiar en tu?",
-        answer:
-          "No hauries de fer-ho. No perquè jo estigui mentint. Perquè no em coneixes. Però si vols saber què faria jo... miraria qui canvia més la seva història."
-      },
-      {
-        question: "Qui et sembla més sospitós?",
-        answer:
-          "Chishiya. Perquè sembla que ja sap què faràs abans que ho facis."
-      },
-      {
-        question: "Què creus que està fent Arisu?",
-        answer:
-          "Intentant no equivocar-se. No sé si això el fa més o menys fiable."
-      },
-      {
-        question: "Estàs segura que és ♠?",
-        answer:
-          "Sí. Completament. Això sí que ho tinc clar."
-      }
-    ],
+    questions: {
+      "Per què hauria de confiar en tu?": [
+        "No hauries de fer-ho.",
+        "No perquè jo estigui mentint.",
+        "Perquè no em coneixes.",
+        "Però si vols saber què faria jo... miraria qui canvia més la seva història."
+      ],
+
+      "Qui et sembla més sospitós?": [
+        "Chishiya.",
+        "Perquè sembla que ja sap què faràs abans que ho facis."
+      ],
+
+      "Què creus que està fent Arisu?": [
+        "Intentant no equivocar-se.",
+        "No sé si això el fa més o menys fiable."
+      ],
+
+      "Estàs segura que és ♠?": [
+        "Sí.",
+        "Completament.",
+        "Això sí que ho tinc clar."
+      ]
+    },
 
     investigation: [
-      "Abans de començar, Kuina ha preguntat a Arisu si tothom estava bé.",
-      "Quan algú sembla nerviós, Kuina tendeix a intentar reduir la tensió.",
-      "Quan Chishiya ha dominat la conversa, Kuina ha deixat de participar durant uns instants.",
-      "No ha modificat la seva resposta: continua afirmant que és ♠.",
+      "Abans de començar, ha preguntat a Arisu si tothom estava bé.",
+      "Durant el joc ha intentat reduir la tensió quan algú semblava nerviós.",
+      "Quan Chishiya ha dominat la conversa, ha deixat de participar durant uns instants.",
+      "No ha canviat mai la seva resposta: ♠.",
       "Abans de començar, havia preguntat a Arisu què faria si algú estigués mentint."
     ]
   },
 
-
   usagi: {
     name: "USAGI",
-    number: "PLAYER 04",
     suit: "♥",
-    image: "assets/usagi.jpg",
+    suitName: "♥",
+    truth: true,
 
-    opening:
-      "És ♥. Això és el que veig.",
-
-    observations: [
-      "Quan els altres jugadors parlen, Usagi no els interromp.",
-      "Quan Arisu diu ♦, Usagi el mira breument, però no diu res.",
-      "Quan Kuina parla, Usagi no mostra una reacció especialment forta.",
-      "Quan Chishiya parla, Usagi manté la mirada sobre ell durant uns segons.",
-      "Quan et veu confós, fa un petit pas enrere en lloc d'apropar-se o intentar convèncer-te.",
-      "En un moment determinat mira el teu collar durant uns segons i després torna a mirar-te."
+    opening: "És ♥.",
+    
+    observation: [
+      "Usagi no interromp els altres jugadors mentre parlen.",
+      "Quan Arisu diu ♦, el mira breument abans de tornar a mirar-te.",
+      "Quan Kuina parla, no mostra una reacció especialment visible.",
+      "Quan Chishiya parla, manté l’atenció sobre ell durant uns instants.",
+      "Quan sembles confós, fa un petit pas enrere en lloc d’apropar-se per convèncer-te."
     ],
 
-    questions: [
-      {
-        question: "Per què hauria de creure't?",
-        answer:
-          "No ho hauries de fer perquè t'ho digui jo. Mira què fa cadascú i decideix-ho tu."
-      },
-      {
-        question: "Qui et sembla més difícil de llegir?",
-        answer:
-          "Chishiya. Però això no vol dir que estigui mentint."
-      },
-      {
-        question: "Qui et sembla més nerviós?",
-        answer:
-          "Arisu. Però estar nerviós no vol dir que menteixi."
-      },
-      {
-        question: "I Kuina?",
-        answer:
-          "Està intentant que estiguis tranquil. No sé si això és perquè diu la veritat o perquè vol que hi confiïs."
-      }
-    ],
+    questions: {
+      "Per què hauria de creure’t?": [
+        "No ho hauries de fer perquè t’ho digui jo.",
+        "Mira què fa cadascú i decideix-ho tu."
+      ],
+
+      "Qui et sembla més difícil de llegir?": [
+        "Chishiya.",
+        "Però això no vol dir que estigui mentint."
+      ],
+
+      "Qui et sembla més nerviós?": [
+        "Arisu.",
+        "Però estar nerviós no vol dir que menteixi."
+      ],
+
+      "I Kuina?": [
+        "Està intentant que estiguis tranquil.",
+        "No sé si això és perquè diu la veritat o perquè vol que hi confiïs."
+      ]
+    },
 
     investigation: [
-      "Usagi ha mantingut la mateixa resposta des del principi: ♥.",
-      "Respon les preguntes directament sense intentar controlar la teva decisió.",
-      "No intenta canviar la teva opinió sobre cap dels altres jugadors.",
-      "Quan un altre jugador és qüestionat, no el defensa ni l'acusa directament.",
-      "Quan li demanes que confirmi la seva resposta, no afegeix informació que no pugui saber.",
-      "La seva resposta continua sent ♥."
+      "Ha mantingut la mateixa resposta des del principi: ♥.",
+      "Ha respost directament a les preguntes que se li han fet.",
+      "No ha intentat canviar la teva opinió sobre cap dels altres jugadors.",
+      "Quan un altre jugador ha estat qüestionat, no l’ha defensat ni l’ha acusat.",
+      "Quan se li ha demanat que confirmés la seva resposta, no ha afegit informació que no pogués saber.",
+      "La seva resposta continua sent ♥.",
+      "En una segona confirmació ha trigat uns segons més a respondre."
     ]
   }
 };
 
 
 /* =========================================================
-   GAME STATE
+   ESTAT DEL JOC
    ========================================================= */
 
 const state = {
+  currentCharacter: null,
 
-  selectedCharacter: null,
-
-  used: {
+  discovered: {
     chishiya: {
-      observation: false,
-      question: false,
-      investigation: false
+      observation: null,
+      question: null,
+      investigation: null
     },
-
     arisu: {
-      observation: false,
-      question: false,
-      investigation: false
+      observation: null,
+      question: null,
+      investigation: null
     },
-
     kuina: {
-      observation: false,
-      question: false,
-      investigation: false
+      observation: null,
+      question: null,
+      investigation: null
     },
-
     usagi: {
-      observation: false,
-      question: false,
-      investigation: false
+      observation: null,
+      question: null,
+      investigation: null
     }
   },
 
-  discovered: {
-    chishiya: [],
-    arisu: [],
-    kuina: [],
-    usagi: []
-  },
+  firstTruthChoice: null,
+  firstSuitChoice: null,
 
-  seconds: 900,
+  truthChoice: null,
+  suitChoice: null,
 
-  timerInterval: null,
+  firstAttemptFinished: false,
+  secondChanceActive: false,
 
-  secondChanceSeconds: 120,
-
-  secondChanceInterval: null,
-
-  secondChance: false,
-
-  ended: false,
-
-  openingIndex: 0,
-
-  finalCharacter: null,
-
-  finalSuit: null
+  timer: null,
+  timeLeft: 15 * 60,
+  secondChanceTimer: null,
+  secondTimeLeft: 2 * 60
 };
 
 
 /* =========================================================
-   DOM
+   ELEMENTS
    ========================================================= */
 
-const introScreen =
-  document.getElementById("introScreen");
+const $ = (id) => document.getElementById(id);
 
-const rulesScreen =
-  document.getElementById("rulesScreen");
+const introScreen = $("intro-screen");
+const rulesScreen = $("rules-screen");
+const gameScreen = $("game-screen");
+const decisionScreen = $("decision-screen");
+const secondChanceScreen = $("second-chance-screen");
+const resultScreen = $("result-screen");
 
-const gameScreen =
-  document.getElementById("gameScreen");
+const enterGameBtn = $("enter-game-btn");
+const startGameBtn = $("start-game-btn");
 
-const resultScreen =
-  document.getElementById("resultScreen");
+const characterPanel = $("character-panel");
+const panelCharacterName = $("panel-character-name");
+const panelCharacterArt = $("panel-character-art");
+const closeCharacterPanel = $("close-character-panel");
 
-const secondChanceScreen =
-  document.getElementById("secondChanceScreen");
+const observationBtn = $("observation-btn");
+const questionBtn = $("question-btn");
+const investigationBtn = $("investigation-btn");
 
-const modalLayer =
-  document.getElementById("modalLayer");
+const modalLayer = $("modal-layer");
+const modalClose = $("modal-close");
+const modalContent = $("modal-content");
 
-const modalContent =
-  document.getElementById("modalContent");
+const finalDecisionBtn = $("final-decision-btn");
 
-const timerElement =
-  document.getElementById("timer");
+const submitDecisionBtn = $("submit-decision-btn");
 
-const secondChanceTimer =
-  document.getElementById("secondChanceTimer");
+const secondChanceTimer = $("second-chance-timer");
+const reviewEvidenceBtn = $("review-evidence-btn");
+const changeDecisionBtn = $("change-decision-btn");
 
-const openingDialogue =
-  document.getElementById("openingDialogue");
+const timerDisplay = $("timer");
 
-const openingImage =
-  document.getElementById("openingImage");
-
-const openingCharacterName =
-  document.getElementById("openingCharacterName");
-
-const openingSuit =
-  document.getElementById("openingSuit");
-
-const openingText =
-  document.getElementById("openingText");
-
-const openingNextButton =
-  document.getElementById("openingNextButton");
-
-const characterPanel =
-  document.getElementById("characterPanel");
-
-const panelPortrait =
-  document.getElementById("panelPortrait");
-
-const panelPlayerNumber =
-  document.getElementById("panelPlayerNumber");
-
-const panelCharacterName =
-  document.getElementById("panelCharacterName");
-
-const panelCharacterSuit =
-  document.getElementById("panelCharacterSuit");
-
-const observationButton =
-  document.getElementById("observationButton");
-
-const questionButton =
-  document.getElementById("questionButton");
-
-const investigationButton =
-  document.getElementById("investigationButton");
-
-const resultStatus =
-  document.getElementById("resultStatus");
-
-const resultHeart =
-  document.getElementById("resultHeart");
-
-const resultTitle =
-  document.getElementById("resultTitle");
-
-const resultMessage =
-  document.getElementById("resultMessage");
-
-const resultTimeConnection =
-  document.getElementById("resultTimeConnection");
+const resultStatus = $("result-status");
+const resultSymbol = $("result-symbol");
+const resultTitle = $("result-title");
+const resultText = $("result-text");
 
 
 /* =========================================================
-   INTRO → RULES
+   UTILITATS
    ========================================================= */
 
-document
-  .getElementById("enterGameButton")
-  .addEventListener("click", () => {
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, "0");
 
-    introScreen.classList.add("hidden");
+  const secs = (seconds % 60)
+    .toString()
+    .padStart(2, "0");
 
-    rulesScreen.classList.remove("hidden");
+  return `${mins}:${secs}`;
+}
 
+
+function showScreen(screen) {
+  [
+    introScreen,
+    rulesScreen,
+    gameScreen,
+    decisionScreen,
+    secondChanceScreen,
+    resultScreen
+  ].forEach((element) => {
+    if (element) {
+      element.classList.remove("active");
+    }
   });
 
+  if (screen) {
+    screen.classList.add("active");
+  }
+}
+
+
+function openModal(content) {
+  modalContent.innerHTML = content;
+  modalLayer.classList.add("active");
+}
+
+
+function closeModal() {
+  modalLayer.classList.remove("active");
+  modalContent.innerHTML = "";
+}
+
+
+function escapeHTML(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 
 /* =========================================================
-   RULES → GAME
+   CSS CHARACTER GENERATOR
    ========================================================= */
 
-document
-  .getElementById("startGameButton")
-  .addEventListener("click", () => {
+function characterArt(key) {
+  const char = characters[key];
 
-    rulesScreen.classList.add("hidden");
+  return `
+    <div class="stick-person ${key}-person">
+      <div class="head">
+        <div class="eye left-eye"></div>
+        <div class="eye right-eye"></div>
+        <div class="mouth"></div>
 
-    gameScreen.classList.remove("hidden");
+        <div class="hair ${key}-hair"></div>
+      </div>
 
-    startGame();
+      <div class="neck"></div>
 
-  });
+      <div class="body ${key}-body">
+        <div class="collar">${char.suit}</div>
+      </div>
+
+      <div class="arm left-arm"></div>
+      <div class="arm right-arm"></div>
+    </div>
+  `;
+}
 
 
 /* =========================================================
-   START GAME
+   INICI
    ========================================================= */
 
-function startGame() {
+enterGameBtn.addEventListener("click", () => {
+  showScreen(rulesScreen);
+});
 
-  state.seconds = 900;
 
-  state.ended = false;
-
-  updateTimer();
+startGameBtn.addEventListener("click", () => {
+  showScreen(gameScreen);
 
   startMainTimer();
-
-  playTone(440, 0.08);
-
-  setTimeout(() => {
-
-    showOpeningDialogue();
-
-  }, 700);
-}
-
-
-/* =========================================================
-   MAIN TIMER
-   ========================================================= */
-
-function startMainTimer() {
-
-  clearInterval(state.timerInterval);
-
-  state.timerInterval = setInterval(() => {
-
-    if (state.secondChance || state.ended) {
-      return;
-    }
-
-    state.seconds--;
-
-    updateTimer();
-
-    if (state.seconds <= 0) {
-
-      clearInterval(state.timerInterval);
-
-      endGame(false, "TIME UP");
-
-    }
-
-  }, 1000);
-}
-
-
-function updateTimer() {
-
-  const minutes =
-    Math.floor(state.seconds / 60);
-
-  const seconds =
-    state.seconds % 60;
-
-  timerElement.textContent =
-    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
-  timerElement.classList.remove(
-    "warning",
-    "danger"
-  );
-
-  if (state.seconds <= 300) {
-    timerElement.classList.add("warning");
-  }
-
-  if (state.seconds <= 120) {
-    timerElement.classList.remove("warning");
-    timerElement.classList.add("danger");
-  }
-
-  if (state.seconds <= 30) {
-    timerElement.classList.add("danger");
-  }
-}
+  startOpeningDialogue();
+});
 
 
 /* =========================================================
    OPENING DIALOGUE
    ========================================================= */
 
-function showOpeningDialogue() {
+function startOpeningDialogue() {
+  const dialogue = $("opening-dialogue");
+  const name = $("opening-name");
+  const text = $("opening-text");
 
-  state.openingIndex = 0;
-
-  openingDialogue.classList.remove("hidden");
-
-  renderOpeningCharacter();
-
-}
-
-
-function renderOpeningCharacter() {
-
-  const keys = [
+  const sequence = [
     "chishiya",
     "arisu",
     "kuina",
     "usagi"
   ];
 
-  const key =
-    keys[state.openingIndex];
+  let index = 0;
 
-  const character =
-    characters[key];
-
-  openingImage.src =
-    character.image;
-
-  openingImage.alt =
-    character.name;
-
-  openingCharacterName.textContent =
-    character.name;
-
-  openingSuit.textContent =
-    character.suit;
-
-  openingText.textContent =
-    character.opening;
-
-  if (state.openingIndex === keys.length - 1) {
-
-    openingNextButton.textContent =
-      "ENTER THE GAME";
-
-  } else {
-
-    openingNextButton.textContent =
-      "CONTINUE";
-
-  }
-}
-
-
-openingNextButton.addEventListener(
-  "click",
-  () => {
-
-    const total = 4;
-
-    state.openingIndex++;
-
-    if (state.openingIndex >= total) {
-
-      openingDialogue.classList.add("hidden");
-
-      playTone(220, 0.12);
-
+  function showNext() {
+    if (index >= sequence.length) {
+      dialogue.classList.remove("active");
       return;
     }
 
-    renderOpeningCharacter();
+    const key = sequence[index];
+    const char = characters[key];
 
+    name.textContent = char.name;
+    text.textContent = char.opening;
+
+    dialogue.classList.add("active");
+
+    index++;
+
+    setTimeout(() => {
+      dialogue.classList.remove("active");
+
+      setTimeout(showNext, 500);
+    }, 2800);
   }
-);
+
+  showNext();
+}
+
+
+/* =========================================================
+   TIMER PRINCIPAL — 15:00
+   ========================================================= */
+
+function startMainTimer() {
+  clearInterval(state.timer);
+
+  state.timeLeft = 15 * 60;
+  updateMainTimer();
+
+  state.timer = setInterval(() => {
+    state.timeLeft--;
+
+    updateMainTimer();
+
+    if (state.timeLeft <= 0) {
+      clearInterval(state.timer);
+
+      if (!state.firstAttemptFinished) {
+        enterSecondChance();
+      }
+    }
+  }, 1000);
+}
+
+
+function updateMainTimer() {
+  timerDisplay.textContent = formatTime(state.timeLeft);
+
+  timerDisplay.classList.remove(
+    "timer-warning",
+    "timer-danger",
+    "timer-critical"
+  );
+
+  if (state.timeLeft <= 30) {
+    timerDisplay.classList.add("timer-critical");
+  } else if (state.timeLeft <= 120) {
+    timerDisplay.classList.add("timer-danger");
+  } else if (state.timeLeft <= 300) {
+    timerDisplay.classList.add("timer-warning");
+  }
+}
 
 
 /* =========================================================
    CHARACTER CARDS
    ========================================================= */
 
-document
-  .querySelectorAll(".character-card")
-  .forEach(card => {
+document.querySelectorAll(".character-card").forEach((card) => {
+  card.addEventListener("click", () => {
+    const key = card.dataset.character;
 
-    card.addEventListener("click", () => {
+    if (state.secondChanceActive) {
+      return;
+    }
 
-      if (state.secondChance || state.ended) {
-        return;
-      }
-
-      const key =
-        card.dataset.character;
-
-      openCharacter(key);
-
-    });
-
+    openCharacter(key);
   });
+});
 
-
-/* =========================================================
-   OPEN CHARACTER
-   ========================================================= */
 
 function openCharacter(key) {
+  state.currentCharacter = key;
 
-  state.selectedCharacter = key;
+  const char = characters[key];
 
-  const character =
-    characters[key];
+  panelCharacterName.textContent = char.name;
 
-  document
-    .querySelectorAll(".character-card")
-    .forEach(card => {
+  panelCharacterArt.innerHTML = characterArt(key);
 
-      if (
-        card.dataset.character === key
-      ) {
+  characterPanel.classList.add("active");
 
-        card.classList.add("selected");
+  updatePanelButtons();
+}
 
-      } else {
 
-        card.classList.add("dimmed");
+function closePanel() {
+  characterPanel.classList.remove("active");
+  state.currentCharacter = null;
+}
 
-      }
 
-    });
+closeCharacterPanel.addEventListener("click", closePanel);
 
-  panelPortrait.src =
-    character.image;
 
-  panelPortrait.alt =
-    character.name;
+/* =========================================================
+   ACCIONS
+   ========================================================= */
 
-  panelPlayerNumber.textContent =
-    character.number;
+function updatePanelButtons() {
+  const key = state.currentCharacter;
 
-  panelCharacterName.textContent =
-    character.name;
+  if (!key) return;
 
-  panelCharacterSuit.textContent =
-    character.suit;
+  const evidence = state.discovered[key];
 
-  updateActionButtons();
+  observationBtn.disabled = Boolean(evidence.observation);
+  questionBtn.disabled = Boolean(evidence.question);
+  investigationBtn.disabled = Boolean(evidence.investigation);
 
-  characterPanel.classList.remove("hidden");
+  observationBtn.classList.toggle(
+    "completed",
+    Boolean(evidence.observation)
+  );
 
+  questionBtn.classList.toggle(
+    "completed",
+    Boolean(evidence.question)
+  );
+
+  investigationBtn.classList.toggle(
+    "completed",
+    Boolean(evidence.investigation)
+  );
 }
 
 
 /* =========================================================
-   CLOSE CHARACTER
+   OBSERVACIÓ
    ========================================================= */
 
-document
-  .getElementById("closeCharacterPanel")
-  .addEventListener("click", closeCharacter);
+observationBtn.addEventListener("click", () => {
+  const key = state.currentCharacter;
+
+  if (!key || state.secondChanceActive) return;
+
+  if (state.discovered[key].observation) return;
+
+  state.discovered[key].observation = true;
+
+  const lines = characters[key].observation;
+
+  openModal(`
+    <div class="evidence-modal observation-modal">
+      <div class="modal-label">OBSERVACIÓ</div>
+
+      <h2>${characters[key].name}</h2>
+
+      <div class="evidence-list">
+        ${lines.map((line) => `<p>${escapeHTML(line)}</p>`).join("")}
+      </div>
+    </div>
+  `);
+
+  updatePanelButtons();
+});
 
 
-function closeCharacter() {
+/* =========================================================
+   PREGUNTA
+   ========================================================= */
 
-  characterPanel.classList.add("hidden");
+questionBtn.addEventListener("click", () => {
+  const key = state.currentCharacter;
 
-  document
-    .querySelectorAll(".character-card")
-    .forEach(card => {
+  if (!key || state.secondChanceActive) return;
 
-      card.classList.remove(
-        "selected",
-        "dimmed"
+  if (state.discovered[key].question) return;
+
+  const questions = Object.keys(characters[key].questions);
+
+  openModal(`
+    <div class="question-modal">
+      <div class="modal-label">INTERROGATORI</div>
+
+      <h2>Tria una pregunta</h2>
+
+      <div class="question-options">
+        ${questions.map((question, index) => `
+          <button
+            class="question-option"
+            data-question-index="${index}"
+          >
+            ${escapeHTML(question)}
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  `);
+
+  document.querySelectorAll(".question-option").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = Number(button.dataset.questionIndex);
+      const selectedQuestion = questions[index];
+
+      const answer = characters[key].questions[selectedQuestion];
+
+      state.discovered[key].question = {
+        question: selectedQuestion,
+        answer: [...answer]
+      };
+
+      showQuestionAnswer(
+        key,
+        selectedQuestion,
+        answer
       );
 
+      updatePanelButtons();
     });
+  });
+});
 
-  state.selectedCharacter = null;
 
+function showQuestionAnswer(key, question, answer) {
+  openModal(`
+    <div class="answer-modal">
+      <div class="modal-label">RESPOSTA — ${characters[key].name}</div>
+
+      <h2>${escapeHTML(question)}</h2>
+
+      <div class="character-answer">
+        ${answer.map((line) => `
+          <p>${escapeHTML(line)}</p>
+        `).join("")}
+      </div>
+    </div>
+  `);
 }
 
 
 /* =========================================================
-   UPDATE ACTION BUTTONS
+   INVESTIGACIÓ
    ========================================================= */
 
-function updateActionButtons() {
+investigationBtn.addEventListener("click", () => {
+  const key = state.currentCharacter;
 
-  if (!state.selectedCharacter) {
+  if (!key || state.secondChanceActive) return;
+
+  if (state.discovered[key].investigation) return;
+
+  state.discovered[key].investigation = true;
+
+  const lines = characters[key].investigation;
+
+  openModal(`
+    <div class="investigation-modal">
+      <div class="modal-label">DOSSIER D'INVESTIGACIÓ</div>
+
+      <h2>${characters[key].name}</h2>
+
+      <div class="evidence-list">
+        ${lines.map((line) => `<p>▸ ${escapeHTML(line)}</p>`).join("")}
+      </div>
+
+      <div class="investigation-note">
+        No hi ha cap conclusió automàtica.
+        La interpretació és teva.
+      </div>
+    </div>
+  `);
+
+  updatePanelButtons();
+});
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+modalClose.addEventListener("click", closeModal);
+
+modalLayer.addEventListener("click", (event) => {
+  if (event.target === modalLayer) {
+    closeModal();
+  }
+});
+
+
+/* =========================================================
+   FINAL DE LA INVESTIGACIÓ
+   ========================================================= */
+
+finalDecisionBtn.addEventListener("click", () => {
+  if (state.secondChanceActive) return;
+
+  clearInterval(state.timer);
+
+  state.firstAttemptFinished = true;
+
+  showDecisionScreen();
+});
+
+
+function showDecisionScreen() {
+  state.truthChoice = null;
+  state.suitChoice = null;
+
+  document
+    .querySelectorAll("#truth-choice button, #suit-choice button")
+    .forEach((button) => {
+      button.classList.remove("selected");
+    });
+
+  submitDecisionBtn.disabled = true;
+
+  showScreen(decisionScreen);
+}
+
+
+/* =========================================================
+   ELECCIÓ DE LA VERITAT
+   ========================================================= */
+
+document.querySelectorAll("#truth-choice button").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (state.secondChanceActive) return;
+
+    document
+      .querySelectorAll("#truth-choice button")
+      .forEach((btn) => btn.classList.remove("selected"));
+
+    button.classList.add("selected");
+
+    state.truthChoice = button.dataset.character;
+
+    updateSubmitButton();
+  });
+});
+
+
+/* =========================================================
+   ELECCIÓ DEL PAL
+   ========================================================= */
+
+document.querySelectorAll("#suit-choice button").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (state.secondChanceActive) return;
+
+    document
+      .querySelectorAll("#suit-choice button")
+      .forEach((btn) => btn.classList.remove("selected"));
+
+    button.classList.add("selected");
+
+    state.suitChoice = button.dataset.suit;
+
+    updateSubmitButton();
+  });
+});
+
+
+function updateSubmitButton() {
+  submitDecisionBtn.disabled = !(
+    state.truthChoice &&
+    state.suitChoice
+  );
+}
+
+
+/* =========================================================
+   COMPROVAR DECISIÓ
+   ========================================================= */
+
+submitDecisionBtn.addEventListener("click", () => {
+  if (!state.truthChoice || !state.suitChoice) {
     return;
   }
 
-  const used =
-    state.used[state.selectedCharacter];
-
-  observationButton.disabled =
-    used.observation;
-
-  questionButton.disabled =
-    used.question;
-
-  investigationButton.disabled =
-    used.investigation;
-
-}
-
-
-/* =========================================================
-   OBSERVATION
-   ========================================================= */
-
-observationButton.addEventListener(
-  "click",
-  () => {
-
-    if (
-      !state.selectedCharacter ||
-      state.secondChance
-    ) {
-      return;
-    }
-
-    const key =
-      state.selectedCharacter;
-
-    if (
-      state.used[key].observation
-    ) {
-      return;
-    }
-
-    state.used[key].observation = true;
-
-    const records =
-      characters[key].observations;
-
-    state.discovered[key].push({
-      type: "observation",
-      data: records
-    });
-
-    updateActionButtons();
-
-    showObservation(key, records);
-
-  }
-);
-
-
-function showObservation(
-  key,
-  records
-) {
-
-  let index = 0;
-
-  renderObservation(
-    key,
-    records,
-    index
-  );
-
-}
-
-
-function renderObservation(
-  key,
-  records,
-  index
-) {
-
-  modalLayer.classList.remove("hidden");
-
-  modalContent.innerHTML = `
-
-    <div class="modal-label">
-      OBSERVATION FILE
-    </div>
-
-    <h2>
-      ${characters[key].name}
-    </h2>
-
-    <div class="observation-record">
-      ${records[index]}
-    </div>
-
-    <div class="next-button-container">
-
-      ${
-        index < records.length - 1
-
-        ? `
-          <button
-            id="nextObservation"
-            class="small-button"
-          >
-            NEXT
-          </button>
-        `
-
-        : `
-          <button
-            id="finishObservation"
-            class="small-button"
-          >
-            CLOSE
-          </button>
-        `
-      }
-
-    </div>
-
-  `;
-
-  const next =
-    document.getElementById(
-      "nextObservation"
-    );
-
-  if (next) {
-
-    next.addEventListener(
-      "click",
-      () => {
-
-        renderObservation(
-          key,
-          records,
-          index + 1
-        );
-
-      }
-    );
-
-  }
-
-  const finish =
-    document.getElementById(
-      "finishObservation"
-    );
-
-  if (finish) {
-
-    finish.addEventListener(
-      "click",
-      closeModal
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   QUESTION
-   ========================================================= */
-
-questionButton.addEventListener(
-  "click",
-  () => {
-
-    if (
-      !state.selectedCharacter ||
-      state.secondChance
-    ) {
-      return;
-    }
-
-    const key =
-      state.selectedCharacter;
-
-    if (
-      state.used[key].question
-    ) {
-      return;
-    }
-
-    state.used[key].question = true;
-
-    state.discovered[key].push({
-      type: "question",
-      data: characters[key].questions
-    });
-
-    updateActionButtons();
-
-    showQuestions(key);
-
-  }
-);
-
-
-function showQuestions(key) {
-
-  const questions =
-    characters[key].questions;
-
-  modalLayer.classList.remove("hidden");
-
-  modalContent.innerHTML = `
-
-    <div class="modal-label">
-      QUESTION
-    </div>
-
-    <h2>
-      ${characters[key].name}
-    </h2>
-
-    <p style="
-      color:#777;
-      font-size:12px;
-      margin-bottom:20px;
-    ">
-      Tria una pregunta.
-    </p>
-
-    <div class="question-list">
-
-      ${questions
-        .map(
-          (item, index) => `
-            <button
-              class="question-button"
-              data-question="${index}"
-            >
-              ${item.question}
-            </button>
-          `
-        )
-        .join("")
-      }
-
-    </div>
-
-  `;
-
-  document
-    .querySelectorAll(".question-button")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const index =
-            Number(
-              button.dataset.question
-            );
-
-          showAnswer(
-            key,
-            questions[index]
-          );
-
-        }
-      );
-
-    });
-
-}
-
-
-function showAnswer(
-  key,
-  question
-) {
-
-  modalContent.innerHTML = `
-
-    <div class="modal-label">
-      ${characters[key].name}
-    </div>
-
-    <h2>
-      ${question.question}
-    </h2>
-
-    <div class="dialogue-answer">
-      ${question.answer}
-    </div>
-
-    <div class="next-button-container">
-
-      <button
-        id="answerClose"
-        class="small-button"
-      >
-        CLOSE
-      </button>
-
-    </div>
-
-  `;
-
-  document
-    .getElementById("answerClose")
-    .addEventListener(
-      "click",
-      closeModal
-    );
-
-}
-
-
-/* =========================================================
-   INVESTIGATION
-   ========================================================= */
-
-investigationButton.addEventListener(
-  "click",
-  () => {
-
-    if (
-      !state.selectedCharacter ||
-      state.secondChance
-    ) {
-      return;
-    }
-
-    const key =
-      state.selectedCharacter;
-
-    if (
-      state.used[key].investigation
-    ) {
-      return;
-    }
-
-    state.used[key].investigation = true;
-
-    state.discovered[key].push({
-      type: "investigation",
-      data: characters[key].investigation
-    });
-
-    updateActionButtons();
-
-    showInvestigation(key);
-
-  }
-);
-
-
-function showInvestigation(key) {
-
-  const records =
-    characters[key].investigation;
-
-  modalLayer.classList.remove("hidden");
-
-  modalContent.innerHTML = `
-
-    <div class="modal-label">
-      EVIDENCE FILE // ${characters[key].name}
-    </div>
-
-    <h2>
-      INVESTIGATION
-    </h2>
-
-    ${
-      records
-        .map(
-          record => `
-            <div class="investigation-record">
-              ${record}
-            </div>
-          `
-        )
-        .join("")
-    }
-
-    <div class="next-button-container">
-
-      <button
-        id="investigationClose"
-        class="small-button"
-      >
-        CLOSE FILE
-      </button>
-
-    </div>
-
-  `;
-
-  document
-    .getElementById("investigationClose")
-    .addEventListener(
-      "click",
-      closeModal
-    );
-
-}
-
-
-/* =========================================================
-   MODAL CLOSE
-   ========================================================= */
-
-document
-  .getElementById("closeModalButton")
-  .addEventListener(
-    "click",
-    closeModal
-  );
-
-
-function closeModal() {
-
-  modalLayer.classList.add("hidden");
-
-  modalContent.innerHTML = "";
-
-}
-
-
-/* =========================================================
-   FINAL DECISION
-   ========================================================= */
-
-document
-  .getElementById("finalDecisionButton")
-  .addEventListener(
-    "click",
-    () => {
-
-      if (state.ended) {
-        return;
-      }
-
-      openFinalDecision();
-
-    }
-  );
-
-
-function openFinalDecision() {
-
-  const characterKeys = [
-    "chishiya",
-    "arisu",
-    "kuina",
-    "usagi"
-  ];
-
-  const suits = [
-    "♠",
-    "♥",
-    "♦",
-    "♣"
-  ];
-
-  modalLayer.classList.remove("hidden");
-
-  modalContent.innerHTML = `
-
-    <div class="decision-section">
-
-      <div class="modal-label">
-        FINAL DECISION
-      </div>
-
-      <h2 class="decision-title">
-        Qui diu la veritat?
-      </h2>
-
-      <div class="decision-characters">
-
-        ${
-          characterKeys
-            .map(
-              key => `
-                <button
-                  class="decision-character"
-                  data-character-choice="${key}"
-                >
-                  ${characters[key].name}
-                </button>
-              `
-            )
-            .join("")
-        }
-
-      </div>
-
-      <div class="decision-subtitle">
-        QUIN PAL PORTES?
-      </div>
-
-      <div class="suit-choices">
-
-        ${
-          suits
-            .map(
-              suit => `
-                <button
-                  class="suit-choice"
-                  data-suit-choice="${suit}"
-                >
-                  ${suit}
-                </button>
-              `
-            )
-            .join("")
-        }
-
-      </div>
-
-      <button
-        id="confirmDecision"
-        class="confirm-decision"
-        disabled
-      >
-        CONFIRM DECISION
-      </button>
-
-    </div>
-
-  `;
-
-
-  let selectedCharacter = null;
-
-  let selectedSuit = null;
-
-
-  document
-    .querySelectorAll(
-      ".decision-character"
-    )
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          document
-            .querySelectorAll(
-              ".decision-character"
-            )
-            .forEach(b =>
-              b.classList.remove(
-                "selected"
-              )
-            );
-
-          button.classList.add(
-            "selected"
-          );
-
-          selectedCharacter =
-            button.dataset.characterChoice;
-
-          checkDecisionReady();
-
-        }
-      );
-
-    });
-
-
-  document
-    .querySelectorAll(
-      ".suit-choice"
-    )
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          document
-            .querySelectorAll(
-              ".suit-choice"
-            )
-            .forEach(b =>
-              b.classList.remove(
-                "selected"
-              )
-            );
-
-          button.classList.add(
-            "selected"
-          );
-
-          selectedSuit =
-            button.dataset.suitChoice;
-
-          checkDecisionReady();
-
-        }
-      );
-
-    });
-
-
-  function checkDecisionReady() {
-
-    const button =
-      document.getElementById(
-        "confirmDecision"
-      );
-
-    button.disabled =
-      !selectedCharacter ||
-      !selectedSuit;
-
-  }
-
-
-  document
-    .getElementById("confirmDecision")
-    .addEventListener(
-      "click",
-      () => {
-
-        if (
-          !selectedCharacter ||
-          !selectedSuit
-        ) {
-          return;
-        }
-
-        state.finalCharacter =
-          selectedCharacter;
-
-        state.finalSuit =
-          selectedSuit;
-
-        closeModal();
-
-        checkFinalAnswer();
-
-      }
-    );
-
-}
-
-
-/* =========================================================
-   CHECK ANSWER
-   ========================================================= */
-
-function checkFinalAnswer() {
+  const correctTruth = "usagi";
+  const correctSuit = "heart";
 
   const correct =
-    state.finalCharacter === "usagi" &&
-    state.finalSuit === "♥";
+    state.truthChoice === correctTruth &&
+    state.suitChoice === correctSuit;
 
   if (correct) {
+    showSuccess();
+  } else {
+    state.firstTruthChoice = state.truthChoice;
+    state.firstSuitChoice = state.suitChoice;
 
-    endGame(true);
-
-    return;
-
+    enterSecondChance();
   }
-
-
-  if (!state.secondChance) {
-
-    startSecondChance();
-
-    return;
-
-  }
-
-
-  endGame(false, "WRONG");
-
-}
+});
 
 
 /* =========================================================
-   SECOND CHANCE
+   SEGONA OPORTUNITAT — 02:00
    ========================================================= */
 
-function startSecondChance() {
+function enterSecondChance() {
+  clearInterval(state.timer);
 
-  clearInterval(
-    state.timerInterval
-  );
+  state.secondChanceActive = true;
+  state.secondTimeLeft = 2 * 60;
 
-  state.secondChance = true;
-
-  secondChanceScreen.classList.remove(
-    "hidden"
-  );
-
-  state.secondChanceSeconds = 120;
+  showScreen(secondChanceScreen);
 
   updateSecondChanceTimer();
 
-  playTone(110, 0.25);
+  clearInterval(state.secondChanceTimer);
 
-  state.secondChanceInterval =
-    setInterval(() => {
+  state.secondChanceTimer = setInterval(() => {
+    state.secondTimeLeft--;
 
-      state.secondChanceSeconds--;
+    updateSecondChanceTimer();
 
-      updateSecondChanceTimer();
+    if (state.secondTimeLeft <= 0) {
+      clearInterval(state.secondChanceTimer);
 
-      if (
-        state.secondChanceSeconds <= 0
-      ) {
-
-        clearInterval(
-          state.secondChanceInterval
-        );
-
-        endGame(
-          false,
-          "SECOND CHANCE TIME UP"
-        );
-
-      }
-
-    }, 1000);
-
+      showGameOver();
+    }
+  }, 1000);
 }
 
 
 function updateSecondChanceTimer() {
-
-  const minutes =
-    Math.floor(
-      state.secondChanceSeconds / 60
-    );
-
-  const seconds =
-    state.secondChanceSeconds % 60;
-
   secondChanceTimer.textContent =
-    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    formatTime(state.secondTimeLeft);
 
+  secondChanceTimer.classList.remove(
+    "timer-warning",
+    "timer-danger",
+    "timer-critical"
+  );
+
+  if (state.secondTimeLeft <= 30) {
+    secondChanceTimer.classList.add("timer-critical");
+  } else if (state.secondTimeLeft <= 60) {
+    secondChanceTimer.classList.add("timer-danger");
+  }
 }
 
 
 /* =========================================================
-   REVIEW EVIDENCE
+   REVISAR EVIDÈNCIES
    ========================================================= */
 
-document
-  .getElementById(
-    "reviewEvidenceButton"
-  )
-  .addEventListener(
-    "click",
-    showEvidenceReview
-  );
+reviewEvidenceBtn.addEventListener("click", () => {
+  const evidenceHTML = buildEvidenceReview();
 
+  openModal(`
+    <div class="review-modal">
+      <div class="modal-label">REVISIÓ D'EVIDÈNCIES</div>
 
-function showEvidenceReview() {
+      <h2>El que has descobert</h2>
 
-  modalLayer.classList.remove("hidden");
-
-  let html = `
-
-    <div class="modal-label">
-      EVIDENCE REVIEW
+      ${evidenceHTML}
     </div>
-
-    <h2>
-      EVERYTHING YOU DISCOVERED
-    </h2>
-
-  `;
-
-  const keys = [
-    "chishiya",
-    "arisu",
-    "kuina",
-    "usagi"
-  ];
+  `);
+});
 
 
-  keys.forEach(key => {
+function buildEvidenceReview() {
+  let html = "";
 
-    const records =
-      state.discovered[key];
+  Object.keys(characters).forEach((key) => {
+    const char = characters[key];
+    const evidence = state.discovered[key];
+
+    const hasEvidence =
+      evidence.observation ||
+      evidence.question ||
+      evidence.investigation;
+
+    if (!hasEvidence) return;
 
     html += `
-
-      <div
-        style="
-          margin-top:25px;
-          border-top:1px solid rgba(255,255,255,.1);
-          padding-top:18px;
-        "
-      >
-
-        <div
-          style="
-            color:#aaa;
-            letter-spacing:.15em;
-            font-size:11px;
-            margin-bottom:10px;
-          "
-        >
-          ${characters[key].name}
-        </div>
-
+      <div class="review-character">
+        <h3>${char.name}</h3>
     `;
 
-
-    if (!records.length) {
-
+    if (evidence.observation) {
       html += `
-        <div class="investigation-record">
-          No evidence collected.
+        <div class="review-section">
+          <strong>OBSERVACIÓ</strong>
+          ${char.observation
+            .map((line) => `<p>${escapeHTML(line)}</p>`)
+            .join("")}
         </div>
       `;
-
-    } else {
-
-      records.forEach(record => {
-
-        if (record.type === "observation") {
-
-          record.data.forEach(item => {
-
-            html += `
-              <div class="observation-record">
-                ${item}
-              </div>
-            `;
-
-          });
-
-        }
-
-
-        if (record.type === "investigation") {
-
-          record.data.forEach(item => {
-
-            html += `
-              <div class="investigation-record">
-                ${item}
-              </div>
-            `;
-
-          });
-
-        }
-
-
-        if (record.type === "question") {
-
-          record.data.forEach(item => {
-
-            html += `
-              <div class="investigation-record">
-                <strong>
-                  ${item.question}
-                </strong>
-                <br><br>
-                ${item.answer}
-              </div>
-            `;
-
-          });
-
-        }
-
-      });
-
     }
 
+    if (evidence.question) {
+      html += `
+        <div class="review-section">
+          <strong>PREGUNTA</strong>
+          <p>
+            <em>${escapeHTML(evidence.question.question)}</em>
+          </p>
+          ${evidence.question.answer
+            .map((line) => `<p>${escapeHTML(line)}</p>`)
+            .join("")}
+        </div>
+      `;
+    }
+
+    if (evidence.investigation) {
+      html += `
+        <div class="review-section">
+          <strong>INVESTIGACIÓ</strong>
+          ${char.investigation
+            .map((line) => `<p>▸ ${escapeHTML(line)}</p>`)
+            .join("")}
+        </div>
+      `;
+    }
 
     html += `</div>`;
-
   });
 
+  if (!html) {
+    html = `
+      <p class="empty-review">
+        No has recollit cap evidència.
+      </p>
+    `;
+  }
 
-  html += `
+  return html;
+}
 
-    <div class="next-button-container">
 
-      <button
-        id="closeReview"
-        class="small-button"
-      >
-        BACK
-      </button>
+/* =========================================================
+   CANVIAR DECISIÓ
+   ========================================================= */
 
-    </div>
+changeDecisionBtn.addEventListener("click", () => {
+  closeModal();
 
+  state.truthChoice = null;
+  state.suitChoice = null;
+
+  showScreen(decisionScreen);
+
+  /*
+    En la segona oportunitat no pot investigar més.
+    Només pot canviar la seva decisió.
+  */
+  document
+    .querySelectorAll("#truth-choice button, #suit-choice button")
+    .forEach((button) => {
+      button.classList.remove("selected");
+    });
+
+  submitDecisionBtn.disabled = true;
+});
+
+
+/* =========================================================
+   RESULTAT — GAME CLEAR
+   ========================================================= */
+
+function showSuccess() {
+  clearInterval(state.secondChanceTimer);
+  clearInterval(state.timer);
+
+  state.secondChanceActive = false;
+
+  resultStatus.textContent = "GAME CLEAR";
+  resultSymbol.textContent = "♥";
+  resultTitle.textContent = "HAS SOBREVISCUT";
+  
+  resultText.innerHTML = `
+    <p>Has identificat correctament qui deia la veritat.</p>
+
+    <p>
+      <strong>USAGI</strong> estava dient la veritat.
+    </p>
+
+    <p>
+      El teu collar porta el símbol <strong>♥</strong>.
+    </p>
+
+    <p class="final-message">
+      TIME WAS NEVER ON YOUR SIDE.
+    </p>
   `;
 
-
-  modalContent.innerHTML = html;
-
-
-  document
-    .getElementById("closeReview")
-    .addEventListener(
-      "click",
-      closeModal
-    );
-
+  showScreen(resultScreen);
 }
 
 
 /* =========================================================
-   SECOND CHANCE → FINAL DECISION
+   GAME OVER
    ========================================================= */
 
-document
-  .getElementById(
-    "secondChanceDecisionButton"
-  )
-  .addEventListener(
-    "click",
-    () => {
+function showGameOver() {
+  clearInterval(state.timer);
+  clearInterval(state.secondChanceTimer);
 
-      secondChanceScreen.classList.add(
-        "hidden"
-      );
+  state.secondChanceActive = false;
 
-      openFinalDecision();
+  resultStatus.textContent = "GAME OVER";
+  resultSymbol.textContent = "×";
+  resultTitle.textContent = "HAS PERDUT";
 
-    }
-  );
+  resultText.innerHTML = `
+    <p>
+      No has aconseguit identificar correctament
+      qui deia la veritat.
+    </p>
 
+    <p>
+      El temps s'ha acabat.
+    </p>
 
-/* =========================================================
-   END GAME
-   ========================================================= */
+    <p class="final-message">
+      THE GAME IS OVER.
+    </p>
+  `;
 
-function endGame(
-  success,
-  reason = ""
-) {
-
-  if (state.ended) {
-    return;
-  }
-
-  state.ended = true;
-
-  clearInterval(
-    state.timerInterval
-  );
-
-  clearInterval(
-    state.secondChanceInterval
-  );
-
-  secondChanceScreen.classList.add(
-    "hidden"
-  );
-
-  gameScreen.classList.add(
-    "hidden"
-  );
-
-  resultScreen.classList.remove(
-    "hidden"
-  );
-
-
-  if (success) {
-
-    resultStatus.textContent =
-      "GAME CLEAR";
-
-    resultHeart.textContent =
-      "♥";
-
-    resultTitle.textContent =
-      "CORRECT";
-
-    resultMessage.innerHTML =
-      `
-        USAGI WAS TELLING THE TRUTH.<br>
-        <span style="color:#777;">
-          YOUR COLLAR WAS ♥.
-        </span>
-      `;
-
-    resultTimeConnection.classList.remove(
-      "hidden"
-    );
-
-    playTone(880, 0.18);
-
-  } else {
-
-    resultStatus.textContent =
-      "GAME OVER";
-
-    resultHeart.textContent =
-      "×";
-
-    resultTitle.textContent =
-      "YOU LOST";
-
-    if (reason === "TIME UP") {
-
-      resultMessage.textContent =
-        "TIME RAN OUT.";
-
-    } else {
-
-      resultMessage.textContent =
-        "YOUR FINAL DECISION WAS WRONG.";
-
-    }
-
-    resultTimeConnection.classList.add(
-      "hidden"
-    );
-
-    playTone(80, 0.4);
-
-  }
-
+  showScreen(resultScreen);
 }
 
 
 /* =========================================================
-   REPLAY
+   INICIALITZACIÓ
    ========================================================= */
 
-document
-  .getElementById("replayButton")
-  .addEventListener(
-    "click",
-    () => {
+showScreen(introScreen);
 
-      window.location.reload();
+document.querySelectorAll(".character-card").forEach((card) => {
+  const key = card.dataset.character;
 
-    }
-  );
+  const stage = card.querySelector(".character-stage");
 
-
-/* =========================================================
-   SIMPLE SYNTHETIC AUDIO
-   No external files required.
-   ========================================================= */
-
-let audioContext = null;
-
-
-function playTone(
-  frequency,
-  duration
-) {
-
-  try {
-
-    if (!audioContext) {
-
-      audioContext =
-        new (
-          window.AudioContext ||
-          window.webkitAudioContext
-        )();
-
-    }
-
-    const oscillator =
-      audioContext.createOscillator();
-
-    const gain =
-      audioContext.createGain();
-
-    oscillator.type =
-      "sine";
-
-    oscillator.frequency.value =
-      frequency;
-
-    gain.gain.setValueAtTime(
-      0.0001,
-      audioContext.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-      0.06,
-      audioContext.currentTime + 0.02
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-      0.0001,
-      audioContext.currentTime + duration
-    );
-
-    oscillator.connect(gain);
-
-    gain.connect(
-      audioContext.destination
-    );
-
-    oscillator.start();
-
-    oscillator.stop(
-      audioContext.currentTime + duration
-    );
-
-  } catch (error) {
-
-    /* Audio is optional.
-       The game continues normally
-       if the browser blocks it. */
-
+  if (stage && !stage.querySelector(".stick-person")) {
+    stage.innerHTML = characterArt(key);
   }
-
-}
+});
