@@ -1,1 +1,600 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
+  <title>GAME 03 — JACK OF HEARTS</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- =========================================================
+       INTRO
+       ========================================================= -->
+
+  <div id="introScreen" class="screen intro-screen">
+
+    <div class="intro-noise"></div>
+
+    <div class="intro-content">
+
+      <div class="intro-small">
+        ALICE IN BORDERLAND
+      </div>
+
+      <div class="intro-game-number">
+        GAME 03
+      </div>
+
+      <div class="heart-symbol">♥</div>
+
+      <h1>JACK OF HEARTS</h1>
+
+      <div class="intro-line"></div>
+
+      <p class="intro-subtitle">
+        ONE TRUTH.<br>
+        THREE LIES.<br>
+        FIFTEEN MINUTES.
+      </p>
+
+      <button id="enterGameButton" class="main-button">
+        ENTER GAME
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       RULES
+       ========================================================= -->
+
+  <div id="rulesScreen" class="screen hidden">
+
+    <div class="rules-container">
+
+      <div class="rules-top">
+        GAME 03
+      </div>
+
+      <h2>JACK OF HEARTS</h2>
+
+      <div class="rules-heart">♥</div>
+
+      <div class="rules-box">
+
+        <p>
+          Tots quatre jugadors poden veure el teu pal.
+        </p>
+
+        <p>
+          Tu no pots veure el teu propi collar.
+        </p>
+
+        <p>
+          <strong>Una persona diu la veritat.</strong><br>
+          Les altres tres menteixen.
+        </p>
+
+        <p>
+          Tens <strong>15 minuts</strong> per descobrir
+          qui està dient la veritat i quin pal portes.
+        </p>
+
+        <div class="rules-divider"></div>
+
+        <p class="rules-action">
+          Cada jugador pot ser:
+        </p>
+
+        <ul>
+          <li>👁 OBSERVAT una vegada</li>
+          <li>💬 PREGUNTAT una vegada</li>
+          <li>🔎 INVESTIGAT una vegada</li>
+        </ul>
+
+        <p class="rules-final">
+          Després hauràs de prendre una decisió.
+        </p>
+
+      </div>
+
+      <button id="startGameButton" class="main-button">
+        START GAME
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       GAME
+       ========================================================= -->
+
+  <main id="gameScreen" class="game-screen hidden">
+
+    <div class="game-background"></div>
+    <div class="scanlines"></div>
+    <div class="noise"></div>
+
+
+    <!-- TOP HUD -->
+
+    <header class="top-hud">
+
+      <div class="hud-game">
+        GAME 03
+      </div>
+
+      <div class="hud-title">
+        JACK OF HEARTS
+      </div>
+
+      <div id="timer" class="timer">
+        15:00
+      </div>
+
+    </header>
+
+
+    <!-- MAIN ROOM -->
+
+    <section class="game-room">
+
+      <div class="room-top">
+
+        <div class="room-label">
+          <span>LOCATION</span>
+          <strong>CONFINEMENT ROOM</strong>
+        </div>
+
+        <div class="player-collar">
+          <span>YOUR COLLAR</span>
+          <strong>?</strong>
+        </div>
+
+      </div>
+
+
+      <!-- INITIAL CLAIMS -->
+
+      <div id="openingDialogue" class="opening-dialogue hidden">
+
+        <div class="opening-character-image">
+          <img id="openingImage" src="" alt="">
+        </div>
+
+        <div class="opening-dialogue-content">
+
+          <div id="openingCharacterName" class="dialogue-name"></div>
+
+          <div id="openingSuit" class="dialogue-suit"></div>
+
+          <p id="openingText"></p>
+
+          <button id="openingNextButton" class="small-button">
+            CONTINUE
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- CHARACTER GRID -->
+
+      <div id="charactersGrid" class="characters-grid">
+
+        <!-- CHISHIYA -->
+
+        <article
+          class="character-card"
+          data-character="chishiya"
+        >
+
+          <div class="character-image">
+
+            <img
+              src="assets/chishiya.jpg"
+              alt="Chishiya"
+            >
+
+            <div class="image-overlay"></div>
+
+          </div>
+
+          <div class="character-info">
+
+            <div class="character-number">
+              PLAYER 01
+            </div>
+
+            <h3>CHISHIYA</h3>
+
+            <div class="collar">
+              <span>♣</span>
+            </div>
+
+          </div>
+
+          <button class="select-character">
+            INVESTIGATE
+          </button>
+
+        </article>
+
+
+        <!-- ARISU -->
+
+        <article
+          class="character-card"
+          data-character="arisu"
+        >
+
+          <div class="character-image">
+
+            <img
+              src="assets/arisu.jpg"
+              alt="Arisu"
+            >
+
+            <div class="image-overlay"></div>
+
+          </div>
+
+          <div class="character-info">
+
+            <div class="character-number">
+              PLAYER 02
+            </div>
+
+            <h3>ARISU</h3>
+
+            <div class="collar">
+              <span>♦</span>
+            </div>
+
+          </div>
+
+          <button class="select-character">
+            INVESTIGATE
+          </button>
+
+        </article>
+
+
+        <!-- KUINA -->
+
+        <article
+          class="character-card"
+          data-character="kuina"
+        >
+
+          <div class="character-image">
+
+            <img
+              src="assets/kuina.jpg"
+              alt="Kuina"
+            >
+
+            <div class="image-overlay"></div>
+
+          </div>
+
+          <div class="character-info">
+
+            <div class="character-number">
+              PLAYER 03
+            </div>
+
+            <h3>KUINA</h3>
+
+            <div class="collar">
+              <span>♠</span>
+            </div>
+
+          </div>
+
+          <button class="select-character">
+            INVESTIGATE
+          </button>
+
+        </article>
+
+
+        <!-- USAGI -->
+
+        <article
+          class="character-card"
+          data-character="usagi"
+        >
+
+          <div class="character-image">
+
+            <img
+              src="assets/usagi.jpg"
+              alt="Usagi"
+            >
+
+            <div class="image-overlay"></div>
+
+          </div>
+
+          <div class="character-info">
+
+            <div class="character-number">
+              PLAYER 04
+            </div>
+
+            <h3>USAGI</h3>
+
+            <div class="collar">
+              <span>♥</span>
+            </div>
+
+          </div>
+
+          <button class="select-character">
+            INVESTIGATE
+          </button>
+
+        </article>
+
+      </div>
+
+
+      <!-- CHARACTER ACTION PANEL -->
+
+      <section
+        id="characterPanel"
+        class="character-panel hidden"
+      >
+
+        <button
+          id="closeCharacterPanel"
+          class="close-button"
+          aria-label="Tancar"
+        >
+          ×
+        </button>
+
+        <div class="panel-character-header">
+
+          <div class="panel-portrait">
+
+            <img
+              id="panelPortrait"
+              src=""
+              alt=""
+            >
+
+          </div>
+
+          <div class="panel-character-info">
+
+            <div id="panelPlayerNumber"></div>
+
+            <h2 id="panelCharacterName"></h2>
+
+            <div
+              id="panelCharacterSuit"
+              class="panel-suit"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="action-buttons">
+
+          <button
+            id="observationButton"
+            class="action-button"
+            data-action="observation"
+          >
+            <span class="action-icon">👁</span>
+
+            <span>
+              <strong>OBSERVAR</strong>
+              <small>Veure com actua</small>
+            </span>
+
+          </button>
+
+
+          <button
+            id="questionButton"
+            class="action-button"
+            data-action="question"
+          >
+            <span class="action-icon">💬</span>
+
+            <span>
+              <strong>PREGUNTAR</strong>
+              <small>Fer una pregunta</small>
+            </span>
+
+          </button>
+
+
+          <button
+            id="investigationButton"
+            class="action-button"
+            data-action="investigation"
+          >
+            <span class="action-icon">🔎</span>
+
+            <span>
+              <strong>INVESTIGAR</strong>
+              <small>Consultar l'expedient</small>
+            </span>
+
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- FINAL DECISION -->
+
+      <div class="final-area">
+
+        <div class="final-warning">
+          NO PRENGUIS LA DECISIÓ FINS QUE ESTIGUIS SEGURA.
+        </div>
+
+        <button
+          id="finalDecisionButton"
+          class="final-button"
+        >
+          MAKE FINAL DECISION
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       MODAL
+       ========================================================= -->
+
+  <div
+    id="modalLayer"
+    class="modal-layer hidden"
+  >
+
+    <div class="modal">
+
+      <button
+        id="closeModalButton"
+        class="close-button"
+      >
+        ×
+      </button>
+
+      <div id="modalContent"></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       SECOND CHANCE
+       ========================================================= -->
+
+  <div
+    id="secondChanceScreen"
+    class="screen second-chance-screen hidden"
+  >
+
+    <div class="second-chance-content">
+
+      <div class="glitch-word">
+        WRONG
+      </div>
+
+      <h2>PERÒ ENCARA NO HAS PERDUT.</h2>
+
+      <div class="second-heart">♥</div>
+
+      <p>
+        Aquesta és la teva última oportunitat.
+      </p>
+
+      <p>
+        No pots obtenir nova informació.
+      </p>
+
+      <p>
+        Només pots revisar el que ja has descobert
+        i canviar la teva decisió.
+      </p>
+
+      <div class="second-timer">
+        <span>SECOND CHANCE</span>
+        <strong id="secondChanceTimer">02:00</strong>
+      </div>
+
+      <button
+        id="reviewEvidenceButton"
+        class="main-button"
+      >
+        REVIEW EVIDENCE
+      </button>
+
+      <button
+        id="secondChanceDecisionButton"
+        class="main-button secondary"
+      >
+        CHANGE DECISION
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       RESULT
+       ========================================================= -->
+
+  <div
+    id="resultScreen"
+    class="screen result-screen hidden"
+  >
+
+    <div class="result-content">
+
+      <div id="resultStatus"></div>
+
+      <div id="resultHeart" class="result-heart">
+        ♥
+      </div>
+
+      <h1 id="resultTitle"></h1>
+
+      <p id="resultMessage"></p>
+
+      <div
+        id="resultTimeConnection"
+        class="result-time-connection hidden"
+      >
+        TIME WAS NEVER ON YOUR SIDE.
+      </div>
+
+      <button
+        id="replayButton"
+        class="main-button"
+      >
+        PLAY AGAIN
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       JAVASCRIPT
+       ========================================================= -->
+
+  <script src="script.js"></script>
+
+</body>
+</html>
