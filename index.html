@@ -5,157 +5,186 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>♠ GAME — ACTION</title>
 <style>
-    * {
-        box-sizing: border-box;
-    }
-    body {
-        margin: 0;
-        min-height: 100vh;
-        background: #050505;
-        color: white;
-        font-family: Arial, sans-serif;
-        overflow: hidden;
-    }
-    /* CRONÒMETRE GEGANT */
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #050505;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+/* CRONÒMETRE GEGANT */
+#timer {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 31vw;
+    font-weight: 900;
+    color: rgba(255,255,255,0.065);
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -15px;
+}
+#game {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    text-align: center;
+}
+.top {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #888;
+}
+#round {
+    color: white;
+}
+h1 {
+    font-size: 17px;
+    letter-spacing: 6px;
+    margin-bottom: 22px;
+}
+#ruleNumber {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #666;
+    margin-bottom: 12px;
+}
+#instruction {
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1.4;
+    max-width: 650px;
+    min-height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#options {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    width: 100%;
+    max-width: 550px;
+    margin-top: 28px;
+}
+.option {
+    flex: 1;
+    min-height: 135px;
+    border: 2px solid rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.035);
+    color: white;
+    font-size: 25px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.12s;
+    padding: 15px;
+}
+.option:hover {
+    background: rgba(255,255,255,0.11);
+}
+.option:active {
+    transform: scale(0.96);
+}
+.option.correct {
+    border-color: white;
+    background: rgba(255,255,255,0.15);
+}
+.option.wrong {
+    border-color: #777;
+    background: rgba(255,255,255,0.02);
+}
+#startScreen,
+#endScreen {
+    position: relative;
+    z-index: 5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    text-align: center;
+    background: #050505;
+}
+#startScreen h2,
+#endScreen h2 {
+    font-size: 30px;
+    letter-spacing: 6px;
+    margin-bottom: 20px;
+}
+.sub {
+    color: #999;
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 35px;
+}
+.mainButton {
+    padding: 16px 35px;
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 2px;
+}
+.mainButton:hover {
+    transform: scale(1.04);
+}
+.hidden {
+    display: none !important;
+}
+#transition {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: #050505;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+}
+#transitionText {
+    font-size: 20px;
+    letter-spacing: 3px;
+    line-height: 1.7;
+}
+@media (max-width: 600px) {
     #timer {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 32vw;
-        font-weight: 900;
-        color: rgba(255,255,255,0.07);
-        z-index: 0;
-        pointer-events: none;
-        user-select: none;
-    }
-    #game {
-        position: relative;
-        z-index: 2;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 25px;
-        text-align: center;
-    }
-    .top {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        display: flex;
-        justify-content: space-between;
-        font-size: 14px;
-        letter-spacing: 2px;
-        color: #aaa;
-    }
-    h1 {
-        font-size: 18px;
-        letter-spacing: 5px;
-        margin-bottom: 35px;
+        font-size: 43vw;
+        letter-spacing: -8px;
     }
     #instruction {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 35px;
-        max-width: 700px;
-    }
-    #options {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-        width: 100%;
-        max-width: 500px;
+        font-size: 18px;
     }
     .option {
-        flex: 1;
-        min-height: 120px;
-        border: 2px solid rgba(255,255,255,0.6);
-        background: rgba(255,255,255,0.05);
-        color: white;
-        font-size: 24px;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: 0.15s;
+        min-height: 115px;
+        font-size: 21px;
     }
-    .option:hover {
-        background: rgba(255,255,255,0.15);
-        transform: scale(1.03);
+    h1 {
+        font-size: 15px;
     }
-    .option:active {
-        transform: scale(0.97);
-    }
-    #startScreen,
-    #endScreen {
-        position: relative;
-        z-index: 5;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 30px;
-        text-align: center;
-        background: #050505;
-    }
-    #startScreen h2,
-    #endScreen h2 {
-        font-size: 30px;
-        letter-spacing: 6px;
-        margin-bottom: 20px;
-    }
-    .sub {
-        color: #999;
-        max-width: 500px;
-        line-height: 1.6;
-        margin-bottom: 35px;
-    }
-    .mainButton {
-        padding: 16px 35px;
-        background: white;
-        color: black;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        letter-spacing: 2px;
-    }
-    .mainButton:hover {
-        transform: scale(1.04);
-    }
-    .hidden {
-        display: none !important;
-    }
-    .correct {
-        border-color: #6cff8d !important;
-        background: rgba(108,255,141,0.15) !important;
-    }
-    .wrong {
-        border-color: #ff4f4f !important;
-        background: rgba(255,79,79,0.15) !important;
-    }
-    #message {
-        height: 25px;
-        margin-top: 20px;
-        font-size: 14px;
-        letter-spacing: 2px;
-    }
-    @media (max-width: 600px) {
-        #timer {
-            font-size: 45vw;
-        }
-        #instruction {
-            font-size: 20px;
-        }
-        .option {
-            min-height: 100px;
-            font-size: 20px;
-        }
-    }
+}
 </style>
 </head>
 <body>
@@ -163,11 +192,11 @@
 <div id="startScreen">
     <h2>♠ GAME</h2>
     <p class="sub">
-        ACCIÓ
+        <strong>ACTION</strong>
         <br><br>
-        No tens gaire temps per pensar.
+        No sempre tindràs temps per pensar.
         <br>
-        Observa. Decideix. Reacciona.
+        Les regles poden canviar.
         <br><br>
         <strong>TIME LIMIT: 60 SECONDS</strong>
     </p>
@@ -179,15 +208,21 @@
 <div id="game" class="hidden">
     <div class="top">
         <span>♠ ACTION</span>
-        <span>ROUND <span id="round">1</span>/10</span>
+        <span>ROUND <span id="round">1</span>/15</span>
     </div>
     <div id="timer">60</div>
     <h1>♠ PICARS</h1>
+    <div id="ruleNumber">
+        RULE 01
+    </div>
     <div id="instruction">
         PREPARA'T
     </div>
     <div id="options"></div>
-    <div id="message"></div>
+</div>
+<!-- TRANSICIÓ -->
+<div id="transition" class="hidden">
+    <div id="transitionText"></div>
 </div>
 <!-- FINAL -->
 <div id="endScreen" class="hidden">
@@ -202,60 +237,115 @@ let timeLeft = 60;
 let timerInterval;
 let currentRound = 0;
 let correctAnswers = 0;
-const totalRounds = 10;
-const neededCorrect = 8;
+const totalRounds = 15;
+const neededCorrect = 11;
+/*
+==================================================
+RONDES
+==================================================
+*/
 const rounds = [
+    // REGLA 1
     {
-        instruction: "CLICA EL SÍMBOLIC NEGRE",
-        options: ["♠", "♥"],
-        correct: 0
-    },
-    {
-        instruction: "CLICA EL COR",
-        options: ["♣", "♥"],
-        correct: 1
-    },
-    {
-        instruction: "NO CLIQUIS EL DIAMANT",
-        options: ["♦", "♠"],
-        correct: 1
-    },
-    {
-        instruction: "CLICA EL SÍMBOL DE L'ESQUERRA",
-        options: ["♣", "♥"],
-        correct: 0
-    },
-    {
-        instruction: "CLICA EL QUE NO ÉS NEGRE",
+        rule: "RULE 01",
+        instruction: "TRIA L'OPCIÓ QUE NO ÉS NEGRA",
         options: ["♠", "♥"],
         correct: 1
     },
     {
-        instruction: "CLICA EL SÍMBOL DE LA DRETA",
-        options: ["♦", "♣"],
+        rule: "RULE 01",
+        instruction: "TRIA L'OPCIÓ QUE TÉ MENYS LLETRES",
+        options: ["PLAY", "GYM"],
         correct: 1
     },
     {
-        instruction: "NO CLIQUIS EL COR",
-        options: ["♥", "♠"],
+        rule: "RULE 01",
+        instruction: "TRIA EL QUE NO PERTANY AL GRUP",
+        options: ["⚽", "🧙"],
+        correct: 1
+    },
+    // CANVI DE REGLA
+    {
+        rule: "RULE 02 — NEW RULE",
+        instruction: "ARA TRIA L'OPCIÓ QUE COMPLEIX LA REGLA",
+        options: ["REAL MADRID", "BREAKING BAD"],
+        correct: 0
+    },
+    {
+        rule: "RULE 02",
+        instruction: "TRIA LA QUE TÉ MÉS LLETRES",
+        options: ["LOL", "HARRY POTTER"],
         correct: 1
     },
     {
-        instruction: "CLICA EL PRIMER SÍMBOL",
+        rule: "RULE 02",
+        instruction: "TRIA L'OPCIÓ DE LA DRETA",
+        options: ["♣", "♦"],
+        correct: 1
+    },
+    // REGLA 3
+    {
+        rule: "RULE 03 — NEW RULE",
+        instruction: "NO TRIA LA MÉS GRAN",
+        options: ["▲", "●"],
+        correct: 1
+    },
+    {
+        rule: "RULE 03",
+        instruction: "TRIA LA QUE NO TÉ CAP LLETRA REPETIDA",
+        options: ["MARCEL", "LAIA"],
+        correct: 1
+    },
+    {
+        rule: "RULE 03",
+        instruction: "TRIA LA QUE TÉ MÉS PARAULES",
+        options: ["REAL", "REAL MADRID"],
+        correct: 1
+    },
+    // DOBLE CONDICIÓ
+    {
+        rule: "RULE 04 — TWO CONDITIONS",
+        instruction: "TRIA LA QUE NO ÉS NEGRA I TÉ MÉS DE 3 LLETRES",
+        options: ["PLAY", "LOL"],
+        correct: 0
+    },
+    {
+        rule: "RULE 04",
+        instruction: "TRIA LA QUE ÉS MÉS CURTA I NO ÉS DE LA DRETA",
+        options: ["♠", "♥"],
+        correct: 0
+    },
+    {
+        rule: "RULE 04",
+        instruction: "TRIA LA QUE TÉ MENYS PARAULES PERÒ MÉS LLETRES",
+        options: ["REAL MADRID", "BREAKING BAD"],
+        correct: 0
+    },
+    // FASE FINAL
+    {
+        rule: "FINAL",
+        instruction: "NO TRIA LA QUE ET SEMBLA MÉS IMPORTANT",
+        options: ["❤️", "🏆"],
+        correct: 0
+    },
+    {
+        rule: "FINAL",
+        instruction: "TRIA L'ÚNICA OPCIÓ QUE NO COMPLEIX CAP DE LES DUES REGLES ANTERIORS",
         options: ["♠", "♦"],
-        correct: 0
+        correct: 1
     },
     {
-        instruction: "CLICA EL QUE NO ÉS UN PAL",
-        options: ["⚡", "♣"],
-        correct: 0
-    },
-    {
-        instruction: "ÚLTIMA RONDA — CLÍCA EL DIAMANT",
-        options: ["♦", "♠"],
-        correct: 0
+        rule: "FINAL",
+        instruction: "ÚLTIMA DECISIÓ. CONFIA EN EL QUE HAS APRÈS.",
+        options: ["STAY", "GO"],
+        correct: 1
     }
 ];
+/*
+==================================================
+INICIAR
+==================================================
+*/
 function startGame() {
     document.getElementById("startScreen").classList.add("hidden");
     document.getElementById("game").classList.remove("hidden");
@@ -272,59 +362,99 @@ function startGame() {
     }, 1000);
     showRound();
 }
+/*
+==================================================
+MOSTRAR RONDA
+==================================================
+*/
 function showRound() {
     if (currentRound >= totalRounds) {
         finishGame(correctAnswers >= neededCorrect);
         return;
     }
     const round = rounds[currentRound];
-    document.getElementById("round").textContent = currentRound + 1;
-    document.getElementById("instruction").textContent = round.instruction;
-    const optionsContainer = document.getElementById("options");
+    document.getElementById("round").textContent =
+        currentRound + 1;
+    document.getElementById("ruleNumber").textContent =
+        round.rule;
+    document.getElementById("instruction").textContent =
+        round.instruction;
+    const optionsContainer =
+        document.getElementById("options");
     optionsContainer.innerHTML = "";
     round.options.forEach((option, index) => {
-        const button = document.createElement("button");
+        const button =
+            document.createElement("button");
         button.className = "option";
         button.textContent = option;
-        button.onclick = () => answer(index, button);
+        button.onclick = () => {
+            answer(index, button);
+        };
         optionsContainer.appendChild(button);
     });
 }
+/*
+==================================================
+RESPONDRE
+==================================================
+*/
 function answer(selected, button) {
     const round = rounds[currentRound];
-    const buttons = document.querySelectorAll(".option");
+    const buttons =
+        document.querySelectorAll(".option");
     buttons.forEach(btn => {
         btn.disabled = true;
     });
     if (selected === round.correct) {
         correctAnswers++;
         button.classList.add("correct");
-        document.getElementById("message").textContent = "CORRECT";
     } else {
         button.classList.add("wrong");
-        document.getElementById("message").textContent = "WRONG";
     }
     currentRound++;
+    /*
+    Petit retard perquè la resposta
+    no sigui instantània.
+    */
     setTimeout(() => {
-        document.getElementById("message").textContent = "";
         showRound();
-    }, 500);
+    }, 280);
 }
+/*
+==================================================
+FINAL
+==================================================
+*/
 function finishGame(success) {
     clearInterval(timerInterval);
-    document.getElementById("game").classList.add("hidden");
-    document.getElementById("endScreen").classList.remove("hidden");
+    document.getElementById("game")
+        .classList.add("hidden");
+    document.getElementById("endScreen")
+        .classList.remove("hidden");
     if (success) {
-        document.getElementById("endTitle").textContent = "♠ GAME CLEAR";
+        document.getElementById("endTitle")
+            .textContent = "♠ GAME CLEAR";
         document.getElementById("endText").innerHTML =
             "PROVA SUPERADA.<br><br>" +
-            "<strong>" + correctAnswers + " / " + totalRounds + "</strong> CORRECTES<br><br>" +
-            "TIME REMAINING: " + timeLeft;
+            "CORRECTES: <strong>" +
+            correctAnswers +
+            " / " +
+            totalRounds +
+            "</strong><br><br>" +
+            "TIME REMAINING: <strong>" +
+            timeLeft +
+            " SECONDS</strong>";
     } else {
-        document.getElementById("endTitle").textContent = "♠ GAME OVER";
+        document.getElementById("endTitle")
+            .textContent = "♠ GAME OVER";
         document.getElementById("endText").innerHTML =
             "NO HAS SUPERAT LA PROVA.<br><br>" +
-            "CORRECTES: " + correctAnswers + " / " + totalRounds;
+            "CORRECTES: <strong>" +
+            correctAnswers +
+            " / " +
+            totalRounds +
+            "</strong><br><br>" +
+            "TIME RAN OUT.";
     }
 }
 </script>
