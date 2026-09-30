@@ -1,7 +1,7 @@
 "use strict";
 
 /* =========================================================
-   JACK OF HEARTS - STRICT LOGIC DOSSIER
+   JACK OF HEARTS - MARCEL IN BORDERLAND DEFINITIU
 ========================================================= */
 
 const SOLUTION = {
@@ -13,45 +13,45 @@ const characters = {
     chishiya: {
         name: "CHISHIYA", suit: "♣", truth: false,
         statements: ["És ♣. Ja tens quatre respostes. Una és correcta. No necessites que jo et faci la feina."],
-        observe: "Roman assegut i aparentment tranquil. Quan l'Arisu parla, el mira. Quan la Usagi diu ♥, mira breument el seu collar i després a tu. No mostra sorpresa. Sembla més interessat en les reaccions que en les paraules. Fa un somriure molt subtil. Quan et mostres confós, no t'ajuda directament.",
-        investigate: "Ha mantingut ♣ des del principi. No ha preguntat als altres quin pal han vist. Presta molta atenció a les reaccions de la resta. Quan se'l pressiona, tendeix a redirigir la conversa. Evita donar explicacions fàcilment contrastables. En diversos moments dirigeix la teva atenció cap als altres. No s'han detectat canvis en la seva versió.",
+        observe: "Roman assegut i relaxat. Els seus ulls van d'un jugador a l'altre. Quan et mira, et sosté la mirada amb total calma, sense mostrar cap indici d'urgència tot i que el temps s'acaba.",
+        investigate: "Manté el ♣. No ha donat cap detall per justificar per què ho sap. Quan se li demana més informació, respon amb una altra pregunta o dirigeix l'atenció cap al comportament dels altres jugadors.",
         questions: [
-            { id: "q1", q: "Per què t'hauria de creure?", a: "No ho facis. Si necessites que et convenci, probablement no sóc la persona que hauries d'escollir." },
+            { id: "q1", q: "Per què t'hauria de creure?", a: "Tots tenim un motiu per mentir per salvar-nos. Pregunta't quin és el meu. Jo no hi guanyo res si tu mors ara." },
             { id: "q2", q: "Qui et sembla més sospitós?", a: "No és la pregunta correcta. Hauries de preguntar-te qui necessita que desconfiïs dels altres." },
-            { id: "q3", q: "Què estàs intentant fer?", a: "Que decideixis tu. Si et dic què has de pensar, ja no serà la teva decisió." }
+            { id: "q3", q: "Què estàs intentant fer?", a: "Sobreviure, com tots. Però jo no necessito posar-me a tremolar o fingir pena per aconseguir-ho." }
         ]
     },
     arisu: {
         name: "ARISU", suit: "♦", truth: false,
         statements: ["És ♦. Ho sento. Sé que no és gaire útil dir-t'ho així, però és el que estic veient."],
-        observe: "Quan el Chishiya parla, sembla que vol intervenir. Obre la boca però s'atura i diu 'No, res'. Quan la Kuina parla, mira a terra i es frega les mans. Quan la Usagi diu ♥, la mira durant uns segons i després aparta la mirada ràpidament.",
-        investigate: "Abans de respondre, ha començat dues frases i n'ha interromput una. Ha demanat que li repetissin una pregunta. Quan se li pregunta directament pel seu pal, respon sense vacil·lar. En explicar un moment anterior, ha corregit una paraula abans de continuar (ha dit 'Quan ens han posat...' i ha corregit a 'Quan ens han fet mirar els collars'). No s'han detectat canvis en la seva versió ♦.",
+        observe: "Es frega les mans i evita el contacte visual prolongat amb tu. Té la respiració agitada. Quan els altres parlen, obre la boca com si volgués intervenir, però es mossega el llavi i s'atura.",
+        investigate: "Reafirma el ♦ molt ràpid quan se li pregunta directament. No obstant, en explicar la situació, s'ha entrebancat i ha corregit una paraula de la seva pròpia frase. Sembla estar sota una pressió emocional immensa.",
         questions: [
-            { id: "q1", q: "Per què estàs tan nerviós?", a: "Perquè si t'equivoques, et maten. I perquè sé que jo podria estar en la teva situació." },
-            { id: "q2", q: "Per què hauria de creure't?", a: "No ho sé. Jo tampoc confiaria en mi si estigués al teu lloc." },
-            { id: "q3", q: "Què creus que està passant aquí?", a: "Que algú està intentant semblar més segur del que és. I no sé si ho fa perquè menteix o perquè té por." }
+            { id: "q1", q: "Per què estàs tan nerviós?", a: "Em posa dels nervis saber que la teva vida depèn del que jo et digui ara mateix. És massa pressió, d'acord?" },
+            { id: "q2", q: "Per què hauria de creure't?", a: "Mira els meus ulls. Si t'estigués mentint a la cara sabent que t'explotarà el coll d'aquí a uns minuts... creus que podria suportar-ho?" },
+            { id: "q3", q: "Què creus que està passant aquí?", a: "No ho entenc. Si tots veiem el mateix, per què donen respostes diferents? Què hi guanyen? No té cap sentit!" }
         ]
     },
     kuina: {
         name: "KUINA", suit: "♠", truth: false,
         statements: ["És ♠. No sé si et servirà de res que t'ho digui, però és el que veig."],
-        observe: "Quan l'Arisu està nerviós, se'l mira. Quan el Chishiya domina la conversa, es concentra en tu. Quan sembles bloquejat, fa un petit gest per tranquil·litzar-te i somriu lleument. No intenta interrompre. Sembla més preocupada pel teu estat emocional que per les respostes.",
-        investigate: "Abans de començar ha preguntat a l'Arisu si tothom estava bé. Durant el joc intenta reduir la tensió quan algú sembla nerviós. Quan el Chishiya domina la conversa, deixa de participar durant uns instants. Mai canvia ♠. Abans de començar havia preguntat a l'Arisu què faria si algú estigués mentint.",
+        observe: "Manté una postura oberta i et dedica somriures lleus per tranquil·litzar-te. Quan la tensió puja a l'habitació, el seu to de veu és el més suau. Et busca constantment amb la mirada.",
+        investigate: "No es mou del ♠. En lloc de donar arguments clars sobre el que veu al teu coll, centra les seves intervencions en preguntar com et sents o en assenyalar l'estat de nervis de la resta del grup.",
         questions: [
-            { id: "q1", q: "Per què hauria de confiar en tu?", a: "No hauries de fer-ho. No perquè jo estigui mentint, sinó perquè no em coneixes. Però si vols saber què faria jo... miraria qui canvia més la seva història." },
+            { id: "q1", q: "Com sé que no m'enganyes?", a: "(Somriu i respira fons). Jo no jugo amb les vides de la gent. Concentra't i confia en el teu instint." },
             { id: "q2", q: "Qui et sembla més sospitós?", a: "El Chishiya. Perquè sembla que ja sap què faràs abans que ho facis." },
-            { id: "q3", q: "Què creus que està fent l'Arisu?", a: "Intentant no equivocar-se. No sé si això el fa més o menys fiable." }
+            { id: "q3", q: "Què creus que està fent l'Arisu?", a: "Pateix molt per la pressió. Però alerta... a vegades els que semblen més inofensius són els que tenen més por a dir la veritat." }
         ]
     },
     usagi: {
         name: "USAGI", truth: true, suit: "♥",
         statements: ["És ♥. (Pausa). Això és el que veig."],
-        observe: "No intervé mentre els altres parlen. Mira breument a l'Arisu quan ell diu ♦ i observa al Chishiya quan ell parla. No mostra una reacció exagerada a la Kuina. Quan et mostres confós, fa un petit pas enrere. No intenta acostar-se ni convèncer-te. Pot mirar el teu collar durant uns segons i després tornar-te a mirar als ulls.",
-        investigate: "Ha mantingut ♥ des del principi. Respon les preguntes directament. No intenta canviar la teva opinió sobre els altres. Quan un altre jugador és qüestionat, no el defensa ni l'acusa. Quan se li demana confirmar una resposta, no afegeix informació que no pot saber. En una segona confirmació tarda uns segons més, però la resposta continua sent ♥.",
+        observe: "Es manté al marge de les discussions. Fa un petit pas enrere si et veu molt angoixat, deixant-te espai personal. Et mira de manera directa i fixa als ulls, però sense fer cap gest per acostar-se.",
+        investigate: "Continua dient ♥. No ha afegit cap explicació addicional ni ha posat cap excusa per donar suport a la seva resposta. Dóna frases molt curtes i no entra a valorar què diuen els seus companys.",
         questions: [
-            { id: "q1", q: "Per què hauria de creure't?", a: "No ho hauries de fer perquè t'ho digui jo. Mira què fa cadascú i decideix-ho tu." },
+            { id: "q1", q: "Per què hauria de creure't?", a: "Creure'm és la teva responsabilitat, no la meva. Jo no m'esforçaré en convèncer-te si decideixes dubtar de la meva paraula." },
             { id: "q2", q: "I si t'estàs equivocant?", a: "Llavors m'hauré equivocat. Però no et diré que he vist una altra cosa només perquè soni més segur." },
-            { id: "q3", q: "Qui et sembla més difícil de llegir?", a: "El Chishiya. Però això no vol dir que estigui mentint." }
+            { id: "q3", q: "Qui et sembla més difícil de llegir?", a: "Cadascú té la seva pròpia estratègia de supervivència basada en la por. Cap d'ells m'inspira una confiança cega, la veritat." }
         ]
     }
 };
@@ -73,12 +73,11 @@ const state = {
 };
 
 const characterStates = {
-    chishiya: { observed: false, questionAsked: false, selectedQuestionId: null, investigated: false },
-    arisu: { observed: false, questionAsked: false, selectedQuestionId: null, investigated: false },
-    kuina: { observed: false, questionAsked: false, selectedQuestionId: null, investigated: false },
-    usagi: { observed: false, questionAsked: false, selectedQuestionId: null, investigated: false }
+    chishiya: { observed: false, questionsAskedCount: 0, askedQuestions: [], investigated: false },
+    arisu: { observed: false, questionsAskedCount: 0, askedQuestions: [], investigated: false },
+    kuina: { observed: false, questionsAskedCount: 0, askedQuestions: [], investigated: false },
+    usagi: { observed: false, questionsAskedCount: 0, askedQuestions: [], investigated: false }
 };
-
 
 /* =========================================================
    DOM ELEMENTS
@@ -115,7 +114,6 @@ const resultTitle = $("result-title");
 const resultText = $("result-text");
 const restartButton = $("restart-button");
 const playerCollar = $("player-collar");
-
 
 /* =========================================================
    SCREEN MANAGEMENT
@@ -188,7 +186,7 @@ function resetState() {
     state.suitChoice = null;
 
     Object.keys(characterStates).forEach(key => {
-        characterStates[key] = { observed: false, questionAsked: false, selectedQuestionId: null, investigated: false };
+        characterStates[key] = { observed: false, questionsAskedCount: 0, askedQuestions: [], investigated: false };
         state.evidence[key] = [];
     });
 
@@ -241,18 +239,31 @@ function openCharacterPanel(key) {
     
     if (!character) return;
 
-    let questionHTML = '';
-    if (cState.questionAsked) {
-        const askedQ = character.questions.find(q => q.id === cState.selectedQuestionId);
-        questionHTML = `<div class="action-result visible"><strong>Tu:</strong> ${askedQ.q}<br><strong>${character.name}:</strong> ${askedQ.a}</div>`;
-    } else {
-        questionHTML = `
-            <select id="question-select-${key}" class="action-select" ${isReadOnly ? 'disabled' : ''}>
-                <option value="" disabled selected>Escull una pregunta...</option>
-                ${character.questions.map(q => `<option value="${q.id}">${q.q}</option>`).join('')}
+    // Mostrar les preguntes que ja ha fet (màxim 2)
+    let askedQuestionsHTML = cState.askedQuestions.map(q => `
+        <div class="action-result visible" style="margin-bottom:8px;">
+            <strong>Tu:</strong> ${q.q}<br>
+            <strong>${character.name}:</strong> ${q.a}
+        </div>
+    `).join('');
+
+    // Controls per seguir preguntant si no n'ha fet 2 encara
+    let askControlsHTML = '';
+    if (cState.questionsAskedCount < 2 && !isReadOnly) {
+        let availableOptions = character.questions.filter(q => !cState.askedQuestions.some(aq => aq.id === q.id));
+        let optionsHTML = availableOptions.map(q => `<option value="${q.id}">${q.q}</option>`).join('');
+
+        askControlsHTML = `
+            <select id="question-select-${key}" class="action-select">
+                <option value="" disabled selected>Escull una pregunta... (${2 - cState.questionsAskedCount} restants)</option>
+                ${optionsHTML}
             </select>
-            <button class="action-button ${isReadOnly ? 'completed' : ''}" data-action="ask" data-character="${key}" ${isReadOnly ? 'disabled' : ''}>💬 PREGUNTAR</button>
+            <button class="action-button" data-action="ask" data-character="${key}">💬 PREGUNTAR</button>
         `;
+    } else if (cState.questionsAskedCount >= 2) {
+        askControlsHTML = `<button class="action-button completed" disabled>💬 PREGUNTES ESGOTADES</button>`;
+    } else if (isReadOnly) {
+        askControlsHTML = `<button class="action-button completed" disabled>💬 PREGUNTAR</button>`;
     }
 
     characterPanelContent.innerHTML = `
@@ -271,7 +282,8 @@ function openCharacterPanel(key) {
             </div>
 
             <div class="action-group">
-                ${questionHTML}
+                ${askedQuestionsHTML}
+                ${askControlsHTML}
             </div>
 
             <div class="action-group">
@@ -283,7 +295,7 @@ function openCharacterPanel(key) {
         </div>
     `;
 
-    characterPanelContent.querySelectorAll('.action-button').forEach(btn => {
+    characterPanelContent.querySelectorAll('.action-button:not(.completed)').forEach(btn => {
         btn.addEventListener('click', (e) => executeCharacterAction(e.target, key));
     });
 
@@ -299,27 +311,27 @@ function executeCharacterAction(button, key) {
         cState.observed = true;
         document.getElementById(`result-observe-${key}`).classList.replace('hidden', 'visible');
         state.evidence[key].push(`👁 OBSERVACIÓ: ${character.observe}`);
+        button.disabled = true;
+        button.classList.add('completed');
     } 
     else if (action === 'investigate') {
         cState.investigated = true;
         document.getElementById(`result-investigate-${key}`).classList.replace('hidden', 'visible');
         state.evidence[key].push(`🔎 INVESTIGACIÓ: ${character.investigate}`);
+        button.disabled = true;
+        button.classList.add('completed');
     }
     else if (action === 'ask') {
         const select = document.getElementById(`question-select-${key}`);
         if (!select.value) return; 
         
-        cState.questionAsked = true;
-        cState.selectedQuestionId = select.value;
+        cState.questionsAskedCount++;
         const askedQ = character.questions.find(q => q.id === select.value);
+        cState.askedQuestions.push(askedQ);
         state.evidence[key].push(`💬 PREGUNTA: ${askedQ.q} -> R: ${askedQ.a}`);
         
         openCharacterPanel(key); 
-        return; 
     }
-
-    button.disabled = true;
-    button.classList.add('completed');
 }
 
 function closeCharacterPanel() {
