@@ -2,7 +2,7 @@
 <html lang="ca">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#050505">
   <title>GAME 03 — JACK OF HEARTS</title>
   <link rel="stylesheet" href="style.css">
@@ -10,16 +10,31 @@
 
 <body>
 
-  <!-- INTRO -->
+  <!-- =====================================================
+       INTRO
+  ====================================================== -->
+
   <section id="intro-screen" class="screen active">
+
     <div class="intro-noise"></div>
 
     <div class="intro-content">
-      <div class="series-title">ALICE IN BORDERLAND</div>
-      <div class="game-number">GAME 03</div>
-      <div class="heart-symbol">♥</div>
 
-      <h1>JACK OF HEARTS</h1>
+      <div class="series-title">
+        ALICE IN BORDERLAND
+      </div>
+
+      <div class="game-number">
+        GAME 03
+      </div>
+
+      <div class="heart-symbol">
+        ♥
+      </div>
+
+      <h1>
+        JACK OF HEARTS
+      </h1>
 
       <div class="intro-line"></div>
 
@@ -28,25 +43,38 @@
         THREE LIES.
       </p>
 
-      <p class="intro-time">FIFTEEN MINUTES.</p>
+      <p class="intro-time">
+        FIFTEEN MINUTES.
+      </p>
 
-      <button id="enter-game-btn" class="main-button">
+      <button id="enter-game-btn" class="main-button" type="button">
         ENTER GAME
       </button>
+
     </div>
+
   </section>
 
 
-  <!-- RULES -->
+  <!-- =====================================================
+       RULES
+  ====================================================== -->
+
   <section id="rules-screen" class="screen">
 
     <div class="rules-container">
 
-      <div class="small-label">GAME 03 / RULES</div>
+      <div class="small-label">
+        GAME 03 / RULES
+      </div>
 
-      <h2>JACK OF HEARTS</h2>
+      <h2>
+        JACK OF HEARTS
+      </h2>
 
-      <div class="rules-heart">♥</div>
+      <div class="rules-heart">
+        ♥
+      </div>
 
       <div class="rules-box">
 
@@ -82,15 +110,19 @@
         No hi haurà una segona ronda d'investigació.
       </div>
 
-      <button id="start-game-btn" class="main-button">
+      <button id="start-game-btn" class="main-button" type="button">
         START
       </button>
 
     </div>
+
   </section>
 
 
-  <!-- GAME -->
+  <!-- =====================================================
+       GAME
+  ====================================================== -->
+
   <section id="game-screen" class="screen">
 
     <header class="game-hud">
@@ -118,7 +150,10 @@
     </div>
 
 
-    <!-- OPENING DIALOGUE -->
+    <!-- ===================================================
+         OPENING DIALOGUE
+    ==================================================== -->
+
     <div id="opening-dialogue" class="opening-dialogue">
 
       <div class="dialogue-character">
@@ -132,47 +167,22 @@
     </div>
 
 
-    <!-- CHARACTERS -->
+    <!-- ===================================================
+         CHARACTERS
+    ==================================================== -->
+
     <main class="characters-grid">
 
 
       <!-- CHISHIYA -->
+
       <button
         class="character-card"
         data-character="chishiya"
         type="button"
       >
 
-        <div class="character-stage chishiya-character">
-
-          <div class="stick-person">
-
-            <div class="hair chishiya-hair">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-
-            <div class="head">
-              <div class="eye left"></div>
-              <div class="eye right"></div>
-              <div class="mouth calm"></div>
-            </div>
-
-            <div class="neck"></div>
-
-            <div class="body chishiya-body">
-              <div class="collar">
-                ♣
-              </div>
-            </div>
-
-            <div class="arm left-arm"></div>
-            <div class="arm right-arm"></div>
-
-          </div>
-
-        </div>
+        <div class="character-stage chishiya-character"></div>
 
         <div class="character-info">
 
@@ -194,43 +204,14 @@
 
 
       <!-- ARISU -->
+
       <button
         class="character-card"
         data-character="arisu"
         type="button"
       >
 
-        <div class="character-stage arisu-character">
-
-          <div class="stick-person">
-
-            <div class="hair arisu-hair">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-
-            <div class="head">
-              <div class="eye left"></div>
-              <div class="eye right"></div>
-              <div class="mouth nervous"></div>
-            </div>
-
-            <div class="neck"></div>
-
-            <div class="body arisu-body">
-              <div class="collar">
-                ♦
-              </div>
-            </div>
-
-            <div class="arm left-arm"></div>
-            <div class="arm right-arm"></div>
-
-          </div>
-
-        </div>
+        <div class="character-stage arisu-character"></div>
 
         <div class="character-info">
 
@@ -252,43 +233,14 @@
 
 
       <!-- KUINA -->
+
       <button
         class="character-card"
         data-character="kuina"
         type="button"
       >
 
-        <div class="character-stage kuina-character">
-
-          <div class="stick-person">
-
-            <div class="hair kuina-hair">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-
-            <div class="head">
-              <div class="eye left"></div>
-              <div class="eye right"></div>
-              <div class="mouth smile"></div>
-            </div>
-
-            <div class="neck"></div>
-
-            <div class="body kuina-body">
-              <div class="collar">
-                ♠
-              </div>
-            </div>
-
-            <div class="arm left-arm"></div>
-            <div class="arm right-arm"></div>
-
-          </div>
-
-        </div>
+        <div class="character-stage kuina-character"></div>
 
         <div class="character-info">
 
@@ -310,44 +262,14 @@
 
 
       <!-- USAGI -->
+
       <button
         class="character-card"
         data-character="usagi"
         type="button"
       >
 
-        <div class="character-stage usagi-character">
-
-          <div class="stick-person">
-
-            <div class="hair usagi-hair">
-
-              <span class="long-hair"></span>
-              <span class="ponytail"></span>
-              <span class="ponytail-tip"></span>
-
-            </div>
-
-            <div class="head">
-              <div class="eye left"></div>
-              <div class="eye right"></div>
-              <div class="mouth neutral"></div>
-            </div>
-
-            <div class="neck"></div>
-
-            <div class="body usagi-body">
-              <div class="collar">
-                ♥
-              </div>
-            </div>
-
-            <div class="arm left-arm"></div>
-            <div class="arm right-arm"></div>
-
-          </div>
-
-        </div>
+        <div class="character-stage usagi-character"></div>
 
         <div class="character-info">
 
@@ -370,13 +292,19 @@
     </main>
 
 
-    <!-- CHARACTER PANEL -->
+    <!-- ===================================================
+         CHARACTER PANEL
+    ==================================================== -->
+
     <section id="character-panel" class="character-panel">
 
       <div class="panel-header">
 
         <div>
-          <span class="panel-label">PLAYER</span>
+          <span class="panel-label">
+            PLAYER
+          </span>
+
           <h2 id="panel-character-name">
             CHISHIYA
           </h2>
@@ -386,6 +314,7 @@
           id="close-character-panel"
           class="close-button"
           type="button"
+          aria-label="Tancar"
         >
           ×
         </button>
@@ -465,7 +394,10 @@
     </section>
 
 
-    <!-- FINAL DECISION -->
+    <!-- ===================================================
+         FINAL DECISION BUTTON
+    ==================================================== -->
+
     <div class="decision-trigger">
 
       <button
@@ -481,7 +413,10 @@
   </section>
 
 
-  <!-- MODAL -->
+  <!-- =====================================================
+       MODAL
+  ====================================================== -->
+
   <div id="modal-layer" class="modal-layer">
 
     <div class="modal-window">
@@ -490,6 +425,7 @@
         id="modal-close"
         class="modal-close"
         type="button"
+        aria-label="Tancar"
       >
         ×
       </button>
@@ -501,7 +437,10 @@
   </div>
 
 
-  <!-- FINAL DECISION -->
+  <!-- =====================================================
+       FINAL DECISION
+  ====================================================== -->
+
   <section id="decision-screen" class="screen">
 
     <div class="decision-container">
@@ -510,7 +449,9 @@
         FINAL DECISION
       </div>
 
-      <h2>WHO TOLD THE TRUTH?</h2>
+      <h2>
+        WHO TOLD THE TRUTH?
+      </h2>
 
       <p>
         Choose the player you believe was telling the truth.
@@ -525,7 +466,9 @@
       <div class="decision-divider"></div>
 
 
-      <h2>WHAT IS YOUR SUIT?</h2>
+      <h2>
+        WHAT IS YOUR SUIT?
+      </h2>
 
       <p>
         Choose the suit you believe is on your collar.
@@ -559,6 +502,7 @@
         id="submit-decision-btn"
         class="main-button"
         type="button"
+        disabled
       >
         SUBMIT
       </button>
@@ -568,7 +512,10 @@
   </section>
 
 
-  <!-- SECOND CHANCE -->
+  <!-- =====================================================
+       SECOND CHANCE
+  ====================================================== -->
+
   <section id="second-chance-screen" class="screen">
 
     <div class="second-chance-container">
@@ -620,7 +567,10 @@
   </section>
 
 
-  <!-- RESULT -->
+  <!-- =====================================================
+       RESULT
+  ====================================================== -->
+
   <section id="result-screen" class="screen">
 
     <div class="result-container">
@@ -640,12 +590,14 @@
       </div>
 
       <h1 id="result-title">
-        USAGI WAS TELLING THE TRUTH
+        HAS SOBREVISCUT
       </h1>
 
-      <p id="result-text">
-        You survived Game 03.
-      </p>
+      <div id="result-text" class="result-text">
+        <p>
+          You survived Game 03.
+        </p>
+      </div>
 
       <div class="result-line"></div>
 
