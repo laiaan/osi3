@@ -5,30 +5,34 @@
    JACK OF HEARTS
 ========================================================= */
 
-
 const characters = {
 
     chishiya: {
 
         name: "CHISHIYA",
-
         suit: "♦",
-
         truth: false,
 
         statements: [
             "El teu pal és ♦."
         ],
 
-        talk: [
-            "No et diré si estic dient la veritat.",
-            "Si vols sobreviure, hauràs d'observar més i confiar menys."
+        ask: [
+            "El teu pal és ♦. Això és tot el que et diré.",
+            "Si vols saber si menteixo, hauràs de comparar el que dic amb la resta.",
+            "No esperis que et faciliti la resposta."
         ],
 
         observe: [
-            "Chishiya sembla completament tranquil.",
-            "No sembla nerviós ni preocupat pel seu collar.",
-            "La seva actitud és difícil de llegir."
+            "Chishiya manté una calma gairebé absoluta.",
+            "No aparta la mirada quan parles amb ell.",
+            "El seu comportament no sembla el d'algú que tingui por."
+        ],
+
+        investigate: [
+            "Quan compares la seva declaració amb les altres, el seu pal no coincideix amb el teu.",
+            "Chishiya no modifica la seva versió en cap moment.",
+            "No trobes cap contradicció interna en el que ha declarat."
         ]
 
     },
@@ -37,24 +41,29 @@ const characters = {
     arisu: {
 
         name: "ARISU",
-
         suit: "♠",
-
         truth: false,
 
         statements: [
             "El teu pal és ♠."
         ],
 
-        talk: [
+        ask: [
             "No sé si pots confiar en mi.",
-            "Potser hauries de fixar-te en el que diu cadascú."
+            "Jo només puc dir-te el que crec que és cert.",
+            "Compara la meva resposta amb el que t'han dit els altres."
         ],
 
         observe: [
             "Arisu sembla més tens que els altres.",
             "Mira repetidament els collars dels altres jugadors.",
             "Sembla estar intentant calcular totes les possibilitats."
+        ],
+
+        investigate: [
+            "Arisu sembla estar buscant una explicació que encaixi amb totes les declaracions.",
+            "La seva versió coincideix amb la seva afirmació inicial, però no amb la realitat del teu collar.",
+            "No sembla tenir informació que els altres no tinguin."
         ]
 
     },
@@ -63,24 +72,29 @@ const characters = {
     kuina: {
 
         name: "KUINA",
-
         suit: "♣",
-
         truth: false,
 
         statements: [
             "El teu pal és ♣."
         ],
 
-        talk: [
+        ask: [
             "No et puc assegurar que la resta siguin sincers.",
-            "No et precipitis. Encara tens temps."
+            "No et precipitis. Encara tens temps.",
+            "Potser el que importa no és qui sembla més segur."
         ],
 
         observe: [
             "Kuina manté una actitud molt segura.",
             "No sembla especialment afectada per la situació.",
-            "El seu comportament no revela clarament si menteix."
+            "La seva postura es manté estable mentre observes el grup."
+        ],
+
+        investigate: [
+            "La seva declaració no coincideix amb la d'algunes de les altres persones.",
+            "Kuina manté la mateixa història encara que li facis més preguntes.",
+            "No trobes cap prova que confirmi que el teu pal sigui ♣."
         ]
 
     },
@@ -89,24 +103,29 @@ const characters = {
     usagi: {
 
         name: "USAGI",
-
         suit: "♥",
-
         truth: true,
 
         statements: [
             "El teu pal és ♥."
         ],
 
-        talk: [
-            "No et puc demostrar que dic la veritat.",
-            "Però pensa en totes les coses que has vist fins ara."
+        ask: [
+            "El teu pal és ♥.",
+            "No et puc demostrar que dic la veritat. Hauràs de decidir-ho tu.",
+            "Mira les quatre declaracions i pensa quina pot ser certa."
         ],
 
         observe: [
             "Usagi sembla concentrada, però no excessivament nerviosa.",
             "La seva expressió es manté estable.",
             "No sembla intentar influir directament en la teva decisió."
+        ],
+
+        investigate: [
+            "La seva declaració és coherent amb la informació que has pogut reunir.",
+            "Usagi no canvia la seva resposta quan tornes a analitzar-la.",
+            "És l'única declaració que encaixa amb el pal que realment tens."
         ]
 
     }
@@ -115,11 +134,8 @@ const characters = {
 
 
 const SOLUTION = {
-
     truth: "usagi",
-
     suit: "♥"
-
 };
 
 
@@ -147,14 +163,17 @@ const state = {
 
     firstSuitChoice: null,
 
+    actionsUsed: 0,
+
+    maxActions: 3,
+
+    usedActions: [],
+
     evidence: {
 
         chishiya: [],
-
         arisu: [],
-
         kuina: [],
-
         usagi: []
 
     }
@@ -168,68 +187,38 @@ const state = {
 
 const $ = (id) => document.getElementById(id);
 
-
 const openingScreen = $("opening-screen");
-
 const gameScreen = $("game-screen");
-
 const decisionScreen = $("decision-screen");
-
 const secondChanceScreen = $("second-chance-screen");
-
 const resultScreen = $("result-screen");
 
-
 const startButton = $("start-button");
-
 const timer = $("timer");
 
+const actionsUsedElement = $("actions-used");
+
 const characterPanel = $("character-panel");
+const characterPanelContent = $("character-panel-content");
+const characterPanelClose = $("character-panel-close");
 
-const characterPanelContent =
-    $("character-panel-content");
+const finalDecisionButton = $("final-decision-button");
+const submitDecisionButton = $("submit-decision");
 
-const characterPanelClose =
-    $("character-panel-close");
+const secondChanceTimer = $("second-chance-timer");
+const reviewEvidenceButton = $("review-evidence");
+const changeDecisionButton = $("change-decision");
 
-const finalDecisionButton =
-    $("final-decision-button");
+const modalLayer = $("modal-layer");
+const modalContent = $("modal-content");
+const modalClose = $("modal-close");
 
-const submitDecisionButton =
-    $("submit-decision");
+const resultSymbol = $("result-symbol");
+const resultTitle = $("result-title");
+const resultText = $("result-text");
 
-const secondChanceTimer =
-    $("second-chance-timer");
-
-const reviewEvidenceButton =
-    $("review-evidence");
-
-const changeDecisionButton =
-    $("change-decision");
-
-const modalLayer =
-    $("modal-layer");
-
-const modalContent =
-    $("modal-content");
-
-const modalClose =
-    $("modal-close");
-
-const resultSymbol =
-    $("result-symbol");
-
-const resultTitle =
-    $("result-title");
-
-const resultText =
-    $("result-text");
-
-const restartButton =
-    $("restart-button");
-
-const playerCollar =
-    $("player-collar");
+const restartButton = $("restart-button");
+const playerCollar = $("player-collar");
 
 
 /* =========================================================
@@ -241,14 +230,10 @@ function showScreen(screen) {
     document
         .querySelectorAll(".screen")
         .forEach((element) => {
-
             element.classList.remove("active");
-
         });
 
-
     screen.classList.add("active");
-
 
     window.scrollTo({
         top: 0,
@@ -264,21 +249,17 @@ function showScreen(screen) {
 
 function characterHair(key) {
 
-
     if (key === "chishiya") {
 
         return `
-
             <div class="hair chishiya-hair">
-
-                <span class="hair-main"></span>
-
-                <span class="hair-left"></span>
-
-                <span class="hair-right"></span>
-
+                <span class="chishiya-top"></span>
+                <span class="chishiya-side left"></span>
+                <span class="chishiya-side right"></span>
+                <span class="chishiya-fringe one"></span>
+                <span class="chishiya-fringe two"></span>
+                <span class="chishiya-fringe three"></span>
             </div>
-
         `;
 
     }
@@ -287,21 +268,14 @@ function characterHair(key) {
     if (key === "arisu") {
 
         return `
-
             <div class="hair arisu-hair">
-
-                <span class="hair-main"></span>
-
-                <span class="spike spike-1"></span>
-
-                <span class="spike spike-2"></span>
-
-                <span class="spike spike-3"></span>
-
-                <span class="spike spike-4"></span>
-
+                <span class="arisu-main"></span>
+                <span class="arisu-fringe f1"></span>
+                <span class="arisu-fringe f2"></span>
+                <span class="arisu-fringe f3"></span>
+                <span class="arisu-fringe f4"></span>
+                <span class="arisu-side"></span>
             </div>
-
         `;
 
     }
@@ -310,29 +284,19 @@ function characterHair(key) {
     if (key === "kuina") {
 
         return `
-
             <div class="hair kuina-hair">
-
-                <span class="kuina-top"></span>
-
+                <span class="kuina-main"></span>
+                <span class="kuina-ponytail"></span>
                 <span class="kuina-front-strand"></span>
 
-                <span class="braid braid-1"></span>
-
-                <span class="braid braid-2"></span>
-
-                <span class="braid braid-3"></span>
-
-                <span class="braid braid-4"></span>
-
-                <span class="braid braid-5"></span>
-
-                <span class="braid braid-6"></span>
-
-                <span class="braid braid-7"></span>
-
+                <span class="braid b1"></span>
+                <span class="braid b2"></span>
+                <span class="braid b3"></span>
+                <span class="braid b4"></span>
+                <span class="braid b5"></span>
+                <span class="braid b6"></span>
+                <span class="braid b7"></span>
             </div>
-
         `;
 
     }
@@ -341,26 +305,19 @@ function characterHair(key) {
     if (key === "usagi") {
 
         return `
-
             <div class="hair usagi-hair">
-
-                <span class="usagi-bob"></span>
-
-                <span class="usagi-bang bang-left"></span>
-
-                <span class="usagi-bang bang-center"></span>
-
-                <span class="usagi-bang bang-right"></span>
-
+                <span class="usagi-main"></span>
+                <span class="usagi-bang b1"></span>
+                <span class="usagi-bang b2"></span>
+                <span class="usagi-bang b3"></span>
+                <span class="usagi-side left"></span>
+                <span class="usagi-side right"></span>
             </div>
-
         `;
 
     }
 
-
     return "";
-
 }
 
 
@@ -371,30 +328,28 @@ function characterHair(key) {
 function characterArt(key) {
 
     const mouthClass = {
-
         chishiya: "calm",
-
         arisu: "nervous",
-
-        kuina: "smile",
-
+        kuina: "serious",
         usagi: "neutral"
-
     }[key];
 
 
     return `
+        <div class="character-figure ${key}-figure">
 
-        <div class="stick-person ${key}-person">
+            <div class="figure-shadow"></div>
 
-            <div class="head">
+            <div class="figure-head">
 
                 ${characterHair(key)}
 
-                <div class="face">
+                <div class="figure-face">
+
+                    <span class="brow left"></span>
+                    <span class="brow right"></span>
 
                     <span class="eye left"></span>
-
                     <span class="eye right"></span>
 
                     <span class="nose"></span>
@@ -406,30 +361,30 @@ function characterArt(key) {
             </div>
 
 
-            <div class="neck"></div>
+            <div class="figure-neck"></div>
 
 
-            <div class="body">
+            <div class="figure-body">
 
-                <div class="shirt-detail"></div>
+                <div class="collar-line"></div>
+                <div class="shirt-mark"></div>
 
             </div>
 
 
-            <div class="arm arm-left"></div>
+            <div class="figure-arm left">
+                <span class="figure-hand"></span>
+            </div>
 
-            <div class="arm arm-right"></div>
+            <div class="figure-arm right">
+                <span class="figure-hand"></span>
+            </div>
 
-            <div class="hand hand-left"></div>
 
-            <div class="hand hand-right"></div>
-
-            <div class="leg leg-left"></div>
-
-            <div class="leg leg-right"></div>
+            <div class="figure-leg left"></div>
+            <div class="figure-leg right"></div>
 
         </div>
-
     `;
 
 }
@@ -445,27 +400,21 @@ function renderCharacters() {
         .querySelectorAll("[data-character-stage]")
         .forEach((stage) => {
 
-            const key =
-                stage.dataset.characterStage;
-
-            const character =
-                characters[key];
+            const key = stage.dataset.characterStage;
+            const character = characters[key];
 
             if (!character) {
                 return;
             }
 
-
-            const statement =
-                character.statements[0];
-
+            const statement = character.statements[0];
 
             stage.innerHTML = `
 
                 <div class="speech-bubble">
 
                     <div class="bubble-name">
-                        ${character.name} Diu:
+                        ${character.name}
                     </div>
 
                     <div class="bubble-text">
@@ -474,16 +423,69 @@ function renderCharacters() {
 
                 </div>
 
-
                 <div class="character-art">
-
                     ${characterArt(key)}
-
                 </div>
 
             `;
 
         });
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetState() {
+
+    clearInterval(state.timer);
+    clearInterval(state.secondChanceTimer);
+
+    state.timeLeft = 15 * 60;
+
+    state.secondChanceActive = false;
+    state.firstAttemptFinished = false;
+
+    state.truthChoice = null;
+    state.suitChoice = null;
+
+    state.firstTruthChoice = null;
+    state.firstSuitChoice = null;
+
+    state.actionsUsed = 0;
+    state.usedActions = [];
+
+    state.evidence = {
+        chishiya: [],
+        arisu: [],
+        kuina: [],
+        usagi: []
+    };
+
+    playerCollar.textContent = "?";
+
+    updateActionsCounter();
+
+    document
+        .querySelectorAll(".action-button")
+        .forEach((button) => {
+
+            button.disabled = false;
+            button.classList.remove("completed");
+
+        });
+
+    document
+        .querySelectorAll(
+            "#truth-choice button, #suit-choice button"
+        )
+        .forEach((button) => {
+            button.classList.remove("selected");
+        });
+
+    timer.className = "timer";
 
 }
 
@@ -504,70 +506,31 @@ function startGame() {
 
 
 /* =========================================================
-   RESET
+   ACTION COUNTER
 ========================================================= */
 
-function resetState() {
+function updateActionsCounter() {
 
-    clearInterval(state.timer);
+    actionsUsedElement.textContent =
+        state.actionsUsed;
 
-    clearInterval(state.secondChanceTimer);
+    actionsUsedElement.parentElement.classList.toggle(
+        "actions-full",
+        state.actionsUsed >= state.maxActions
+    );
 
-
-    state.timeLeft = 15 * 60;
-
-    state.secondChanceActive = false;
-
-    state.firstAttemptFinished = false;
-
-    state.truthChoice = null;
-
-    state.suitChoice = null;
-
-    state.firstTruthChoice = null;
-
-    state.firstSuitChoice = null;
+}
 
 
-    state.evidence = {
-
-        chishiya: [],
-
-        arisu: [],
-
-        kuina: [],
-
-        usagi: []
-
-    };
-
-
-    playerCollar.textContent = "?";
-
+function disableAllActions() {
 
     document
         .querySelectorAll(".action-button")
         .forEach((button) => {
 
-            button.disabled = false;
-
-            button.classList.remove("completed");
+            button.disabled = true;
 
         });
-
-
-    document
-        .querySelectorAll(
-            "#truth-choice button, #suit-choice button"
-        )
-        .forEach((button) => {
-
-            button.classList.remove("selected");
-
-        });
-
-
-    timer.className = "timer";
 
 }
 
@@ -580,12 +543,9 @@ function startMainTimer() {
 
     clearInterval(state.timer);
 
-
     state.timeLeft = 15 * 60;
 
-
     updateTimer();
-
 
     state.timer = setInterval(() => {
 
@@ -593,20 +553,14 @@ function startMainTimer() {
 
         updateTimer();
 
-
         if (state.timeLeft <= 0) {
 
             clearInterval(state.timer);
 
-
             if (!state.firstAttemptFinished) {
-
                 enterSecondChance();
-
             } else {
-
                 showGameOver();
-
             }
 
         }
@@ -619,22 +573,13 @@ function startMainTimer() {
 function updateTimer() {
 
     const minutes =
-        Math.max(
-            0,
-            Math.floor(state.timeLeft / 60)
-        );
-
+        Math.max(0, Math.floor(state.timeLeft / 60));
 
     const seconds =
-        Math.max(
-            0,
-            state.timeLeft % 60
-        );
-
+        Math.max(0, state.timeLeft % 60);
 
     timer.textContent =
         `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
 
     timer.classList.remove(
         "timer-warning",
@@ -642,24 +587,17 @@ function updateTimer() {
         "timer-critical"
     );
 
-
     if (state.timeLeft <= 60) {
 
-        timer.classList.add(
-            "timer-critical"
-        );
+        timer.classList.add("timer-critical");
 
     } else if (state.timeLeft <= 180) {
 
-        timer.classList.add(
-            "timer-danger"
-        );
+        timer.classList.add("timer-danger");
 
     } else if (state.timeLeft <= 300) {
 
-        timer.classList.add(
-            "timer-warning"
-        );
+        timer.classList.add("timer-warning");
 
     }
 
@@ -673,22 +611,13 @@ function updateTimer() {
 function updateSecondChanceTimer() {
 
     const minutes =
-        Math.max(
-            0,
-            Math.floor(state.timeLeft / 60)
-        );
-
+        Math.max(0, Math.floor(state.timeLeft / 60));
 
     const seconds =
-        Math.max(
-            0,
-            state.timeLeft % 60
-        );
-
+        Math.max(0, state.timeLeft % 60);
 
     secondChanceTimer.textContent =
         `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
 
     secondChanceTimer.classList.remove(
         "timer-warning",
@@ -696,18 +625,13 @@ function updateSecondChanceTimer() {
         "timer-critical"
     );
 
-
     if (state.timeLeft <= 30) {
 
-        secondChanceTimer.classList.add(
-            "timer-critical"
-        );
+        secondChanceTimer.classList.add("timer-critical");
 
     } else if (state.timeLeft <= 60) {
 
-        secondChanceTimer.classList.add(
-            "timer-danger"
-        );
+        secondChanceTimer.classList.add("timer-danger");
 
     }
 
@@ -724,59 +648,40 @@ function openCharacterPanel(key) {
         return;
     }
 
-
-    const character =
-        characters[key];
-
+    const character = characters[key];
 
     if (!character) {
         return;
     }
 
-
     characterPanelContent.innerHTML = `
 
         <div class="panel-character-art">
-
             ${characterArt(key)}
-
         </div>
-
 
         <div class="panel-character-name">
-
             ${character.name}
-
         </div>
-
 
         <div class="panel-character-suit">
-
             Collar visible: ${character.suit}
-
         </div>
-
 
         <div class="panel-statements">
 
             <h3>
-                DECLARACIÓ
+                DECLARACIÓ INICIAL
             </h3>
 
             ${character.statements
-                .map(
-                    (statement) => `
-                        <p>
-                            “${statement}”
-                        </p>
-                    `
-                )
+                .map((statement) => `
+                    <p>“${statement}”</p>
+                `)
                 .join("")}
 
         </div>
-
     `;
-
 
     characterPanel.classList.add("active");
 
@@ -785,9 +690,7 @@ function openCharacterPanel(key) {
 
 function closeCharacterPanel() {
 
-    characterPanel.classList.remove(
-        "active"
-    );
+    characterPanel.classList.remove("active");
 
 }
 
@@ -798,29 +701,20 @@ function closeCharacterPanel() {
 
 function openModal(content) {
 
-    modalContent.innerHTML =
-        content;
+    modalContent.innerHTML = content;
 
-    modalLayer.classList.add(
-        "active"
-    );
+    modalLayer.classList.add("active");
 
-    document.body.classList.add(
-        "modal-open"
-    );
+    document.body.classList.add("modal-open");
 
 }
 
 
 function closeModal() {
 
-    modalLayer.classList.remove(
-        "active"
-    );
+    modalLayer.classList.remove("active");
 
-    document.body.classList.remove(
-        "modal-open"
-    );
+    document.body.classList.remove("modal-open");
 
 }
 
@@ -829,128 +723,120 @@ function closeModal() {
    ACTIONS
 ========================================================= */
 
-function performAction(
-    action,
-    key,
-    button
-) {
+function performAction(action, key, button) {
 
     if (state.secondChanceActive) {
         return;
     }
 
+    if (state.actionsUsed >= state.maxActions) {
 
-    const character =
-        characters[key];
+        openModal(`
+            <div class="modal-title">
+                LÍMIT D'ACCIONS
+            </div>
 
+            <p class="modal-dialogue">
+                Ja has utilitzat les 3 accions disponibles.
+                Ara només pots prendre la decisió final.
+            </p>
+        `);
+
+        return;
+    }
+
+    const character = characters[key];
 
     if (!character) {
         return;
     }
-
 
     if (button.classList.contains("completed")) {
         return;
     }
 
 
-    button.classList.add(
-        "completed"
+    let pool = [];
+
+    let typeName = "";
+
+
+    if (action === "ask") {
+
+        pool = character.ask;
+        typeName = "PREGUNTA";
+
+    } else if (action === "observe") {
+
+        pool = character.observe;
+        typeName = "OBSERVACIÓ";
+
+    } else if (action === "investigate") {
+
+        pool = character.investigate;
+        typeName = "INVESTIGACIÓ";
+
+    }
+
+
+    if (!pool.length) {
+        return;
+    }
+
+
+    const randomLine =
+        pool[
+            Math.floor(
+                Math.random() * pool.length
+            )
+        ];
+
+
+    state.actionsUsed++;
+
+    state.usedActions.push({
+        action,
+        character: key
+    });
+
+
+    state.evidence[key].push(
+        `${typeName}: ${randomLine}`
     );
 
+
+    button.classList.add("completed");
     button.disabled = true;
 
 
-    let content = "";
+    updateActionsCounter();
 
 
-    if (action === "talk") {
-
-        const randomLine =
-            character.talk[
-                Math.floor(
-                    Math.random() *
-                    character.talk.length
-                )
-            ];
-
-
-        state.evidence[key].push(
-            `PARLAR: ${randomLine}`
-        );
-
-
-        content = `
-
-            <div class="modal-title">
-
-                ${character.name}
-
-            </div>
-
-
-            <div class="modal-type">
-
-                CONVERSA
-
-            </div>
-
-
-            <p class="modal-dialogue">
-
-                “${randomLine}”
-
-            </p>
-
-        `;
-
+    if (state.actionsUsed >= state.maxActions) {
+        disableAllActions();
     }
 
 
-    if (action === "observe") {
+    openModal(`
 
-        const randomLine =
-            character.observe[
-                Math.floor(
-                    Math.random() *
-                    character.observe.length
-                )
-            ];
+        <div class="modal-title">
+            ${character.name}
+        </div>
 
+        <div class="modal-type">
+            ${typeName}
+        </div>
 
-        state.evidence[key].push(
-            `OBSERVAR: ${randomLine}`
-        );
+        <p class="modal-dialogue">
+            “${randomLine}”
+        </p>
 
+        <div class="action-result-count">
+            ACCIONS UTILITZADES:
+            ${state.actionsUsed}/3
+        </div>
 
-        content = `
-
-            <div class="modal-title">
-
-                ${character.name}
-
-            </div>
-
-
-            <div class="modal-type">
-
-                OBSERVACIÓ
-
-            </div>
-
-
-            <p class="modal-dialogue">
-
-                ${randomLine}
-
-            </p>
-
-        `;
-
-    }
-
-
-    openModal(content);
+    `);
 
 }
 
@@ -962,31 +848,20 @@ function performAction(
 function showDecisionScreen() {
 
     closeCharacterPanel();
-
     closeModal();
 
-
     state.truthChoice = null;
-
     state.suitChoice = null;
-
 
     document
         .querySelectorAll(
             "#truth-choice button, #suit-choice button"
         )
         .forEach((button) => {
-
-            button.classList.remove(
-                "selected"
-            );
-
+            button.classList.remove("selected");
         });
 
-
-    showScreen(
-        decisionScreen
-    );
+    showScreen(decisionScreen);
 
 }
 
@@ -999,33 +874,20 @@ document
     .querySelectorAll("#truth-choice button")
     .forEach((button) => {
 
-        button.addEventListener(
-            "click",
-            () => {
+        button.addEventListener("click", () => {
 
-                state.truthChoice =
-                    button.dataset.character;
+            state.truthChoice =
+                button.dataset.character;
 
+            document
+                .querySelectorAll("#truth-choice button")
+                .forEach((btn) => {
+                    btn.classList.remove("selected");
+                });
 
-                document
-                    .querySelectorAll(
-                        "#truth-choice button"
-                    )
-                    .forEach((btn) => {
+            button.classList.add("selected");
 
-                        btn.classList.remove(
-                            "selected"
-                        );
-
-                    });
-
-
-                button.classList.add(
-                    "selected"
-                );
-
-            }
-        );
+        });
 
     });
 
@@ -1038,33 +900,20 @@ document
     .querySelectorAll("#suit-choice button")
     .forEach((button) => {
 
-        button.addEventListener(
-            "click",
-            () => {
+        button.addEventListener("click", () => {
 
-                state.suitChoice =
-                    button.dataset.suit;
+            state.suitChoice =
+                button.dataset.suit;
 
+            document
+                .querySelectorAll("#suit-choice button")
+                .forEach((btn) => {
+                    btn.classList.remove("selected");
+                });
 
-                document
-                    .querySelectorAll(
-                        "#suit-choice button"
-                    )
-                    .forEach((btn) => {
+            button.classList.add("selected");
 
-                        btn.classList.remove(
-                            "selected"
-                        );
-
-                    });
-
-
-                button.classList.add(
-                    "selected"
-                );
-
-            }
-        );
+        });
 
     });
 
@@ -1083,17 +932,12 @@ function submitDecision() {
         openModal(`
 
             <div class="modal-title">
-
                 DECISIÓ INCOMPLETA
-
             </div>
 
-
             <p class="modal-dialogue">
-
                 Has de seleccionar tant la persona
                 que diu la veritat com el teu pal.
-
             </p>
 
         `);
@@ -1112,7 +956,6 @@ function submitDecision() {
         showSuccess();
 
         return;
-
     }
 
 
@@ -1121,7 +964,6 @@ function submitDecision() {
         showGameOver();
 
         return;
-
     }
 
 
@@ -1131,9 +973,7 @@ function submitDecision() {
     state.firstSuitChoice =
         state.suitChoice;
 
-    state.firstAttemptFinished =
-        true;
-
+    state.firstAttemptFinished = true;
 
     enterSecondChance();
 
@@ -1150,37 +990,20 @@ function enterSecondChance() {
         return;
     }
 
+    clearInterval(state.timer);
 
-    clearInterval(
-        state.timer
-    );
+    state.secondChanceActive = true;
 
-
-    state.secondChanceActive =
-        true;
-
-
-    state.timeLeft =
-        120;
-
+    state.timeLeft = 120;
 
     closeModal();
-
     closeCharacterPanel();
 
-
-    showScreen(
-        secondChanceScreen
-    );
-
+    showScreen(secondChanceScreen);
 
     updateSecondChanceTimer();
 
-
-    clearInterval(
-        state.secondChanceTimer
-    );
-
+    clearInterval(state.secondChanceTimer);
 
     state.secondChanceTimer =
         setInterval(() => {
@@ -1189,12 +1012,9 @@ function enterSecondChance() {
 
             updateSecondChanceTimer();
 
-
             if (state.timeLeft <= 0) {
 
-                clearInterval(
-                    state.secondChanceTimer
-                );
+                clearInterval(state.secondChanceTimer);
 
                 showGameOver();
 
@@ -1227,82 +1047,60 @@ function reviewEvidence() {
     let html = `
 
         <div class="modal-title">
-
             PROVES RECOPILADES
-
         </div>
 
+        <div class="evidence-counter">
+            ${state.actionsUsed}/3 accions utilitzades
+        </div>
     `;
 
 
     const allEvidence =
-        Object.entries(
-            state.evidence
-        ).flatMap(
-            ([key, evidence]) => {
+        Object.entries(state.evidence)
+            .flatMap(([key, evidence]) => {
 
-                return evidence.map(
-                    (item) => ({
+                return evidence.map((item) => ({
+                    character: characters[key].name,
+                    text: item
+                }));
 
-                        character:
-                            characters[key].name,
-
-                        text: item
-
-                    })
-                );
-
-            }
-        );
+            });
 
 
-    if (
-        allEvidence.length === 0
-    ) {
+    if (!allEvidence.length) {
 
         html += `
-
             <p class="modal-dialogue">
-
                 No has recopilat cap prova.
-
             </p>
-
         `;
 
     } else {
 
-        html += `
-            <div class="evidence-list">
-        `;
+        html += `<div class="evidence-list">`;
 
+        allEvidence.forEach((item) => {
 
-        allEvidence.forEach(
-            (item) => {
+            html += `
 
-                html += `
+                <div class="evidence-item">
 
-                    <div class="evidence-item">
+                    <strong>
+                        ${item.character}
+                    </strong>
 
-                        <strong>
-                            ${item.character}
-                        </strong>
+                    <span>
+                        ${item.text}
+                    </span>
 
-                        <span>
-                            ${item.text}
-                        </span>
+                </div>
 
-                    </div>
+            `;
 
-                `;
+        });
 
-            }
-        );
-
-
-        html += `
-            </div>
-        `;
+        html += `</div>`;
 
     }
 
@@ -1318,40 +1116,22 @@ function reviewEvidence() {
 
 function showSuccess() {
 
-    clearInterval(
-        state.timer
-    );
+    clearInterval(state.timer);
+    clearInterval(state.secondChanceTimer);
 
-    clearInterval(
-        state.secondChanceTimer
-    );
-
-
-    state.secondChanceActive =
-        false;
-
+    state.secondChanceActive = false;
 
     closeModal();
-
     closeCharacterPanel();
 
+    playerCollar.textContent = SOLUTION.suit;
 
-    playerCollar.textContent =
-        SOLUTION.suit;
+    resultScreen.classList.remove("game-over");
 
-
-    resultScreen.classList.remove(
-        "game-over"
-    );
-
-
-    resultSymbol.textContent =
-        "♥";
-
+    resultSymbol.textContent = "♥";
 
     resultTitle.textContent =
         "HAS SOBREVISCUT";
-
 
     resultText.innerHTML = `
 
@@ -1375,10 +1155,7 @@ function showSuccess() {
 
     `;
 
-
-    showScreen(
-        resultScreen
-    );
+    showScreen(resultScreen);
 
 }
 
@@ -1389,36 +1166,20 @@ function showSuccess() {
 
 function showGameOver() {
 
-    clearInterval(
-        state.timer
-    );
+    clearInterval(state.timer);
+    clearInterval(state.secondChanceTimer);
 
-    clearInterval(
-        state.secondChanceTimer
-    );
-
-
-    state.secondChanceActive =
-        false;
-
+    state.secondChanceActive = false;
 
     closeModal();
-
     closeCharacterPanel();
 
+    resultScreen.classList.add("game-over");
 
-    resultScreen.classList.add(
-        "game-over"
-    );
-
-
-    resultSymbol.textContent =
-        "×";
-
+    resultSymbol.textContent = "×";
 
     resultTitle.textContent =
         "GAME OVER";
-
 
     resultText.innerHTML = `
 
@@ -1442,10 +1203,7 @@ function showGameOver() {
 
     `;
 
-
-    showScreen(
-        resultScreen
-    );
+    showScreen(resultScreen);
 
 }
 
@@ -1500,12 +1258,8 @@ modalLayer.addEventListener(
     "click",
     (event) => {
 
-        if (
-            event.target === modalLayer
-        ) {
-
+        if (event.target === modalLayer) {
             closeModal();
-
         }
 
     }
@@ -1518,9 +1272,7 @@ restartButton.addEventListener(
 
         resetState();
 
-        showScreen(
-            openingScreen
-        );
+        showScreen(openingScreen);
 
     }
 );
@@ -1540,18 +1292,9 @@ document
 
                 event.stopPropagation();
 
-
-                const action =
-                    button.dataset.action;
-
-
-                const character =
-                    button.dataset.character;
-
-
                 performAction(
-                    action,
-                    character,
+                    button.dataset.action,
+                    button.dataset.character,
                     button
                 );
 
@@ -1574,24 +1317,14 @@ document
             (event) => {
 
                 if (
-                    event.target.closest(
-                        ".action-button"
-                    )
+                    event.target.closest(".action-button")
                 ) {
-
                     return;
-
                 }
 
-
-                if (
-                    state.secondChanceActive
-                ) {
-
+                if (state.secondChanceActive) {
                     return;
-
                 }
-
 
                 openCharacterPanel(
                     card.dataset.character
@@ -1612,15 +1345,9 @@ document
 
                     event.preventDefault();
 
-
-                    if (
-                        state.secondChanceActive
-                    ) {
-
+                    if (state.secondChanceActive) {
                         return;
-
                     }
-
 
                     openCharacterPanel(
                         card.dataset.character
@@ -1642,17 +1369,11 @@ document.addEventListener(
     "keydown",
     (event) => {
 
-        if (
-            event.key !== "Escape"
-        ) {
-
+        if (event.key !== "Escape") {
             return;
-
         }
 
-
         closeModal();
-
         closeCharacterPanel();
 
     }
@@ -1665,11 +1386,6 @@ document.addEventListener(
 
 renderCharacters();
 
-showScreen(
-    openingScreen
-);
+showScreen(openingScreen);
 
-
-/* =========================================================
-   RESET
-========================================================= */
+updateActionsCounter();
