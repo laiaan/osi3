@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
     <title>JACK OF HEARTS</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,8 +63,15 @@
                 JACK OF HEARTS
             </div>
 
-            <div id="timer" class="timer">
-                15:00
+            <div class="header-actions">
+                <div class="actions-counter">
+                    ACCIONS:
+                    <span id="actions-used">0</span>/3
+                </div>
+
+                <div id="timer" class="timer">
+                    15:00
+                </div>
             </div>
 
         </header>
@@ -128,10 +136,10 @@
                         <button
                             type="button"
                             class="action-button"
-                            data-action="talk"
+                            data-action="ask"
                             data-character="chishiya"
                         >
-                            PARLAR
+                            PREGUNTAR
                         </button>
 
                         <button
@@ -141,6 +149,15 @@
                             data-character="chishiya"
                         >
                             OBSERVAR
+                        </button>
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="investigate"
+                            data-character="chishiya"
+                        >
+                            INVESTIGAR
                         </button>
 
                     </div>
@@ -178,10 +195,10 @@
                         <button
                             type="button"
                             class="action-button"
-                            data-action="talk"
+                            data-action="ask"
                             data-character="arisu"
                         >
-                            PARLAR
+                            PREGUNTAR
                         </button>
 
                         <button
@@ -191,6 +208,15 @@
                             data-character="arisu"
                         >
                             OBSERVAR
+                        </button>
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="investigate"
+                            data-character="arisu"
+                        >
+                            INVESTIGAR
                         </button>
 
                     </div>
@@ -228,10 +254,10 @@
                         <button
                             type="button"
                             class="action-button"
-                            data-action="talk"
+                            data-action="ask"
                             data-character="kuina"
                         >
-                            PARLAR
+                            PREGUNTAR
                         </button>
 
                         <button
@@ -241,6 +267,15 @@
                             data-character="kuina"
                         >
                             OBSERVAR
+                        </button>
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="investigate"
+                            data-character="kuina"
+                        >
+                            INVESTIGAR
                         </button>
 
                     </div>
@@ -278,10 +313,10 @@
                         <button
                             type="button"
                             class="action-button"
-                            data-action="talk"
+                            data-action="ask"
                             data-character="usagi"
                         >
-                            PARLAR
+                            PREGUNTAR
                         </button>
 
                         <button
@@ -291,6 +326,15 @@
                             data-character="usagi"
                         >
                             OBSERVAR
+                        </button>
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="investigate"
+                            data-character="usagi"
+                        >
+                            INVESTIGAR
                         </button>
 
                     </div>
@@ -368,31 +412,19 @@
 
                 <div id="truth-choice" class="decision-options">
 
-                    <button
-                        type="button"
-                        data-character="chishiya"
-                    >
+                    <button type="button" data-character="chishiya">
                         CHISHIYA
                     </button>
 
-                    <button
-                        type="button"
-                        data-character="arisu"
-                    >
+                    <button type="button" data-character="arisu">
                         ARISU
                     </button>
 
-                    <button
-                        type="button"
-                        data-character="kuina"
-                    >
+                    <button type="button" data-character="kuina">
                         KUINA
                     </button>
 
-                    <button
-                        type="button"
-                        data-character="usagi"
-                    >
+                    <button type="button" data-character="usagi">
                         USAGI
                     </button>
 
@@ -409,33 +441,10 @@
 
                 <div id="suit-choice" class="decision-options suit-options">
 
-                    <button
-                        type="button"
-                        data-suit="♥"
-                    >
-                        ♥
-                    </button>
-
-                    <button
-                        type="button"
-                        data-suit="♦"
-                    >
-                        ♦
-                    </button>
-
-                    <button
-                        type="button"
-                        data-suit="♣"
-                    >
-                        ♣
-                    </button>
-
-                    <button
-                        type="button"
-                        data-suit="♠"
-                    >
-                        ♠
-                    </button>
+                    <button type="button" data-suit="♥">♥</button>
+                    <button type="button" data-suit="♦">♦</button>
+                    <button type="button" data-suit="♣">♣</button>
+                    <button type="button" data-suit="♠">♠</button>
 
                 </div>
 
