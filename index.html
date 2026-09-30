@@ -1,616 +1,576 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#050505">
-  <title>GAME 03 — JACK OF HEARTS</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>JACK OF HEARTS</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Special+Elite&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- =====================================================
-       INTRO
-  ====================================================== -->
+<div id="app">
 
-  <section id="intro-screen" class="screen active">
+    <!-- =========================
+         OPENING
+    ========================== -->
 
-    <div class="intro-noise"></div>
+    <section id="opening-screen" class="screen active">
 
-    <div class="intro-content">
+        <div class="opening-background"></div>
 
-      <div class="series-title">
-        ALICE IN BORDERLAND
-      </div>
+        <div class="opening-content">
 
-      <div class="game-number">
-        GAME 03
-      </div>
+            <div class="game-symbol">♥</div>
 
-      <div class="heart-symbol">
-        ♥
-      </div>
+            <h1>JACK OF HEARTS</h1>
 
-      <h1>
-        JACK OF HEARTS
-      </h1>
+            <div class="opening-line"></div>
 
-      <div class="intro-line"></div>
+            <p class="opening-subtitle">
+                ALICE IN BORDERLAND
+            </p>
 
-      <p class="intro-subtitle">
-        ONE TRUTH.<br>
-        THREE LIES.
-      </p>
+            <p class="opening-description">
+                Un joc de confiança, mentides i supervivència.
+            </p>
 
-      <p class="intro-time">
-        FIFTEEN MINUTES.
-      </p>
-
-      <button id="enter-game-btn" class="main-button" type="button">
-        ENTER GAME
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- =====================================================
-       RULES
-  ====================================================== -->
-
-  <section id="rules-screen" class="screen">
-
-    <div class="rules-container">
-
-      <div class="small-label">
-        GAME 03 / RULES
-      </div>
-
-      <h2>
-        JACK OF HEARTS
-      </h2>
-
-      <div class="rules-heart">
-        ♥
-      </div>
-
-      <div class="rules-box">
-
-        <p>
-          Un dels quatre pals està al teu collar.
-        </p>
-
-        <p>
-          Tu no pots veure quin és.
-          Els altres quatre jugadors sí.
-        </p>
-
-        <p>
-          <strong>Només una persona diu la veritat.</strong>
-        </p>
-
-        <p>
-          Els altres tres menteixen.
-        </p>
-
-        <p>
-          Tens <strong>15:00</strong> per descobrir:
-        </p>
-
-        <ul>
-          <li>Qui està dient la veritat.</li>
-          <li>Quin pal portes tu.</li>
-        </ul>
-
-      </div>
-
-      <div class="rules-warning">
-        No hi haurà una segona ronda d'investigació.
-      </div>
-
-      <button id="start-game-btn" class="main-button" type="button">
-        START
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- =====================================================
-       GAME
-  ====================================================== -->
-
-  <section id="game-screen" class="screen">
-
-    <header class="game-hud">
-
-      <div class="hud-left">
-        <span class="hud-label">GAME 03</span>
-        <span class="hud-game">JACK OF HEARTS</span>
-      </div>
-
-      <div class="hud-center">
-        <span id="timer">15:00</span>
-      </div>
-
-      <div class="hud-right">
-        <span class="hud-label">YOUR COLLAR</span>
-        <span id="player-collar">?</span>
-      </div>
-
-    </header>
-
-
-    <div class="room-label">
-      <span>ROOM 04</span>
-      <span>ACTIVE PLAYERS: 04</span>
-    </div>
-
-
-    <!-- ===================================================
-         OPENING DIALOGUE
-    ==================================================== -->
-
-    <div id="opening-dialogue" class="opening-dialogue">
-
-      <div class="dialogue-character">
-        <span id="opening-name">CHISHIYA</span>
-      </div>
-
-      <div class="dialogue-text">
-        <span id="opening-text"></span>
-      </div>
-
-    </div>
-
-
-    <!-- ===================================================
-         CHARACTERS
-    ==================================================== -->
-
-    <main class="characters-grid">
-
-
-      <!-- CHISHIYA -->
-
-      <button
-        class="character-card"
-        data-character="chishiya"
-        type="button"
-      >
-
-        <div class="character-stage chishiya-character"></div>
-
-        <div class="character-info">
-
-          <span class="player-number">
-            PLAYER 01
-          </span>
-
-          <span class="character-name">
-            CHISHIYA
-          </span>
-
-          <span class="character-suit suit-clubs">
-            ♣
-          </span>
+            <button id="start-button" class="main-button">
+                COMENÇAR
+            </button>
 
         </div>
-
-      </button>
-
-
-      <!-- ARISU -->
-
-      <button
-        class="character-card"
-        data-character="arisu"
-        type="button"
-      >
-
-        <div class="character-stage arisu-character"></div>
-
-        <div class="character-info">
-
-          <span class="player-number">
-            PLAYER 02
-          </span>
-
-          <span class="character-name">
-            ARISU
-          </span>
-
-          <span class="character-suit suit-diamonds">
-            ♦
-          </span>
-
-        </div>
-
-      </button>
-
-
-      <!-- KUINA -->
-
-      <button
-        class="character-card"
-        data-character="kuina"
-        type="button"
-      >
-
-        <div class="character-stage kuina-character"></div>
-
-        <div class="character-info">
-
-          <span class="player-number">
-            PLAYER 03
-          </span>
-
-          <span class="character-name">
-            KUINA
-          </span>
-
-          <span class="character-suit suit-spades">
-            ♠
-          </span>
-
-        </div>
-
-      </button>
-
-
-      <!-- USAGI -->
-
-      <button
-        class="character-card"
-        data-character="usagi"
-        type="button"
-      >
-
-        <div class="character-stage usagi-character"></div>
-
-        <div class="character-info">
-
-          <span class="player-number">
-            PLAYER 04
-          </span>
-
-          <span class="character-name">
-            USAGI
-          </span>
-
-          <span class="character-suit suit-hearts">
-            ♥
-          </span>
-
-        </div>
-
-      </button>
-
-    </main>
-
-
-    <!-- ===================================================
-         CHARACTER PANEL
-    ==================================================== -->
-
-    <section id="character-panel" class="character-panel">
-
-      <div class="panel-header">
-
-        <div>
-          <span class="panel-label">
-            PLAYER
-          </span>
-
-          <h2 id="panel-character-name">
-            CHISHIYA
-          </h2>
-        </div>
-
-        <button
-          id="close-character-panel"
-          class="close-button"
-          type="button"
-          aria-label="Tancar"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div
-        id="panel-character-art"
-        class="panel-character-art"
-      ></div>
-
-
-      <div class="panel-actions">
-
-        <button
-          id="observation-btn"
-          class="action-button"
-          type="button"
-        >
-
-          <span class="action-icon">
-            👁
-          </span>
-
-          <span>
-            <strong>OBSERVE</strong>
-            <small>
-              Watch their behaviour.
-            </small>
-          </span>
-
-        </button>
-
-
-        <button
-          id="question-btn"
-          class="action-button"
-          type="button"
-        >
-
-          <span class="action-icon">
-            💬
-          </span>
-
-          <span>
-            <strong>QUESTION</strong>
-            <small>
-              Ask one question.
-            </small>
-          </span>
-
-        </button>
-
-
-        <button
-          id="investigation-btn"
-          class="action-button"
-          type="button"
-        >
-
-          <span class="action-icon">
-            🔎
-          </span>
-
-          <span>
-            <strong>INVESTIGATE</strong>
-            <small>
-              Review their behaviour.
-            </small>
-          </span>
-
-        </button>
-
-      </div>
 
     </section>
 
 
-    <!-- ===================================================
-         FINAL DECISION BUTTON
-    ==================================================== -->
+    <!-- =========================
+         GAME
+    ========================== -->
 
-    <div class="decision-trigger">
+    <section id="game-screen" class="screen">
 
-      <button
-        id="final-decision-btn"
-        class="main-button danger-button"
-        type="button"
-      >
-        MAKE FINAL DECISION
-      </button>
+        <header class="game-header">
 
-    </div>
+            <div class="header-title">
+                <span class="header-symbol">♥</span>
+                JACK OF HEARTS
+            </div>
 
-  </section>
+            <div id="timer" class="timer">
+                15:00
+            </div>
 
-
-  <!-- =====================================================
-       MODAL
-  ====================================================== -->
-
-  <div id="modal-layer" class="modal-layer">
-
-    <div class="modal-window">
-
-      <button
-        id="modal-close"
-        class="modal-close"
-        type="button"
-        aria-label="Tancar"
-      >
-        ×
-      </button>
-
-      <div id="modal-content"></div>
-
-    </div>
-
-  </div>
+        </header>
 
 
-  <!-- =====================================================
-       FINAL DECISION
-  ====================================================== -->
+        <div class="game-content">
 
-  <section id="decision-screen" class="screen">
+            <!-- OPENING DIALOGUE -->
 
-    <div class="decision-container">
+            <div id="opening-dialogue" class="opening-dialogue">
 
-      <div class="small-label">
-        FINAL DECISION
-      </div>
+                <div class="dialogue-title">
+                    JACK OF HEARTS
+                </div>
 
-      <h2>
-        WHO TOLD THE TRUTH?
-      </h2>
+                <div id="dialogue-text" class="dialogue-text"></div>
 
-      <p>
-        Choose the player you believe was telling the truth.
-      </p>
-
-      <div
-        id="truth-choice"
-        class="decision-options"
-      ></div>
+            </div>
 
 
-      <div class="decision-divider"></div>
+            <!-- PLAYER -->
+
+            <div class="player-area">
+
+                <div class="player-card">
+
+                    <div class="player-card-title">
+                        TU
+                    </div>
+
+                    <div id="player-collar" class="player-collar">
+                        ?
+                    </div>
+
+                    <div class="player-warning">
+                        NO POTS VEURE EL TEU PAL
+                    </div>
+
+                </div>
+
+            </div>
 
 
-      <h2>
-        WHAT IS YOUR SUIT?
-      </h2>
+            <!-- CHARACTERS -->
 
-      <p>
-        Choose the suit you believe is on your collar.
-      </p>
+            <div class="characters-grid">
 
-      <div
-        id="suit-choice"
-        class="decision-options suit-options"
-      >
+                <!-- CHISHIYA -->
 
-        <button type="button" data-suit="♥">
-          ♥
+                <article
+                    class="character-card"
+                    data-character="chishiya"
+                    tabindex="0"
+                >
+
+                    <div class="character-stage" data-character-stage="chishiya"></div>
+
+                    <div class="character-info">
+
+                        <div class="character-name">
+                            CHISHIYA
+                        </div>
+
+                        <div class="character-suit">
+                            ♦
+                        </div>
+
+                    </div>
+
+                    <div class="card-actions">
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="talk"
+                            data-character="chishiya"
+                        >
+                            PARLAR
+                        </button>
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="observe"
+                            data-character="chishiya"
+                        >
+                            OBSERVAR
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- ARISU -->
+
+                <article
+                    class="character-card"
+                    data-character="arisu"
+                    tabindex="0"
+                >
+
+                    <div class="character-stage" data-character-stage="arisu"></div>
+
+                    <div class="character-info">
+
+                        <div class="character-name">
+                            ARISU
+                        </div>
+
+                        <div class="character-suit">
+                            ♠
+                        </div>
+
+                    </div>
+
+                    <div class="card-actions">
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="talk"
+                            data-character="arisu"
+                        >
+                            PARLAR
+                        </button>
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="observe"
+                            data-character="arisu"
+                        >
+                            OBSERVAR
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- KUINA -->
+
+                <article
+                    class="character-card"
+                    data-character="kuina"
+                    tabindex="0"
+                >
+
+                    <div class="character-stage" data-character-stage="kuina"></div>
+
+                    <div class="character-info">
+
+                        <div class="character-name">
+                            KUINA
+                        </div>
+
+                        <div class="character-suit">
+                            ♣
+                        </div>
+
+                    </div>
+
+                    <div class="card-actions">
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="talk"
+                            data-character="kuina"
+                        >
+                            PARLAR
+                        </button>
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="observe"
+                            data-character="kuina"
+                        >
+                            OBSERVAR
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- USAGI -->
+
+                <article
+                    class="character-card"
+                    data-character="usagi"
+                    tabindex="0"
+                >
+
+                    <div class="character-stage" data-character-stage="usagi"></div>
+
+                    <div class="character-info">
+
+                        <div class="character-name">
+                            USAGI
+                        </div>
+
+                        <div class="character-suit">
+                            ♥
+                        </div>
+
+                    </div>
+
+                    <div class="card-actions">
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="talk"
+                            data-character="usagi"
+                        >
+                            PARLAR
+                        </button>
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            data-action="observe"
+                            data-character="usagi"
+                        >
+                            OBSERVAR
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- BOTTOM -->
+
+            <div class="game-bottom">
+
+                <button
+                    id="final-decision-button"
+                    type="button"
+                    class="decision-button"
+                >
+                    PRENDRE LA DECISIÓ
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CHARACTER PANEL
+    ========================== -->
+
+    <aside id="character-panel" class="character-panel">
+
+        <button
+            id="character-panel-close"
+            type="button"
+            class="panel-close"
+            aria-label="Tancar"
+        >
+            ×
         </button>
 
-        <button type="button" data-suit="♦">
-          ♦
-        </button>
+        <div id="character-panel-content"></div>
 
-        <button type="button" data-suit="♣">
-          ♣
-        </button>
-
-        <button type="button" data-suit="♠">
-          ♠
-        </button>
-
-      </div>
+    </aside>
 
 
-      <button
-        id="submit-decision-btn"
-        class="main-button"
-        type="button"
-        disabled
-      >
-        SUBMIT
-      </button>
+    <!-- =========================
+         DECISION
+    ========================== -->
+
+    <section id="decision-screen" class="screen">
+
+        <div class="decision-container">
+
+            <div class="decision-heading">
+
+                <div class="decision-symbol">♥</div>
+
+                <h2>DECISIÓ FINAL</h2>
+
+                <p>
+                    Només una persona diu la veritat.
+                </p>
+
+            </div>
+
+
+            <div class="decision-section">
+
+                <h3>
+                    QUI DIU LA VERITAT?
+                </h3>
+
+                <div id="truth-choice" class="decision-options">
+
+                    <button
+                        type="button"
+                        data-character="chishiya"
+                    >
+                        CHISHIYA
+                    </button>
+
+                    <button
+                        type="button"
+                        data-character="arisu"
+                    >
+                        ARISU
+                    </button>
+
+                    <button
+                        type="button"
+                        data-character="kuina"
+                    >
+                        KUINA
+                    </button>
+
+                    <button
+                        type="button"
+                        data-character="usagi"
+                    >
+                        USAGI
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="decision-section">
+
+                <h3>
+                    QUIN ÉS EL TEU PAL?
+                </h3>
+
+                <div id="suit-choice" class="decision-options suit-options">
+
+                    <button
+                        type="button"
+                        data-suit="♥"
+                    >
+                        ♥
+                    </button>
+
+                    <button
+                        type="button"
+                        data-suit="♦"
+                    >
+                        ♦
+                    </button>
+
+                    <button
+                        type="button"
+                        data-suit="♣"
+                    >
+                        ♣
+                    </button>
+
+                    <button
+                        type="button"
+                        data-suit="♠"
+                    >
+                        ♠
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="submit-decision"
+                type="button"
+                class="main-button submit-button"
+            >
+                SUBMIT
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SECOND CHANCE
+    ========================== -->
+
+    <section id="second-chance-screen" class="screen">
+
+        <div class="second-chance-container">
+
+            <div class="second-chance-symbol">
+                ♥
+            </div>
+
+            <h2>SEGONA OPORTUNITAT</h2>
+
+            <div class="second-chance-line"></div>
+
+            <p class="second-chance-warning">
+                T'HAS EQUIVOCAT.
+            </p>
+
+            <p>
+                No pots tornar a investigar.
+            </p>
+
+            <p>
+                Només pots revisar les proves que ja has obtingut
+                i canviar la teva decisió.
+            </p>
+
+            <div id="second-chance-timer" class="second-chance-timer">
+                02:00
+            </div>
+
+            <div class="second-chance-buttons">
+
+                <button
+                    id="review-evidence"
+                    type="button"
+                    class="secondary-button"
+                >
+                    REVISAR PROVES
+                </button>
+
+                <button
+                    id="change-decision"
+                    type="button"
+                    class="main-button"
+                >
+                    CANVIAR DECISIÓ
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         RESULT
+    ========================== -->
+
+    <section id="result-screen" class="screen">
+
+        <div class="result-container">
+
+            <div id="result-symbol" class="result-symbol">
+                ♥
+            </div>
+
+            <h2 id="result-title">
+                RESULTAT
+            </h2>
+
+            <p id="result-text"></p>
+
+            <button
+                id="restart-button"
+                type="button"
+                class="main-button"
+            >
+                TORNAR A JUGAR
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MODAL
+    ========================== -->
+
+    <div id="modal-layer" class="modal-layer">
+
+        <div class="modal-box">
+
+            <button
+                id="modal-close"
+                type="button"
+                class="modal-close"
+                aria-label="Tancar"
+            >
+                ×
+            </button>
+
+            <div id="modal-content"></div>
+
+        </div>
 
     </div>
 
-  </section>
+</div>
 
-
-  <!-- =====================================================
-       SECOND CHANCE
-  ====================================================== -->
-
-  <section id="second-chance-screen" class="screen">
-
-    <div class="second-chance-container">
-
-      <div class="glitch-label">
-        INCORRECT
-      </div>
-
-      <h2>
-        YOU HAVE ONE LAST CHANCE.
-      </h2>
-
-      <div
-        id="second-chance-timer"
-        class="second-chance-timer"
-      >
-        02:00
-      </div>
-
-      <p>
-        No more observations.<br>
-        No more questions.<br>
-        No more investigations.
-      </p>
-
-      <p class="second-chance-emphasis">
-        Review what you discovered.<br>
-        Rethink your decision.
-      </p>
-
-      <button
-        id="review-evidence-btn"
-        class="main-button"
-        type="button"
-      >
-        REVIEW EVIDENCE
-      </button>
-
-      <button
-        id="change-decision-btn"
-        class="main-button secondary-button"
-        type="button"
-      >
-        CHANGE DECISION
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- =====================================================
-       RESULT
-  ====================================================== -->
-
-  <section id="result-screen" class="screen">
-
-    <div class="result-container">
-
-      <div
-        id="result-status"
-        class="result-status"
-      >
-        GAME CLEAR
-      </div>
-
-      <div
-        id="result-symbol"
-        class="result-symbol"
-      >
-        ♥
-      </div>
-
-      <h1 id="result-title">
-        HAS SOBREVISCUT
-      </h1>
-
-      <div id="result-text" class="result-text">
-        <p>
-          You survived Game 03.
-        </p>
-      </div>
-
-      <div class="result-line"></div>
-
-      <p class="result-final">
-        TIME WAS NEVER ON YOUR SIDE.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
