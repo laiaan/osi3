@@ -448,8 +448,40 @@ function renderCharacters() {
             const key =
                 stage.dataset.characterStage;
 
-            stage.innerHTML =
-                characterArt(key);
+            const character =
+                characters[key];
+
+            if (!character) {
+                return;
+            }
+
+
+            const statement =
+                character.statements[0];
+
+
+            stage.innerHTML = `
+
+                <div class="speech-bubble">
+
+                    <div class="bubble-name">
+                        ${character.name} Diu:
+                    </div>
+
+                    <div class="bubble-text">
+                        “${statement}”
+                    </div>
+
+                </div>
+
+
+                <div class="character-art">
+
+                    ${characterArt(key)}
+
+                </div>
+
+            `;
 
         });
 
@@ -1636,3 +1668,8 @@ renderCharacters();
 showScreen(
     openingScreen
 );
+
+
+/* =========================================================
+   RESET
+========================================================= */
