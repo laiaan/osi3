@@ -115,7 +115,7 @@ button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .bubble-text { font-family: "Share Tech Mono", monospace; font-size: clamp(10px, 1.8vw, 13px); line-height: 1.25; text-align: center; }
 
 /* =========================================================
-   CARTOON PERSON (MANTENIDOS TUS AVATARES)
+   CARTOON PERSON (DISEÑOS ACTUALIZADOS)
 ========================================================= */
 .character-art { width: 100%; height: 100%; position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; }
 .stick-person { position: relative; width: 115px; height: 210px; scale: 1; animation: characterIdle 4s ease-in-out infinite; transform-origin: bottom center; z-index: 10; }
@@ -141,9 +141,11 @@ button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .leg-left { left: 38px; transform: rotate(2deg); } .leg-right { right: 38px; transform: rotate(-2deg); }
 
 /* CHISHIYA */
-.chishiya-person .body { background: linear-gradient(90deg, #d5d2c9 0 18%, #bdbbb4 18% 82%, #d5d2c9 82%); border: 1px solid #8c8a84; }
-.chishiya-person .shirt-detail { position: absolute; width: 30px; height: 42px; left: 50%; top: 0; transform: translateX(-50%); background: #252525; clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%); }
-.chishiya-person .arm { background: #cbc9c2; } .chishiya-person .leg { background: #242424; }
+.chishiya-person .body { background: #f0f0f0; border: 1px solid #dcdcdc; }
+.chishiya-person .neck { background: #f0f0f0; z-index: 5; border-bottom: 1px solid #ccc; width: 26px; border-radius: 4px; }
+.chishiya-person .shirt-detail { position: absolute; width: 40px; height: 25px; left: 50%; top: 40px; transform: translateX(-50%); background: transparent; border: 1px solid #ddd; border-radius: 5px 5px 15px 15px; clip-path: none; }
+.chishiya-person .arm { background: #e8e8e8; }
+.chishiya-person .leg { background: #242424; }
 .chishiya-hair { position: absolute; width: 100px; height: 85px; left: 50%; top: -8px; transform: translateX(-50%); z-index: 20; }
 .chishiya-hair .hair-main { position: absolute; width: 88px; height: 62px; left: 6px; top: 4px; background: #eeeae1; border-radius: 55% 48% 35% 40%; }
 .chishiya-hair .hair-left, .chishiya-hair .hair-right { position: absolute; width: 25px; height: 54px; background: #eeeae1; top: 27px; }
@@ -151,40 +153,51 @@ button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .chishiya-hair .hair-right { right: 0; transform: rotate(-12deg); border-radius: 20% 70% 40% 50%; }
 
 /* ARISU */
-.arisu-person .body { background: #252a31; border: 1px solid #17191d; }
-.arisu-person .shirt-detail { position: absolute; width: 28px; height: 45px; left: 50%; top: 0; transform: translateX(-50%); background: #9b3030; }
-.arisu-person .arm { background: #252a31; } .arisu-person .leg { background: #17191d; }
+.arisu-person .body { background: #7a2626; border: 1px solid #4a1515; }
+.arisu-person .shirt-detail { position: absolute; width: 14px; height: 50px; left: 50%; top: 0; transform: translateX(-50%); background: #d7a77e; clip-path: none; border-left: 1px solid #4a1515; border-right: 1px solid #4a1515; }
+.arisu-person .arm { background: #7a2626; }
+.arisu-person .leg { background: #17191d; }
 .arisu-hair { position: absolute; width: 100px; height: 80px; left: 50%; top: -10px; transform: translateX(-50%); z-index: 20; }
 .arisu-hair .hair-main { position: absolute; width: 82px; height: 67px; left: 9px; top: 5px; background: #29252a; border-radius: 50% 50% 35% 40%; }
 .arisu-hair .spike { position: absolute; width: 22px; height: 28px; background: #29252a; clip-path: polygon(0 0, 100% 50%, 25% 100%); }
-.arisu-hair .spike-1 { left: 8px; top: 10px; transform: rotate(-30deg); } .arisu-hair .spike-2 { left: 28px; top: 1px; transform: rotate(-12deg); }
-.arisu-hair .spike-3 { left: 51px; top: 0; transform: rotate(8deg); } .arisu-hair .spike-4 { right: 4px; top: 11px; transform: rotate(28deg); }
+.arisu-hair .spike-1 { left: 8px; top: 10px; transform: rotate(-30deg); }
+.arisu-hair .spike-2 { left: 28px; top: 1px; transform: rotate(-12deg); }
+.arisu-hair .spike-3 { left: 51px; top: 0; transform: rotate(8deg); }
+.arisu-hair .spike-4 { right: 4px; top: 11px; transform: rotate(28deg); }
 
 /* KUINA */
-.kuina-person .body { background: #24242a; border: 1px solid #111114; }
-.kuina-person .shirt-detail { position: absolute; width: 34px; height: 55px; left: 50%; top: 0; transform: translateX(-50%); background: #111114; border-top: 4px solid #9d3658; }
-.kuina-person .arm { background: #24242a; } .kuina-person .leg { background: #111114; }
+.kuina-person .body { background: #c9936b; border: 1px solid #a37250; } 
+.kuina-person .shirt-detail { position: absolute; width: 68px; height: 22px; left: 50%; top: 15px; transform: translateX(-50%); background: #48aebb; border: none; } 
+.kuina-person .arm { background: #c9936b; } 
+.kuina-person .leg { background: #111114; }
 .kuina-hair { position: absolute; width: 108px; height: 140px; left: 50%; top: -30px; transform: translateX(-50%); z-index: 20; }
 .kuina-top { position: absolute; width: 76px; height: 67px; left: 13px; top: 12px; background: #17151a; border-radius: 50% 50% 35% 35%; }
 .kuina-front-strand { position: absolute; width: 9px; height: 65px; left: 16px; top: 43px; background: #e6dfd4; border-radius: 8px; transform: rotate(7deg); z-index: 30; }
 .kuina-hair::before { content: ""; position: absolute; width: 42px; height: 48px; left: 63px; top: -10px; background: #17151a; border-radius: 50%; transform: rotate(20deg); }
-.kuina-hair .braid { position: absolute; width: 9px; height: 105px; top: 27px; background: repeating-linear-gradient(135deg, #17151a 0 5px, #343038 5px 9px); border-radius: 8px; transform-origin: top center; }
+.kuina-hair .braid { position: absolute; width: 9px; height: 105px; top: 27px; background: repeating-linear-gradient(135deg, #2b1d14 0 5px, #422d20 5px 9px); border-radius: 8px; transform-origin: top center; }
 .kuina-hair .braid::after { content: ""; position: absolute; width: 11px; height: 6px; left: -1px; bottom: -2px; background: #b78a52; border-radius: 50%; }
-.kuina-hair .braid-1 { left: 53px; transform: rotate(-7deg); } .kuina-hair .braid-2 { left: 63px; transform: rotate(1deg); }
-.kuina-hair .braid-3 { left: 73px; transform: rotate(7deg); } .kuina-hair .braid-4 { left: 43px; transform: rotate(-14deg); }
-.kuina-hair .braid-5 { left: 82px; transform: rotate(13deg); } .kuina-hair .braid-6 { left: 34px; transform: rotate(-19deg); }
+.kuina-hair .braid-1 { left: 53px; transform: rotate(-7deg); }
+.kuina-hair .braid-2 { left: 63px; transform: rotate(1deg); }
+.kuina-hair .braid-3 { left: 73px; transform: rotate(7deg); }
+.kuina-hair .braid-4 { left: 43px; transform: rotate(-14deg); }
+.kuina-hair .braid-5 { left: 82px; transform: rotate(13deg); }
+.kuina-hair .braid-6 { left: 34px; transform: rotate(-19deg); }
 .kuina-hair .braid-7 { left: 92px; transform: rotate(18deg); }
 
 /* USAGI */
-.usagi-person .body { background: #b9b6aa; border: 1px solid #858277; }
-.usagi-person .shirt-detail { position: absolute; width: 25px; height: 46px; left: 50%; top: 0; transform: translateX(-50%); background: #d8d2bd; }
-.usagi-person .arm { background: #b9b6aa; } .usagi-person .leg { background: #4c5b61; }
+.usagi-person .body { background: #2c2c2c; border: 1px solid #111; }
+.usagi-person .shirt-detail { position: absolute; width: 26px; height: 18px; left: 50%; top: 0; transform: translateX(-50%); background: #c9936b; border-radius: 0 0 15px 15px; } 
+.usagi-person .arm { background: #c9936b; } 
+.usagi-person .leg { background: #222; }
 .usagi-hair { position: absolute; width: 100px; height: 90px; left: 50%; top: -17px; transform: translateX(-50%); z-index: 20; }
 .usagi-bob { position: absolute; width: 92px; height: 83px; left: 4px; top: 2px; background: #292328; border-radius: 48% 48% 40% 40%; }
 .usagi-bob::before, .usagi-bob::after { content: ""; position: absolute; width: 20px; height: 43px; bottom: -10px; background: #292328; border-radius: 0 0 12px 12px; }
-.usagi-bob::before { left: -3px; transform: rotate(7deg); } .usagi-bob::after { right: -3px; transform: rotate(-7deg); }
+.usagi-bob::before { left: -3px; transform: rotate(7deg); }
+.usagi-bob::after { right: -3px; transform: rotate(-7deg); }
 .usagi-hair .usagi-bang { position: absolute; top: 19px; height: 42px; background: #292328; z-index: 30; border-radius: 0 0 12px 12px; }
-.usagi-hair .bang-left { width: 23px; left: 20px; transform: rotate(8deg); } .usagi-hair .bang-center { width: 18px; left: 41px; height: 49px; transform: rotate(1deg); } .usagi-hair .bang-right { width: 21px; left: 57px; transform: rotate(-8deg); }
+.usagi-hair .bang-left { width: 23px; left: 20px; transform: rotate(8deg); }
+.usagi-hair .bang-center { width: 18px; left: 41px; height: 49px; transform: rotate(1deg); }
+.usagi-hair .bang-right { width: 21px; left: 57px; transform: rotate(-8deg); }
 
 .kuina-hair, .usagi-hair, .kuina-hair *, .usagi-hair * { pointer-events: none; }
 .face { z-index: 40; } .face .eye, .face .nose, .face .mouth { z-index: 50; }
