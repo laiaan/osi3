@@ -1,2293 +1,330 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html,
-body {
-    width: 100%;
-    min-height: 100%;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; min-height: 100%; }
 
 body {
-    background: #050505;
-    color: #f2f2f2;
+    background: #050505; color: #f2f2f2;
     font-family: "Share Tech Mono", monospace;
     overflow-x: hidden;
 }
-
-body.modal-open {
-    overflow: hidden;
-}
-
-button {
-    font-family: inherit;
-}
-
-button:focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: 3px;
-}
-
+body.modal-open { overflow: hidden; }
+button { font-family: inherit; }
+button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
 /* =========================================================
    APP / SCREENS
 ========================================================= */
-
-#app {
-    min-height: 100vh;
-    min-height: 100dvh;
-    position: relative;
-}
-
-.screen {
-    display: none;
-    min-height: 100vh;
-    min-height: 100dvh;
-    width: 100%;
-}
-
-.screen.active {
-    display: flex;
-}
-
+#app { min-height: 100vh; min-height: 100dvh; position: relative; }
+.screen { display: none; min-height: 100vh; min-height: 100dvh; width: 100%; }
+.screen.active { display: flex; }
 
 /* =========================================================
-   OPENING
+   OPENING & RULES
 ========================================================= */
-
-#opening-screen {
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #241313 0%,
-            #090606 45%,
-            #020202 100%
-        );
+#opening-screen, #rules-screen {
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    background: radial-gradient(circle at center, #241313 0%, #090606 45%, #020202 100%);
 }
-
 .opening-background {
-    position: absolute;
-    inset: 0;
-    opacity: 0.16;
-
-    background-image:
-        linear-gradient(
-            rgba(255,255,255,0.03) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,0.03) 1px,
-            transparent 1px
-        );
-
+    position: absolute; inset: 0; opacity: 0.16;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
     background-size: 40px 40px;
-
-    mask-image:
-        radial-gradient(
-            circle,
-            black,
-            transparent 75%
-        );
+    mask-image: radial-gradient(circle, black, transparent 75%);
 }
-
-.opening-content {
-    position: relative;
-    z-index: 2;
-    width: min(90%, 650px);
-    text-align: center;
-    padding: 40px 20px;
-}
+.opening-content { position: relative; z-index: 2; width: min(90%, 650px); text-align: center; padding: 40px 20px; }
+.rules-content { background: rgba(0,0,0,0.7); border: 1px solid #333; padding: 30px; }
 
 .game-symbol {
-    color: #d92828;
-    font-family: Georgia, serif;
-    font-size: clamp(80px, 16vw, 150px);
-    line-height: 0.8;
-    text-shadow: 0 0 20px rgba(220,35,35,0.35);
-    margin-bottom: 25px;
+    color: #d92828; font-family: Georgia, serif;
+    font-size: clamp(80px, 16vw, 150px); line-height: 0.8;
+    text-shadow: 0 0 20px rgba(220,35,35,0.35); margin-bottom: 25px;
 }
-
-.opening-content h1 {
-    font-size: clamp(34px, 8vw, 72px);
-    letter-spacing: 0.12em;
-    font-weight: 400;
-}
-
-.opening-line {
-    width: 180px;
-    height: 1px;
-    background: #8c2525;
-    margin: 24px auto;
-}
-
-.opening-subtitle {
-    color: #a6a6a6;
-    letter-spacing: 0.35em;
-    font-size: 12px;
-}
-
-.opening-description {
-    color: #777;
-    font-size: 14px;
-    margin-top: 25px;
-    margin-bottom: 35px;
-}
-
+.opening-content h1, .opening-content h2 { font-size: clamp(28px, 8vw, 72px); letter-spacing: 0.12em; font-weight: 400; }
+.opening-line { width: 180px; height: 1px; background: #8c2525; margin: 24px auto; }
+.opening-subtitle { color: #a6a6a6; letter-spacing: 0.35em; font-size: 12px; }
+.opening-description { color: #777; font-size: 14px; margin-top: 25px; margin-bottom: 35px; }
 
 /* =========================================================
    BUTTONS
 ========================================================= */
-
-.main-button,
-.secondary-button,
-.decision-button,
-.action-button {
-    border: 1px solid #777;
-    background: #101010;
-    color: #eee;
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
+.main-button, .secondary-button, .decision-button, .action-button {
+    border: 1px solid #777; background: #101010; color: #eee; cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
-
-.main-button:hover,
-.secondary-button:hover,
-.decision-button:hover,
-.action-button:hover:not(:disabled) {
-    background: #202020;
-    border-color: #ddd;
-    transform: translateY(-2px);
+.main-button:hover:not(:disabled), .secondary-button:hover:not(:disabled), 
+.decision-button:hover:not(:disabled), .action-button:hover:not(:disabled) {
+    background: #202020; border-color: #ddd; transform: translateY(-2px);
 }
-
-.main-button {
-    padding: 15px 40px;
-    font-size: 14px;
-    letter-spacing: 0.18em;
-}
-
-.secondary-button {
-    padding: 13px 25px;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-}
-
+.main-button { padding: 15px 40px; font-size: 14px; letter-spacing: 0.18em; }
+.secondary-button { padding: 13px 25px; font-size: 12px; letter-spacing: 0.12em; }
+.main-button:disabled { background: #111; color: #444; border-color: #333; cursor: not-allowed; }
 
 /* =========================================================
    GAME
 ========================================================= */
-
-#game-screen {
-    flex-direction: column;
-
-    background:
-        radial-gradient(
-            circle at 50% 10%,
-            #191919 0,
-            #080808 50%,
-            #030303 100%
-        );
-}
-
+#game-screen { flex-direction: column; background: radial-gradient(circle at 50% 10%, #191919 0, #080808 50%, #030303 100%); }
 .game-header {
-    height: 70px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding:
-        0
-        max(20px, env(safe-area-inset-right))
-        0
-        max(20px, env(safe-area-inset-left));
-
-    border-bottom: 1px solid #242424;
-
-    background: rgba(0,0,0,0.88);
-
-    position: sticky;
-    top: 0;
-    z-index: 30;
+    height: 70px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 max(20px, env(safe-area-inset-right)) 0 max(20px, env(safe-area-inset-left));
+    border-bottom: 1px solid #242424; background: rgba(0,0,0,0.88); position: sticky; top: 0; z-index: 30;
 }
+.header-title { font-size: 14px; letter-spacing: 0.13em; }
+.header-symbol { color: #d92929; font-family: Georgia, serif; font-size: 22px; margin-right: 8px; }
+.timer { min-width: 82px; text-align: right; font-size: 22px; color: #f2f2f2; }
+.timer.timer-warning { color: #e5b63d; }
+.timer.timer-danger { color: #e66a3d; }
+.timer.timer-critical { color: #ed2929; animation: timerPulse 0.5s infinite alternate; }
 
-.header-title {
-    font-size: 14px;
-    letter-spacing: 0.13em;
-}
+@keyframes timerPulse { from { opacity: 1; } to { opacity: 0.4; } }
 
-.header-symbol {
-    color: #d92929;
-    font-family: Georgia, serif;
-    font-size: 22px;
-    margin-right: 8px;
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-}
-
-.actions-counter {
-    color: #777;
-    font-size: 9px;
-    letter-spacing: 0.12em;
-}
-
-.actions-counter span {
-    color: #eee;
-    font-size: 13px;
-}
-
-.actions-counter.actions-full {
-    color: #b33;
-}
-
-.timer {
-    min-width: 82px;
-    text-align: right;
-    font-size: 22px;
-    color: #f2f2f2;
-}
-
-.timer.timer-warning {
-    color: #e5b63d;
-}
-
-.timer.timer-danger {
-    color: #e66a3d;
-}
-
-.timer.timer-critical {
-    color: #ed2929;
-    animation: timerPulse 0.8s infinite alternate;
-}
-
-@keyframes timerPulse {
-    from {
-        opacity: 1;
-    }
-
-    to {
-        opacity: 0.4;
-    }
-}
-
+.game-content { width: min(1100px, 94%); margin: 0 auto; padding: 25px 0 max(25px, env(safe-area-inset-bottom)); }
 
 /* =========================================================
-   GAME CONTENT
+   CHARACTER GRID & CARDS
 ========================================================= */
-
-.game-content {
-    width: min(1100px, 94%);
-    margin: 0 auto;
-
-    padding:
-        25px
-        0
-        max(25px, env(safe-area-inset-bottom));
-}
-
-
-/* =========================================================
-   PLAYER
-========================================================= */
-
-.player-area {
-    display: flex;
-    justify-content: center;
-    margin-top: 4px;
-    margin-bottom: 24px;
-}
-
-.player-card {
-    width: 190px;
-
-    border: 1px solid #343434;
-
-    background:
-        linear-gradient(
-            145deg,
-            #171717,
-            #080808
-        );
-
-    padding: 14px;
-    text-align: center;
-
-    box-shadow:
-        0 10px 30px rgba(0,0,0,0.3);
-}
-
-.player-card-title {
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    color: #777;
-    margin-bottom: 8px;
-}
-
-.player-collar {
-    width: 52px;
-    height: 52px;
-
-    margin: 0 auto 8px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-    border: 2px solid #666;
-
-    background: #0b0b0b;
-
-    font-family: Georgia, serif;
-    font-size: 28px;
-    color: #ddd;
-}
-
-.player-warning {
-    color: #555;
-    font-size: 8px;
-    letter-spacing: 0.1em;
-}
-
-
-/* =========================================================
-   CHARACTER GRID
-========================================================= */
-
-.characters-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-}
-
-
-/* =========================================================
-   CHARACTER CARD
-========================================================= */
-
+.characters-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .character-card {
-    position: relative;
-    min-width: 0;
-
-    border: 1px solid #292929;
-
-    background:
-        linear-gradient(
-            145deg,
-            #151515,
-            #080808
-        );
-
-    cursor: pointer;
-    overflow: hidden;
-
-    transition:
-        border-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+    position: relative; min-width: 0; border: 1px solid #292929;
+    background: linear-gradient(145deg, #151515, #080808); cursor: pointer;
+    overflow: hidden; transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
-
-.character-card:hover {
-    border-color: #575757;
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 10px 30px rgba(0,0,0,0.45);
-}
-
-
-/* =========================================================
-   CHARACTER STAGE
-========================================================= */
+.character-card:hover { border-color: #575757; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
 
 .character-stage {
-    height: 310px;
-
-    position: relative;
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-
-    overflow: hidden;
-
-    background:
-        radial-gradient(
-            ellipse at center bottom,
-            #242424 0%,
-            #111 52%,
-            #090909 100%
-        );
+    height: 285px; position: relative; display: flex; justify-content: center; align-items: flex-end;
+    overflow: visible; background: radial-gradient(ellipse at center bottom, #202020, #0b0b0b 70%);
 }
-
-
-/* =========================================================
-   PERMANENT SPEECH BUBBLE
-========================================================= */
 
 .speech-bubble {
-    position: absolute;
-
-    top: 12px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: calc(100% - 30px);
-
-    min-height: 67px;
-
-    padding: 10px 14px 13px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-
-    background: #f3f0e8;
-    color: #161616;
-
-    border: 2px solid #111;
-    border-radius: 15px;
-
-    z-index: 60;
-
-    box-shadow:
-        4px 5px 0 rgba(0,0,0,0.35);
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: calc(100% - 28px); min-height: 64px; padding: 10px 13px 12px;
+    display: flex; flex-direction: column; justify-content: center; gap: 4px;
+    background: #f2f0e9; color: #171717; border: 2px solid #111; border-radius: 14px; z-index: 50;
+    box-shadow: 3px 4px 0 rgba(0,0,0,0.35);
 }
-
 .speech-bubble::after {
-    content: "";
-
-    position: absolute;
-
-    bottom: -15px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: 0;
-    height: 0;
-
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 16px solid #111;
+    content: ""; position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-top: 15px solid #111;
 }
-
 .speech-bubble::before {
-    content: "";
-
-    position: absolute;
-
-    bottom: -11px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: 0;
-    height: 0;
-
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 12px solid #f3f0e8;
-
-    z-index: 2;
+    content: ""; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 12px solid #f2f0e9; z-index: 2;
 }
-
-.bubble-name {
-    text-align: center;
-
-    font-family: "Share Tech Mono", monospace;
-
-    font-size: 8px;
-    font-weight: bold;
-
-    color: #777;
-    letter-spacing: 0.16em;
-}
-
-.bubble-text {
-    font-family: "Special Elite", serif;
-
-    font-size: clamp(11px, 1.7vw, 14px);
-
-    line-height: 1.3;
-
-    text-align: center;
-}
-
+.bubble-name { font-size: 8px; font-weight: bold; letter-spacing: 0.12em; color: #777; }
+.bubble-text { font-family: "Share Tech Mono", monospace; font-size: clamp(10px, 1.8vw, 13px); line-height: 1.25; text-align: center; }
 
 /* =========================================================
-   CHARACTER ART AREA
+   CARTOON PERSON (MANTENIDOS TUS AVATARES)
 ========================================================= */
+.character-art { width: 100%; height: 100%; position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; }
+.stick-person { position: relative; width: 115px; height: 210px; scale: 1; animation: characterIdle 4s ease-in-out infinite; transform-origin: bottom center; z-index: 10; }
+.character-card:hover .stick-person { scale: 1.035; }
+@keyframes characterIdle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 
-.character-art {
-    position: absolute;
-    inset: 0;
+.head { position: absolute; width: 76px; height: 86px; left: 50%; top: 10px; transform: translateX(-50%); z-index: 4; }
+.face { position: absolute; inset: 12px 7px 5px; background: #d7a77e; border-radius: 48% 48% 45% 45%; z-index: 30; box-shadow: inset 0 -4px 0 rgba(80,40,20,0.08); }
+.eye { position: absolute; top: 37px; width: 6px; height: 8px; border-radius: 50%; background: #151515; z-index: 40; }
+.eye.left { left: 20px; } .eye.right { right: 20px; }
+.nose { position: absolute; top: 47px; left: 50%; width: 4px; height: 8px; transform: translateX(-50%); border-left: 1px solid rgba(60,30,20,0.45); z-index: 40; }
+.mouth { position: absolute; left: 50%; top: 61px; width: 16px; height: 7px; transform: translateX(-50%); border-bottom: 2px solid #542725; border-radius: 50%; z-index: 40; }
+.mouth.smile { width: 18px; height: 9px; } .mouth.nervous { width: 12px; height: 6px; }
+.mouth.calm { width: 14px; border-bottom-width: 1px; } .mouth.neutral { width: 14px; }
 
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+.neck { position: absolute; width: 20px; height: 18px; left: 50%; top: 82px; transform: translateX(-50%); background: #c9936b; z-index: 2; }
+.body { position: absolute; width: 68px; height: 82px; left: 50%; top: 94px; transform: translateX(-50%); border-radius: 18px 18px 7px 7px; z-index: 3; }
+.arm { position: absolute; width: 14px; height: 74px; top: 99px; border-radius: 10px; z-index: 2; transform-origin: top center; }
+.arm-left { left: 18px; transform: rotate(7deg); } .arm-right { right: 18px; transform: rotate(-7deg); }
+.hand { position: absolute; width: 16px; height: 16px; top: 165px; border-radius: 50%; background: #d7a77e; z-index: 4; }
+.hand-left { left: 12px; } .hand-right { right: 12px; }
+.leg { position: absolute; width: 18px; height: 65px; top: 166px; border-radius: 0 0 8px 8px; z-index: 1; }
+.leg-left { left: 38px; transform: rotate(2deg); } .leg-right { right: 38px; transform: rotate(-2deg); }
 
-    pointer-events: none;
-}
+/* CHISHIYA */
+.chishiya-person .body { background: linear-gradient(90deg, #d5d2c9 0 18%, #bdbbb4 18% 82%, #d5d2c9 82%); border: 1px solid #8c8a84; }
+.chishiya-person .shirt-detail { position: absolute; width: 30px; height: 42px; left: 50%; top: 0; transform: translateX(-50%); background: #252525; clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%); }
+.chishiya-person .arm { background: #cbc9c2; } .chishiya-person .leg { background: #242424; }
+.chishiya-hair { position: absolute; width: 100px; height: 85px; left: 50%; top: -8px; transform: translateX(-50%); z-index: 20; }
+.chishiya-hair .hair-main { position: absolute; width: 88px; height: 62px; left: 6px; top: 4px; background: #eeeae1; border-radius: 55% 48% 35% 40%; }
+.chishiya-hair .hair-left, .chishiya-hair .hair-right { position: absolute; width: 25px; height: 54px; background: #eeeae1; top: 27px; }
+.chishiya-hair .hair-left { left: 0; transform: rotate(12deg); border-radius: 70% 20% 50% 40%; }
+.chishiya-hair .hair-right { right: 0; transform: rotate(-12deg); border-radius: 20% 70% 40% 50%; }
 
+/* ARISU */
+.arisu-person .body { background: #252a31; border: 1px solid #17191d; }
+.arisu-person .shirt-detail { position: absolute; width: 28px; height: 45px; left: 50%; top: 0; transform: translateX(-50%); background: #9b3030; }
+.arisu-person .arm { background: #252a31; } .arisu-person .leg { background: #17191d; }
+.arisu-hair { position: absolute; width: 100px; height: 80px; left: 50%; top: -10px; transform: translateX(-50%); z-index: 20; }
+.arisu-hair .hair-main { position: absolute; width: 82px; height: 67px; left: 9px; top: 5px; background: #29252a; border-radius: 50% 50% 35% 40%; }
+.arisu-hair .spike { position: absolute; width: 22px; height: 28px; background: #29252a; clip-path: polygon(0 0, 100% 50%, 25% 100%); }
+.arisu-hair .spike-1 { left: 8px; top: 10px; transform: rotate(-30deg); } .arisu-hair .spike-2 { left: 28px; top: 1px; transform: rotate(-12deg); }
+.arisu-hair .spike-3 { left: 51px; top: 0; transform: rotate(8deg); } .arisu-hair .spike-4 { right: 4px; top: 11px; transform: rotate(28deg); }
+
+/* KUINA */
+.kuina-person .body { background: #24242a; border: 1px solid #111114; }
+.kuina-person .shirt-detail { position: absolute; width: 34px; height: 55px; left: 50%; top: 0; transform: translateX(-50%); background: #111114; border-top: 4px solid #9d3658; }
+.kuina-person .arm { background: #24242a; } .kuina-person .leg { background: #111114; }
+.kuina-hair { position: absolute; width: 108px; height: 140px; left: 50%; top: -30px; transform: translateX(-50%); z-index: 20; }
+.kuina-top { position: absolute; width: 76px; height: 67px; left: 13px; top: 12px; background: #17151a; border-radius: 50% 50% 35% 35%; }
+.kuina-front-strand { position: absolute; width: 9px; height: 65px; left: 16px; top: 43px; background: #e6dfd4; border-radius: 8px; transform: rotate(7deg); z-index: 30; }
+.kuina-hair::before { content: ""; position: absolute; width: 42px; height: 48px; left: 63px; top: -10px; background: #17151a; border-radius: 50%; transform: rotate(20deg); }
+.kuina-hair .braid { position: absolute; width: 9px; height: 105px; top: 27px; background: repeating-linear-gradient(135deg, #17151a 0 5px, #343038 5px 9px); border-radius: 8px; transform-origin: top center; }
+.kuina-hair .braid::after { content: ""; position: absolute; width: 11px; height: 6px; left: -1px; bottom: -2px; background: #b78a52; border-radius: 50%; }
+.kuina-hair .braid-1 { left: 53px; transform: rotate(-7deg); } .kuina-hair .braid-2 { left: 63px; transform: rotate(1deg); }
+.kuina-hair .braid-3 { left: 73px; transform: rotate(7deg); } .kuina-hair .braid-4 { left: 43px; transform: rotate(-14deg); }
+.kuina-hair .braid-5 { left: 82px; transform: rotate(13deg); } .kuina-hair .braid-6 { left: 34px; transform: rotate(-19deg); }
+.kuina-hair .braid-7 { left: 92px; transform: rotate(18deg); }
+
+/* USAGI */
+.usagi-person .body { background: #b9b6aa; border: 1px solid #858277; }
+.usagi-person .shirt-detail { position: absolute; width: 25px; height: 46px; left: 50%; top: 0; transform: translateX(-50%); background: #d8d2bd; }
+.usagi-person .arm { background: #b9b6aa; } .usagi-person .leg { background: #4c5b61; }
+.usagi-hair { position: absolute; width: 100px; height: 90px; left: 50%; top: -17px; transform: translateX(-50%); z-index: 20; }
+.usagi-bob { position: absolute; width: 92px; height: 83px; left: 4px; top: 2px; background: #292328; border-radius: 48% 48% 40% 40%; }
+.usagi-bob::before, .usagi-bob::after { content: ""; position: absolute; width: 20px; height: 43px; bottom: -10px; background: #292328; border-radius: 0 0 12px 12px; }
+.usagi-bob::before { left: -3px; transform: rotate(7deg); } .usagi-bob::after { right: -3px; transform: rotate(-7deg); }
+.usagi-hair .usagi-bang { position: absolute; top: 19px; height: 42px; background: #292328; z-index: 30; border-radius: 0 0 12px 12px; }
+.usagi-hair .bang-left { width: 23px; left: 20px; transform: rotate(8deg); } .usagi-hair .bang-center { width: 18px; left: 41px; height: 49px; transform: rotate(1deg); } .usagi-hair .bang-right { width: 21px; left: 57px; transform: rotate(-8deg); }
+
+.kuina-hair, .usagi-hair, .kuina-hair *, .usagi-hair * { pointer-events: none; }
+.face { z-index: 40; } .face .eye, .face .nose, .face .mouth { z-index: 50; }
 
 /* =========================================================
-   CHARACTER FIGURE
+   CHARACTER INFO & CARDS
 ========================================================= */
-
-.character-figure {
-    position: relative;
-
-    width: 132px;
-    height: 260px;
-
-    transform-origin: bottom center;
-
-    animation:
-        characterIdle
-        4.5s
-        ease-in-out
-        infinite;
-
-    z-index: 20;
-}
-
-.character-card:hover .character-figure {
-    transform: translateY(-2px) scale(1.025);
-}
-
-@keyframes characterIdle {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-3px);
-    }
-
-}
-
+.character-info { min-height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; border-top: 1px solid #282828; background: #0d0d0d; }
+.character-name { font-size: 12px; letter-spacing: 0.12em; }
+.character-suit { font-family: Georgia, serif; font-size: 25px; color: #ddd; }
 
 /* =========================================================
-   SHADOW
+   PLAYER & BOTTOM
 ========================================================= */
+.player-area { display: flex; justify-content: center; margin-top: 24px; }
+.player-card { width: 190px; border: 1px solid #343434; background: linear-gradient(145deg, #171717, #080808); padding: 14px; text-align: center; }
+.player-card-title { font-size: 10px; letter-spacing: 0.25em; color: #777; margin-bottom: 8px; }
+.player-collar { width: 52px; height: 52px; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid #666; background: #0b0b0b; font-family: Georgia, serif; font-size: 28px; color: #ddd; }
+.player-warning { color: #555; font-size: 8px; letter-spacing: 0.1em; }
 
-.figure-shadow {
-    position: absolute;
-
-    width: 88px;
-    height: 15px;
-
-    left: 50%;
-    bottom: -2px;
-
-    transform: translateX(-50%);
-
-    background: rgba(0,0,0,0.55);
-
-    border-radius: 50%;
-
-    filter: blur(2px);
-}
-
+.game-bottom { display: flex; justify-content: center; padding: 22px 0 10px; }
+.decision-button { width: min(500px, 100%); padding: 16px; background: #161616; border-color: #7b2525; color: #eee; letter-spacing: 0.14em; font-size: 12px; }
+.decision-button:hover { background: #241010; border-color: #a62d2d; }
 
 /* =========================================================
-   HEAD
+   CHARACTER PANEL & ACTIONS (MODAL 4)
 ========================================================= */
-
-.figure-head {
-    position: absolute;
-
-    width: 83px;
-    height: 98px;
-
-    left: 50%;
-    top: 12px;
-
-    transform: translateX(-50%);
-
-    z-index: 20;
-}
-
-.figure-face {
-    position: absolute;
-
-    inset: 12px 7px 4px;
-
-    background:
-        linear-gradient(
-            110deg,
-            #c98f68,
-            #e0b08a 50%,
-            #c58a65
-        );
-
-    border-radius:
-        48%
-        48%
-        44%
-        44%;
-
-    border: 1px solid rgba(50,25,15,0.35);
-
-    box-shadow:
-        inset -4px -5px 0 rgba(70,30,20,0.08);
-
-    z-index: 25;
-}
-
-.brow {
-    position: absolute;
-
-    top: 32px;
-
-    width: 17px;
-    height: 3px;
-
-    background: #30221e;
-
-    border-radius: 4px;
-
-    z-index: 50;
-}
-
-.brow.left {
-    left: 15px;
-    transform: rotate(5deg);
-}
-
-.brow.right {
-    right: 15px;
-    transform: rotate(-5deg);
-}
-
-.eye {
-    position: absolute;
-
-    top: 40px;
-
-    width: 7px;
-    height: 9px;
-
-    background: #171313;
-
-    border-radius: 50%;
-
-    z-index: 50;
-}
-
-.eye.left {
-    left: 18px;
-}
-
-.eye.right {
-    right: 18px;
-}
-
-.nose {
-    position: absolute;
-
-    top: 48px;
-    left: 50%;
-
-    width: 5px;
-    height: 9px;
-
-    transform: translateX(-50%);
-
-    border-left: 1px solid rgba(70,35,20,0.5);
-
-    z-index: 50;
-}
-
-.mouth {
-    position: absolute;
-
-    left: 50%;
-    top: 64px;
-
-    transform: translateX(-50%);
-
-    z-index: 50;
-
-    border-bottom: 2px solid #552725;
-
-    border-radius: 50%;
-}
-
-.mouth.calm {
-    width: 14px;
-    height: 5px;
-}
-
-.mouth.nervous {
-    width: 12px;
-    height: 7px;
-}
-
-.mouth.serious {
-    width: 13px;
-    height: 2px;
-}
-
-.mouth.neutral {
-    width: 14px;
-    height: 5px;
-}
-
-
-/* =========================================================
-   NECK
-========================================================= */
-
-.figure-neck {
-    position: absolute;
-
-    width: 23px;
-    height: 24px;
-
-    left: 50%;
-    top: 94px;
-
-    transform: translateX(-50%);
-
-    background: #c58b66;
-
-    z-index: 5;
-}
-
-
-/* =========================================================
-   BODY
-========================================================= */
-
-.figure-body {
-    position: absolute;
-
-    width: 77px;
-    height: 105px;
-
-    left: 50%;
-    top: 105px;
-
-    transform: translateX(-50%);
-
-    border-radius:
-        19px
-        19px
-        8px
-        8px;
-
-    z-index: 8;
-
-    box-shadow:
-        inset 0 -8px 0 rgba(0,0,0,0.13);
-}
-
-.collar-line {
-    position: absolute;
-
-    width: 31px;
-    height: 31px;
-
-    left: 50%;
-    top: -2px;
-
-    transform: translateX(-50%);
-
-    border-radius: 0 0 50% 50%;
-
-    background: rgba(0,0,0,0.25);
-}
-
-.shirt-mark {
-    position: absolute;
-
-    width: 24px;
-    height: 38px;
-
-    left: 50%;
-    top: 8px;
-
-    transform: translateX(-50%);
-
-    background: rgba(255,255,255,0.07);
-}
-
-
-/* =========================================================
-   ARMS
-========================================================= */
-
-.figure-arm {
-    position: absolute;
-
-    width: 19px;
-    height: 92px;
-
-    top: 112px;
-
-    border-radius: 12px;
-
-    z-index: 6;
-
-    transform-origin: top center;
-}
-
-.figure-arm.left {
-    left: 18px;
-    transform: rotate(8deg);
-}
-
-.figure-arm.right {
-    right: 18px;
-    transform: rotate(-8deg);
-}
-
-.figure-hand {
-    position: absolute;
-
-    width: 19px;
-    height: 19px;
-
-    left: 50%;
-    bottom: -8px;
-
-    transform: translateX(-50%);
-
-    background: #ce966e;
-
-    border-radius: 50%;
-}
-
-
-/* =========================================================
-   LEGS
-========================================================= */
-
-.figure-leg {
-    position: absolute;
-
-    width: 22px;
-    height: 75px;
-
-    top: 201px;
-
-    border-radius:
-        0
-        0
-        9px
-        9px;
-
-    z-index: 4;
-}
-
-.figure-leg.left {
-    left: 42px;
-    transform: rotate(2deg);
-}
-
-.figure-leg.right {
-    right: 42px;
-    transform: rotate(-2deg);
-}
-
-
-/* =========================================================
-   CHISHIYA
-========================================================= */
-
-.chishiya-figure .figure-body {
-    background:
-        linear-gradient(
-            90deg,
-            #dedbd1 0%,
-            #c9c7bf 50%,
-            #dedbd1 100%
-        );
-
-    border: 1px solid #85827b;
-}
-
-.chishiya-figure .figure-arm {
-    background: #c9c7bf;
-}
-
-.chishiya-figure .figure-leg {
-    background: #252525;
-}
-
-.chishiya-figure .shirt-mark {
-    background: #252525;
-    width: 32px;
-    height: 55px;
-    clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%);
-}
-
-.chishiya-hair {
-    position: absolute;
-    inset: -12px -7px auto;
-
-    height: 94px;
-
-    z-index: 40;
-}
-
-.chishiya-top {
-    position: absolute;
-
-    width: 91px;
-    height: 72px;
-
-    left: 3px;
-    top: 3px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #f4f1e9,
-            #d9d5cc
-        );
-
-    border-radius:
-        56%
-        48%
-        38%
-        40%;
-}
-
-.chishiya-side {
-    position: absolute;
-
-    width: 24px;
-    height: 56px;
-
-    top: 31px;
-
-    background: #e8e4db;
-
-    border-radius: 50%;
-}
-
-.chishiya-side.left {
-    left: -1px;
-    transform: rotate(10deg);
-}
-
-.chishiya-side.right {
-    right: -1px;
-    transform: rotate(-10deg);
-}
-
-.chishiya-fringe {
-    position: absolute;
-
-    top: 7px;
-
-    background: #f1eee6;
-
-    clip-path: polygon(
-        0 0,
-        100% 20%,
-        50% 100%
-    );
-}
-
-.chishiya-fringe.one {
-    width: 29px;
-    height: 47px;
-    left: 22px;
-    transform: rotate(16deg);
-}
-
-.chishiya-fringe.two {
-    width: 25px;
-    height: 52px;
-    left: 42px;
-    transform: rotate(4deg);
-}
-
-.chishiya-fringe.three {
-    width: 25px;
-    height: 45px;
-    left: 58px;
-    transform: rotate(-13deg);
-}
-
-
-/* =========================================================
-   ARISU
-========================================================= */
-
-.arisu-figure .figure-body {
-    background:
-        linear-gradient(
-            90deg,
-            #292d35,
-            #20242c,
-            #292d35
-        );
-
-    border: 1px solid #15171b;
-}
-
-.arisu-figure .figure-arm {
-    background: #252a31;
-}
-
-.arisu-figure .figure-leg {
-    background: #17191d;
-}
-
-.arisu-figure .shirt-mark {
-    width: 29px;
-    height: 54px;
-    background: #8f2e31;
-}
-
-.arisu-hair {
-    position: absolute;
-    inset: -12px -8px auto;
-
-    height: 100px;
-
-    z-index: 40;
-}
-
-.arisu-main {
-    position: absolute;
-
-    width: 86px;
-    height: 75px;
-
-    left: 7px;
-    top: 4px;
-
-    background:
-        linear-gradient(
-            130deg,
-            #2c282c,
-            #171519
-        );
-
-    border-radius:
-        50%
-        52%
-        35%
-        42%;
-}
-
-.arisu-fringe {
-    position: absolute;
-
-    background: #262126;
-
-    clip-path: polygon(
-        0 0,
-        100% 18%,
-        70% 100%,
-        25% 70%
-    );
-}
-
-.arisu-fringe.f1 {
-    width: 31px;
-    height: 55px;
-    left: 7px;
-    top: 5px;
-    transform: rotate(-25deg);
-}
-
-.arisu-fringe.f2 {
-    width: 31px;
-    height: 60px;
-    left: 25px;
-    top: 0;
-    transform: rotate(-9deg);
-}
-
-.arisu-fringe.f3 {
-    width: 30px;
-    height: 57px;
-    left: 46px;
-    top: 2px;
-    transform: rotate(7deg);
-}
-
-.arisu-fringe.f4 {
-    width: 27px;
-    height: 50px;
-    left: 64px;
-    top: 8px;
-    transform: rotate(19deg);
-}
-
-.arisu-side {
-    position: absolute;
-
-    width: 21px;
-    height: 48px;
-
-    left: 1px;
-    top: 40px;
-
-    background: #211d22;
-
-    border-radius: 0 0 10px 10px;
-}
-
-
-/* =========================================================
-   KUINA
-========================================================= */
-
-.kuina-figure .figure-body {
-    background:
-        linear-gradient(
-            90deg,
-            #28272e,
-            #1e1d23,
-            #28272e
-        );
-
-    border: 1px solid #111114;
-}
-
-.kuina-figure .figure-arm {
-    background: #25242b;
-}
-
-.kuina-figure .figure-leg {
-    background: #111114;
-}
-
-.kuina-figure .shirt-mark {
-    width: 35px;
-    height: 61px;
-    background: #111114;
-    border-top: 4px solid #963956;
-}
-
-.kuina-hair {
-    position: absolute;
-
-    inset: -22px -15px auto;
-
-    height: 180px;
-
-    z-index: 40;
-}
-
-.kuina-main {
-    position: absolute;
-
-    width: 82px;
-    height: 76px;
-
-    left: 17px;
-    top: 15px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #211c23,
-            #111014
-        );
-
-    border-radius:
-        52%
-        52%
-        37%
-        37%;
-}
-
-.kuina-ponytail {
-    position: absolute;
-
-    width: 48px;
-    height: 73px;
-
-    left: 57px;
-    top: -6px;
-
-    background: #17141a;
-
-    border-radius: 55%;
-
-    transform: rotate(23deg);
-}
-
-.kuina-front-strand {
-    position: absolute;
-
-    width: 10px;
-    height: 70px;
-
-    left: 20px;
-    top: 49px;
-
-    background: #e4ded4;
-
-    border-radius: 10px;
-
-    transform: rotate(7deg);
-
-    z-index: 60;
-}
-
-.braid {
-    position: absolute;
-
-    width: 10px;
-    height: 113px;
-
-    top: 45px;
-
-    background:
-        repeating-linear-gradient(
-            135deg,
-            #17151a 0 5px,
-            #38333b 5px 9px
-        );
-
-    border-radius: 8px;
-
-    transform-origin: top center;
-}
-
-.braid::after {
-    content: "";
-
-    position: absolute;
-
-    width: 11px;
-    height: 7px;
-
-    left: -1px;
-    bottom: -3px;
-
-    background: #ae7d4c;
-
-    border-radius: 50%;
-}
-
-.braid.b1 {
-    left: 47px;
-    transform: rotate(-12deg);
-}
-
-.braid.b2 {
-    left: 57px;
-    transform: rotate(-5deg);
-}
-
-.braid.b3 {
-    left: 67px;
-    transform: rotate(2deg);
-}
-
-.braid.b4 {
-    left: 77px;
-    transform: rotate(9deg);
-}
-
-.braid.b5 {
-    left: 37px;
-    transform: rotate(-18deg);
-}
-
-.braid.b6 {
-    left: 87px;
-    transform: rotate(16deg);
-}
-
-.braid.b7 {
-    left: 97px;
-    transform: rotate(21deg);
-}
-
-
-/* =========================================================
-   USAGI
-========================================================= */
-
-.usagi-figure .figure-body {
-    background:
-        linear-gradient(
-            90deg,
-            #bcb9ad,
-            #a8a59a,
-            #bcb9ad
-        );
-
-    border: 1px solid #858277;
-}
-
-.usagi-figure .figure-arm {
-    background: #b9b6aa;
-}
-
-.usagi-figure .figure-leg {
-    background: #46565d;
-}
-
-.usagi-figure .shirt-mark {
-    width: 27px;
-    height: 54px;
-    background: #d7d1bc;
-}
-
-.usagi-hair {
-    position: absolute;
-
-    inset: -16px -10px auto;
-
-    height: 108px;
-
-    z-index: 40;
-}
-
-.usagi-main {
-    position: absolute;
-
-    width: 96px;
-    height: 91px;
-
-    left: -1px;
-    top: 1px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #322b30,
-            #211d22
-        );
-
-    border-radius:
-        50%
-        50%
-        38%
-        40%;
-}
-
-.usagi-side {
-    position: absolute;
-
-    width: 22px;
-    height: 50px;
-
-    top: 52px;
-
-    background: #292329;
-
-    border-radius:
-        0
-        0
-        12px
-        12px;
-}
-
-.usagi-side.left {
-    left: -3px;
-    transform: rotate(7deg);
-}
-
-.usagi-side.right {
-    right: -3px;
-    transform: rotate(-7deg);
-}
-
-.usagi-bang {
-    position: absolute;
-
-    top: 23px;
-
-    background: #292329;
-
-    border-radius:
-        0
-        0
-        12px
-        12px;
-
-    z-index: 60;
-}
-
-.usagi-bang.b1 {
-    width: 24px;
-    height: 43px;
-    left: 20px;
-    transform: rotate(9deg);
-}
-
-.usagi-bang.b2 {
-    width: 19px;
-    height: 50px;
-    left: 42px;
-    transform: rotate(1deg);
-}
-
-.usagi-bang.b3 {
-    width: 23px;
-    height: 44px;
-    left: 58px;
-    transform: rotate(-9deg);
-}
-
-
-/* =========================================================
-   CHARACTER INFO
-========================================================= */
-
-.character-info {
-    min-height: 56px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 12px 15px;
-
-    border-top: 1px solid #282828;
-
-    background: #0d0d0d;
-}
-
-.character-name {
-    font-size: 12px;
-    letter-spacing: 0.12em;
-}
-
-.character-suit {
-    font-family: Georgia, serif;
-    font-size: 25px;
-    color: #ddd;
-}
-
-
-/* =========================================================
-   ACTIONS — EXACTLY 3
-========================================================= */
-
-.card-actions {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    gap: 1px;
-
-    background: #282828;
-}
-
-.action-button {
-    min-height: 42px;
-
-    border: 0;
-
-    background: #111;
-
-    color: #aaa;
-
-    font-size: 8px;
-
-    letter-spacing: 0.07em;
-}
-
-.action-button.completed,
-.action-button:disabled {
-    color: #4c4c4c;
-    background: #090909;
-    cursor: default;
-    transform: none;
-    text-decoration: line-through;
-}
-
-
-/* =========================================================
-   BOTTOM
-========================================================= */
-
-.game-bottom {
-    display: flex;
-    justify-content: center;
-
-    padding: 22px 0 10px;
-}
-
-.decision-button {
-    width: min(500px, 100%);
-
-    padding: 16px;
-
-    background: #161616;
-
-    border-color: #7b2525;
-
-    color: #eee;
-
-    letter-spacing: 0.14em;
-
-    font-size: 12px;
-}
-
-.decision-button:hover {
-    background: #241010;
-    border-color: #a62d2d;
-}
-
-
-/* =========================================================
-   CHARACTER PANEL
-========================================================= */
-
 .character-panel {
-    position: fixed;
-
-    left: 50%;
-    bottom: 0;
-
-    width: min(600px, 94%);
-    max-height: 88vh;
-
-    overflow-y: auto;
-
-    transform: translate(-50%, 110%);
-
-    transition: transform 0.3s ease;
-
-    z-index: 80;
-
-    padding: 22px;
-
-    background: #111;
-
-    border: 1px solid #4a4a4a;
-
-    box-shadow:
-        0 -15px 60px rgba(0,0,0,0.7);
+    position: fixed; left: 50%; bottom: 0; width: min(600px, 94%); max-height: 88vh;
+    overflow-y: auto; transform: translate(-50%, 110%); transition: transform 0.3s ease;
+    z-index: 80; padding: 22px; background: #111; border: 1px solid #4a4a4a; box-shadow: 0 -15px 60px rgba(0,0,0,0.7);
 }
+.character-panel.active { transform: translate(-50%, 0); }
+.panel-close { position: absolute; right: 12px; top: 8px; border: 0; background: transparent; color: #aaa; font-size: 30px; cursor: pointer; z-index: 100; }
+.panel-character-art { height: 190px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 10px; overflow: hidden; }
+.panel-character-art .stick-person { scale: 0.9; }
+.panel-character-name { text-align: center; font-size: 18px; letter-spacing: 0.2em; margin-bottom: 4px; }
+.panel-character-suit { text-align: center; color: #777; font-size: 11px; margin-bottom: 20px; }
 
-.character-panel.active {
-    transform: translate(-50%, 0);
-}
+.panel-statements h3 { font-size: 10px; color: #777; letter-spacing: 0.18em; margin-bottom: 12px; text-align: center;}
+.action-group { background: #181818; border-left: 2px solid #6d2727; margin-bottom: 12px; padding: 10px; display: flex; flex-direction: column;}
+.action-button { min-height: 40px; border: 1px solid #444; background: #111; color: #eee; font-size: 11px; letter-spacing: 0.12em; width: 100%; cursor: pointer;}
+.action-button.completed, .action-button:disabled { color: #555; background: #090909; cursor: not-allowed; border-color: #222; }
 
-.panel-close {
-    position: absolute;
+.action-select { width: 100%; background: #111; color: #eee; border: 1px solid #444; padding: 10px; margin-bottom: 8px; font-family: inherit; font-size: 11px; }
+.action-select:disabled { background: #090909; color: #555; border-color: #222; }
 
-    right: 12px;
-    top: 8px;
-
-    border: 0;
-
-    background: transparent;
-
-    color: #aaa;
-
-    font-size: 30px;
-
-    cursor: pointer;
-
-    z-index: 100;
-}
-
-.panel-character-art {
-    height: 210px;
-
-    display: flex;
-
-    align-items: flex-end;
-    justify-content: center;
-
-    margin-bottom: 10px;
-
-    overflow: hidden;
-}
-
-.panel-character-art .character-figure {
-    transform: scale(0.82);
-    transform-origin: bottom center;
-}
-
-.panel-character-name {
-    text-align: center;
-
-    font-size: 18px;
-
-    letter-spacing: 0.2em;
-
-    margin-bottom: 4px;
-}
-
-.panel-character-suit {
-    text-align: center;
-
-    color: #777;
-
-    font-size: 11px;
-
-    margin-bottom: 20px;
-}
-
-.panel-statements h3 {
-    font-size: 10px;
-
-    color: #777;
-
-    letter-spacing: 0.18em;
-
-    margin-bottom: 12px;
-}
-
-.panel-statements p {
-    border-left: 2px solid #6d2727;
-
-    padding: 10px 12px;
-
-    margin-bottom: 8px;
-
-    background: #181818;
-
-    color: #ccc;
-
-    font-size: 12px;
-
-    line-height: 1.5;
-}
-
+.action-result { display: none; margin-top: 10px; font-size: 12px; color: #ccc; line-height: 1.4; border-top: 1px solid #333; padding-top: 8px; }
+.action-result.visible { display: block; }
+.action-result strong { color: #d92929; }
 
 /* =========================================================
-   MODAL
+   DECISION SCREEN
 ========================================================= */
-
-.modal-layer {
-    display: none;
-
-    position: fixed;
-    inset: 0;
-
-    z-index: 150;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px;
-
-    background: rgba(0,0,0,0.78);
-
-    backdrop-filter: blur(5px);
-}
-
-.modal-layer.active {
-    display: flex;
-}
-
-.modal-box {
-    position: relative;
-
-    width: min(580px, 100%);
-    max-height: 85vh;
-
-    overflow-y: auto;
-
-    padding: 30px 25px;
-
-    background: #111;
-
-    border: 1px solid #444;
-
-    box-shadow:
-        0 20px 70px rgba(0,0,0,0.8);
-}
-
-.modal-close {
-    position: absolute;
-
-    top: 8px;
-    right: 12px;
-
-    border: 0;
-
-    background: transparent;
-
-    color: #aaa;
-
-    font-size: 28px;
-
-    cursor: pointer;
-}
-
-.modal-title {
-    font-size: 18px;
-
-    letter-spacing: 0.15em;
-
-    margin-bottom: 8px;
-}
-
-.modal-type {
-    color: #7c2727;
-
-    font-size: 9px;
-
-    letter-spacing: 0.2em;
-
-    margin-bottom: 22px;
-}
-
-.modal-dialogue {
-    color: #ccc;
-
-    line-height: 1.7;
-
-    font-size: 13px;
-}
-
-.action-result-count,
-.evidence-counter {
-    margin-top: 20px;
-
-    color: #777;
-
-    font-size: 9px;
-
-    letter-spacing: 0.12em;
-}
-
-.evidence-list {
-    margin-top: 15px;
-}
-
-.evidence-item {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-
-    padding: 12px;
-
-    margin-bottom: 8px;
-
-    border-left: 2px solid #672727;
-
-    background: #181818;
-}
-
-.evidence-item strong {
-    font-size: 10px;
-
-    letter-spacing: 0.12em;
-
-    color: #aaa;
-}
-
-.evidence-item span {
-    font-size: 11px;
-
-    color: #ccc;
-
-    line-height: 1.5;
-}
-
-
-/* =========================================================
-   DECISION
-========================================================= */
-
-#decision-screen {
-    align-items: center;
-    justify-content: center;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #1d1111,
-            #070707 65%
-        );
-
-    padding: 25px;
-}
-
-.decision-container {
-    width: min(700px, 100%);
-    text-align: center;
-}
-
-.decision-heading {
-    margin-bottom: 35px;
-}
-
-.decision-symbol {
-    font-family: Georgia, serif;
-
-    font-size: 70px;
-
-    color: #d52c2c;
-
-    line-height: 1;
-
-    margin-bottom: 15px;
-}
-
-.decision-heading h2 {
-    font-size: 28px;
-
-    font-weight: 400;
-
-    letter-spacing: 0.13em;
-}
-
-.decision-heading p {
-    color: #777;
-
-    margin-top: 10px;
-
-    font-size: 12px;
-}
-
-.decision-section {
-    margin-bottom: 28px;
-}
-
-.decision-section h3 {
-    font-size: 10px;
-
-    letter-spacing: 0.2em;
-
-    color: #777;
-
-    margin-bottom: 12px;
-}
-
-.decision-options {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-    gap: 8px;
-}
-
-.decision-options button {
-    min-height: 54px;
-
-    border: 1px solid #363636;
-
-    background: #111;
-
-    color: #aaa;
-
-    cursor: pointer;
-
-    transition:
-        border-color 0.2s,
-        background 0.2s,
-        color 0.2s;
-}
-
-.decision-options button:hover {
-    border-color: #888;
-    color: #eee;
-}
-
-.decision-options button.selected {
-    background: #351414;
-
-    border-color: #c12d2d;
-
-    color: #fff;
-
-    box-shadow:
-        inset 0 0 0 1px #702020;
-}
-
-.suit-options button {
-    font-family: Georgia, serif;
-    font-size: 30px;
-}
-
-.submit-button {
-    margin-top: 8px;
-    width: 100%;
-}
-
+#decision-screen { align-items: center; justify-content: center; background: radial-gradient(circle at center, #1d1111, #070707 65%); padding: 25px; }
+.decision-container { width: min(700px, 100%); text-align: center; }
+.decision-heading { margin-bottom: 35px; }
+.decision-symbol { font-family: Georgia, serif; font-size: 70px; color: #d52c2c; line-height: 1; margin-bottom: 15px; }
+.decision-heading h2 { font-size: 28px; font-weight: 400; letter-spacing: 0.13em; }
+.decision-heading p { color: #777; margin-top: 10px; font-size: 12px; }
+.decision-section { margin-bottom: 28px; }
+.decision-section h3 { font-size: 10px; letter-spacing: 0.2em; color: #777; margin-bottom: 12px; }
+
+.decision-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.decision-options button { min-height: 54px; border: 1px solid #363636; background: #111; color: #aaa; cursor: pointer; transition: border-color 0.2s, background 0.2s, color 0.2s; }
+.decision-options button:hover { border-color: #888; color: #eee; }
+.decision-options button.selected { background: #351414; border-color: #c12d2d; color: #fff; box-shadow: inset 0 0 0 1px #702020; }
+.suit-options button { font-family: Georgia, serif; font-size: 30px; }
+.submit-button { margin-top: 8px; width: 100%; }
 
 /* =========================================================
    SECOND CHANCE
 ========================================================= */
-
-#second-chance-screen {
-    align-items: center;
-    justify-content: center;
-
-    padding: 25px;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #281212,
-            #070707 68%
-        );
-}
-
-.second-chance-container {
-    width: min(650px, 100%);
-    text-align: center;
-}
-
-.second-chance-symbol {
-    font-family: Georgia, serif;
-
-    font-size: 75px;
-
-    color: #d72b2b;
-
-    line-height: 1;
-}
-
-.second-chance-container h2 {
-    font-size: 28px;
-
-    font-weight: 400;
-
-    letter-spacing: 0.1em;
-
-    margin-top: 15px;
-}
-
-.second-chance-line {
-    width: 140px;
-    height: 1px;
-
-    background: #7b2929;
-
-    margin: 20px auto;
-}
-
-.second-chance-container p {
-    color: #888;
-
-    font-size: 12px;
-
-    line-height: 1.7;
-
-    max-width: 480px;
-
-    margin: 8px auto;
-}
-
-.second-chance-warning {
-    color: #d42c2c !important;
-
-    font-size: 14px !important;
-
-    letter-spacing: 0.15em;
-}
-
-.second-chance-timer {
-    font-size: 38px;
-
-    margin: 30px 0;
-
-    color: #eee;
-}
-
-.second-chance-timer.timer-danger {
-    color: #e66a3d;
-}
-
-.second-chance-timer.timer-critical {
-    color: #ed2929;
-
-    animation:
-        timerPulse
-        0.8s
-        infinite
-        alternate;
-}
-
-.second-chance-buttons {
-    display: flex;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    flex-wrap: wrap;
-}
-
+#second-chance-screen { align-items: center; justify-content: center; padding: 25px; background: radial-gradient(circle at center, #281212, #070707 68%); }
+.second-chance-container { width: min(650px, 100%); text-align: center; }
+.second-chance-symbol { font-family: Georgia, serif; font-size: 75px; color: #d72b2b; line-height: 1; }
+.second-chance-container h2 { font-size: 28px; font-weight: 400; letter-spacing: 0.1em; margin-top: 15px; }
+.second-chance-line { width: 140px; height: 1px; background: #7b2929; margin: 20px auto; }
+.second-chance-container p { color: #888; font-size: 12px; line-height: 1.7; max-width: 480px; margin: 8px auto; }
+.second-chance-warning { color: #d42c2c !important; font-size: 14px !important; letter-spacing: 0.15em; }
+.second-chance-timer { font-size: 38px; margin: 30px 0; color: #eee; }
+.second-chance-timer.timer-danger { color: #e66a3d; }
+.second-chance-timer.timer-critical { color: #ed2929; animation: timerPulse 0.8s infinite alternate; }
+.second-chance-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 
 /* =========================================================
-   RESULT
+   RESULT SCREEN (GAME OVER / CLEAR)
 ========================================================= */
-
-#result-screen {
-    align-items: center;
-    justify-content: center;
-
-    padding: 25px;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #131313,
-            #030303 70%
-        );
-}
-
-.result-container {
-    width: min(600px, 100%);
-    text-align: center;
-}
-
-.result-symbol {
-    font-family: Georgia, serif;
-
-    font-size: 90px;
-
-    color: #c8c8c8;
-
-    line-height: 1;
-
-    margin-bottom: 15px;
-}
-
-.result-container h2 {
-    font-size: 30px;
-
-    font-weight: 400;
-
-    letter-spacing: 0.13em;
-}
-
-.result-container p {
-    color: #999;
-
-    font-size: 13px;
-
-    line-height: 1.8;
-
-    margin: 25px auto 30px;
-
-    max-width: 500px;
-}
-
-.result-container strong {
-    color: #eee;
-}
-
-#result-screen.game-over .result-symbol {
-    color: #d62c2c;
-}
-
+#result-screen { align-items: center; justify-content: center; padding: 25px; background: radial-gradient(circle at center, #131313, #030303 70%); }
+.result-container { width: min(600px, 100%); text-align: center; }
+.result-symbol { font-family: Georgia, serif; font-size: 90px; color: #c8c8c8; line-height: 1; margin-bottom: 15px; }
+.result-container h2 { font-size: 30px; font-weight: 400; letter-spacing: 0.13em; }
+.result-container p { color: #999; font-size: 13px; line-height: 1.8; margin: 25px auto 30px; max-width: 500px; }
+.result-container strong { color: #eee; }
+#result-screen.game-over .result-symbol { color: #d62c2c; }
 
 /* =========================================================
-   DESKTOP
+   MODAL LAYER (EVIDENCES)
 ========================================================= */
+.modal-layer { display: none; position: fixed; inset: 0; z-index: 150; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0.78); backdrop-filter: blur(5px); }
+.modal-layer.active { display: flex; }
+.modal-box { position: relative; width: min(580px, 100%); max-height: 85vh; overflow-y: auto; padding: 30px 25px; background: #111; border: 1px solid #444; box-shadow: 0 20px 70px rgba(0,0,0,0.8); }
+.modal-close { position: absolute; top: 8px; right: 12px; border: 0; background: transparent; color: #aaa; font-size: 28px; cursor: pointer; }
+.modal-title { font-size: 18px; letter-spacing: 0.15em; margin-bottom: 8px; color: #eee;}
+.evidence-list { margin-top: 15px; }
+.evidence-item { display: flex; flex-direction: column; gap: 5px; padding: 12px; margin-bottom: 8px; border-left: 2px solid #672727; background: #181818; }
+.evidence-item strong { font-size: 10px; letter-spacing: 0.12em; color: #d92929; }
+.evidence-item span { font-size: 12px; color: #ccc; line-height: 1.5; }
 
+/* =========================================================
+   MEDIA QUERIES
+========================================================= */
 @media (min-width: 800px) {
-
-    .game-content {
-        padding-top: 30px;
-    }
-
-    .characters-grid {
-        gap: 22px;
-    }
-
-    .character-stage {
-        height: 330px;
-    }
-
-    .character-figure {
-        transform: scale(1.08);
-    }
-
-    .character-card:hover .character-figure {
-        transform: translateY(-2px) scale(1.105);
-    }
-
+    .game-content { padding-top: 30px; }
+    .characters-grid { gap: 22px; }
+    .character-stage { height: 315px; }
+    .stick-person { scale: 1.2; }
+    .character-card:hover .stick-person { scale: 1.24; }
+    .panel-character-art .stick-person { scale: 1; }
 }
-
-
-/* =========================================================
-   MOBILE / IPAD
-========================================================= */
-
 @media (max-width: 560px) {
-
-    .game-header {
-        height: 60px;
-    }
-
-    .header-title {
-        font-size: 9px;
-    }
-
-    .header-actions {
-        gap: 9px;
-    }
-
-    .actions-counter {
-        font-size: 7px;
-    }
-
-    .actions-counter span {
-        font-size: 10px;
-    }
-
-    .timer {
-        min-width: 65px;
-        font-size: 18px;
-    }
-
-    .game-content {
-        width: 96%;
-        padding-top: 12px;
-    }
-
-    .player-area {
-        margin-bottom: 14px;
-    }
-
-    .characters-grid {
-        gap: 9px;
-    }
-
-    .character-stage {
-        height: 250px;
-    }
-
-    .speech-bubble {
-        width: calc(100% - 12px);
-
-        min-height: 59px;
-
-        padding: 8px 7px 10px;
-
-        border-radius: 11px;
-    }
-
-    .bubble-name {
-        font-size: 6px;
-    }
-
-    .bubble-text {
-        font-size: 9px;
-        line-height: 1.25;
-    }
-
-    .character-figure {
-        transform: scale(0.79);
-    }
-
-    .character-card:hover .character-figure {
-        transform: translateY(-2px) scale(0.81);
-    }
-
-    .character-info {
-        padding: 9px 10px;
-        min-height: 46px;
-    }
-
-    .character-name {
-        font-size: 9px;
-    }
-
-    .character-suit {
-        font-size: 20px;
-    }
-
-    .card-actions {
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-    }
-
-    .action-button {
-        min-height: 37px;
-        font-size: 6px;
-        letter-spacing: 0.04em;
-    }
-
-    .decision-options {
-        gap: 6px;
-    }
-
-    .decision-options button {
-        min-height: 48px;
-        font-size: 9px;
-    }
-
-    .suit-options button {
-        font-size: 25px;
-    }
-
-    .decision-heading h2,
-    .second-chance-container h2 {
-        font-size: 22px;
-    }
-
-    .second-chance-buttons {
-        flex-direction: column;
-    }
-
-    .second-chance-buttons button {
-        width: 100%;
-    }
-
+    .game-header { height: 60px; }
+    .header-title { font-size: 10px; }
+    .timer { font-size: 18px; }
+    .game-content { width: 96%; padding-top: 12px; }
+    .characters-grid { gap: 9px; }
+    .character-stage { height: 230px; }
+    .speech-bubble { width: calc(100% - 12px); min-height: 57px; padding: 8px; border-radius: 11px; }
+    .bubble-name { font-size: 7px; } .bubble-text { font-size: 9px; }
+    .stick-person { scale: 0.85; } .character-card:hover .stick-person { scale: 0.88; }
+    .character-info { padding: 9px 10px; min-height: 46px; }
+    .character-name { font-size: 9px; } .character-suit { font-size: 20px; }
+    .decision-options { gap: 6px; }
+    .decision-options button { min-height: 48px; font-size: 9px; }
+    .suit-options button { font-size: 25px; }
+    .decision-heading h2, .second-chance-container h2 { font-size: 22px; }
+    .second-chance-buttons { flex-direction: column; } .second-chance-buttons button { width: 100%; }
 }
-
-
-/* =========================================================
-   VERY SMALL
-========================================================= */
-
 @media (max-width: 380px) {
-
-    .character-stage {
-        height: 235px;
-    }
-
-    .character-figure {
-        transform: scale(0.71);
-    }
-
-    .character-card:hover .character-figure {
-        transform: translateY(-2px) scale(0.73);
-    }
-
-    .character-name {
-        font-size: 8px;
-    }
-
-    .action-button {
-        font-size: 5.5px;
-    }
-
-    .speech-bubble {
-        min-height: 54px;
-    }
-
-    .bubble-text {
-        font-size: 8px;
-    }
-
+    .character-stage { height: 215px; }
+    .stick-person { scale: 0.76; } .character-card:hover .stick-person { scale: 0.79; }
+    .character-name { font-size: 8px; } .speech-bubble { min-height: 53px; } .bubble-text { font-size: 8px; }
 }
