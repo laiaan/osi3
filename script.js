@@ -16,7 +16,9 @@ const characters = {
         observe: "Mostra calma absoluta, observa als altres. Mira l'Arisu al parlar, i mira el collar de la Usagi quan diu ♥ sense immutar-se.",
         investigate: "Manté que veu ♣. No pregunta què veuen els altres i redirigeix la conversa hàbilment.",
         questions: [
-            { id: "q1", q: "Per què t'hauria de creure?", a: "No ho facis. Confiar en algú aquí és el primer pas per morir." }
+            { id: "q1", q: "Per què t'hauria de creure?", a: "No ho facis. Confiar en algú aquí és el primer pas per morir." },
+            { id: "q2", q: "Quin interès tens en què jo visqui?", a: "Cap ni un. Només m'avorreixo i vull veure com reaccioneu." },
+            { id: "q3", q: "Qui creus que menteix dels altres?", a: "Tothom menteix, només has de descobrir qui ho fa pitjor." }
         ]
     },
     arisu: {
@@ -25,7 +27,9 @@ const characters = {
         observe: "Té gestos nerviosos. Es frega les mans, mira a terra i mira breument a la Usagi per apartar la mirada ràpidament.",
         investigate: "S'atura en parlar i corregeix algunes paraules. Manté el ♦. Deixa el dubte obert sobre si menteix o simplement té por.",
         questions: [
-            { id: "q1", q: "Per què estàs tan nerviós?", a: "Perquè si t'equivoques, et maten. I si jo m'equivoco, també em maten." }
+            { id: "q1", q: "Per què estàs tan nerviós?", a: "Perquè si t'equivoques, et maten. I si jo m'equivoco, també em maten." },
+            { id: "q2", q: "Estàs segur del que veus al meu coll?", a: "I tant... (empassa saliva) no jugaria pas amb la vida d'un altre." },
+            { id: "q3", q: "Creus que l'Usagi diu la veritat?", a: "No ho sé! Això és una bogeria, no puc pensar amb claredat!" }
         ]
     },
     kuina: {
@@ -34,7 +38,9 @@ const characters = {
         observe: "Fa gestos de suport cap a l'Arisu i cap a tu quan sembles bloquejat. Manté una postura segura.",
         investigate: "Manté el ♠. Es revela que anteriorment va preguntar a l'Arisu què faria si algú estigués mentint, fet ambigu.",
         questions: [
-            { id: "q1", q: "Com sé que no m'enganyes?", a: "Si vols saber què faria jo... miraria qui canvia més la seva història." }
+            { id: "q1", q: "Com sé que no m'enganyes?", a: "Si vols saber què faria jo... miraria qui canvia més la seva història." },
+            { id: "q2", q: "Què hi guanyes tu mentint?", a: "Res. Jo només vull sortir d'aquí amb vida, igual que tu." },
+            { id: "q3", q: "Notes alguna cosa estranya en el Chishiya?", a: "Sempre té la mateixa cara. És impossible saber què pensa." }
         ]
     },
     usagi: {
@@ -43,7 +49,9 @@ const characters = {
         observe: "Postura controlada, precisa. S'allunya lleugerament quan et veu confós sense intentar convèncer-te a la força.",
         investigate: "Manté ♥ des de l'inici. Respon de manera directa, sense inventar dades addicionals i no acusa ni defensa a ningú.",
         questions: [
-            { id: "q1", q: "M'estàs dient la veritat?", a: "No ho hauries de fer perquè t'ho digui jo. Mira què fa cadascú i decideix-ho tu." }
+            { id: "q1", q: "M'estàs dient la veritat?", a: "No ho hauries de fer perquè t'ho digui jo. Mira què fa cadascú i decideix-ho tu." },
+            { id: "q2", q: "Per què no intentes convèncer-me més?", a: "Si t'obligo a creure'm i et mors, serà culpa meva. La decisió és teva." },
+            { id: "q3", q: "Tens por de morir?", a: "Tothom en té. Però no deixaré que la por em faci mentir per matar un innocent." }
         ]
     }
 };
@@ -202,7 +210,6 @@ function startMainTimer() {
 
         if (state.timeLeft <= 0) {
             clearInterval(state.timer);
-            // Dossier: Expiración sin respuesta fuerza la Segunda Oportunidad (o Game Over si ya estábamos allí)
             if (!state.firstAttemptFinished) {
                 state.firstAttemptFinished = true;
                 enterSecondChance();
@@ -307,7 +314,7 @@ function executeCharacterAction(button, key) {
         const askedQ = character.questions.find(q => q.id === select.value);
         state.evidence[key].push(`💬 PREGUNTA: ${askedQ.q} -> R: ${askedQ.a}`);
         
-        openCharacterPanel(key); // Refresh panel
+        openCharacterPanel(key); 
         return; 
     }
 
@@ -318,7 +325,6 @@ function executeCharacterAction(button, key) {
 function closeCharacterPanel() {
     characterPanel.classList.remove("active");
 }
-
 
 /* =========================================================
    DECISION SCREEN
@@ -473,12 +479,10 @@ function showGameOver() {
     showScreen(resultScreen);
 }
 
-
 /* =========================================================
    EVENT LISTENERS INITIALIZATION
 ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
-    // Escenas
     startButton.addEventListener("click", () => showScreen(rulesScreen));
     beginInvestigationButton.addEventListener("click", () => {
         resetState();
@@ -486,7 +490,6 @@ document.addEventListener('DOMContentLoaded', () => {
         startMainTimer();
     });
 
-    // Cartas de personaje (abrir modal)
     document.querySelectorAll(".character-card").forEach((card) => {
         card.addEventListener("click", () => openCharacterPanel(card.dataset.character));
         card.addEventListener("keydown", (e) => {
@@ -497,7 +500,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Botones
     finalDecisionButton.addEventListener("click", showDecisionScreen);
     submitDecisionButton.addEventListener("click", submitDecision);
     reviewEvidenceButton.addEventListener("click", reviewEvidence);
@@ -510,12 +512,10 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen(openingScreen);
     });
 
-    // Cerrar modal al clicar fuera
     modalLayer.addEventListener("click", (e) => {
         if (e.target === modalLayer) closeModal();
     });
 
-    // Tecla Escape para modales
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
             closeModal();
@@ -523,7 +523,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Arrancar la app
     renderCharacters();
     showScreen(openingScreen);
 });
