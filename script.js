@@ -12,46 +12,46 @@ const SOLUTION = {
 const characters = {
     chishiya: {
         name: "CHISHIYA", suit: "♣", truth: false,
-        statements: ["El teu pal és ♣."],
-        observe: "Mostra calma absoluta, observa als altres. Mira l'Arisu al parlar, i mira el collar de la Usagi quan diu ♥ sense immutar-se.",
-        investigate: "Manté que veu ♣. No pregunta què veuen els altres i redirigeix la conversa hàbilment.",
+        statements: ["És ♣. Ja tens quatre respostes. Una és correcta. No necessites que jo et faci la feina."],
+        observe: "Roman assegut i aparentment tranquil. Quan l'Arisu parla, el mira. Quan la Usagi diu ♥, mira breument el seu collar i després a tu. No mostra sorpresa. Sembla més interessat en les reaccions que en les paraules. Fa un somriure molt subtil. Quan et mostres confós, no t'ajuda directament.",
+        investigate: "Ha mantingut ♣ des del principi. No ha preguntat als altres quin pal han vist. Presta molta atenció a les reaccions de la resta. Quan se'l pressiona, tendeix a redirigir la conversa. Evita donar explicacions fàcilment contrastables. En diversos moments dirigeix la teva atenció cap als altres. No s'han detectat canvis en la seva versió.",
         questions: [
-            { id: "q1", q: "Per què t'hauria de creure?", a: "No ho facis. Confiar en algú aquí és el primer pas per morir." },
-            { id: "q2", q: "Quin interès tens en què jo visqui?", a: "Cap ni un. Només m'avorreixo i vull veure com reaccioneu." },
-            { id: "q3", q: "Qui creus que menteix dels altres?", a: "Tothom menteix, només has de descobrir qui ho fa pitjor." }
+            { id: "q1", q: "Per què t'hauria de creure?", a: "No ho facis. Si necessites que et convenci, probablement no sóc la persona que hauries d'escollir." },
+            { id: "q2", q: "Qui et sembla més sospitós?", a: "No és la pregunta correcta. Hauries de preguntar-te qui necessita que desconfiïs dels altres." },
+            { id: "q3", q: "Què estàs intentant fer?", a: "Que decideixis tu. Si et dic què has de pensar, ja no serà la teva decisió." }
         ]
     },
     arisu: {
         name: "ARISU", suit: "♦", truth: false,
-        statements: ["El teu pal és ♦."],
-        observe: "Té gestos nerviosos. Es frega les mans, mira a terra i mira breument a la Usagi per apartar la mirada ràpidament.",
-        investigate: "S'atura en parlar i corregeix algunes paraules. Manté el ♦. Deixa el dubte obert sobre si menteix o simplement té por.",
+        statements: ["És ♦. Ho sento. Sé que no és gaire útil dir-t'ho així, però és el que estic veient."],
+        observe: "Quan el Chishiya parla, sembla que vol intervenir. Obre la boca però s'atura i diu 'No, res'. Quan la Kuina parla, mira a terra i es frega les mans. Quan la Usagi diu ♥, la mira durant uns segons i després aparta la mirada ràpidament.",
+        investigate: "Abans de respondre, ha començat dues frases i n'ha interromput una. Ha demanat que li repetissin una pregunta. Quan se li pregunta directament pel seu pal, respon sense vacil·lar. En explicar un moment anterior, ha corregit una paraula abans de continuar (ha dit 'Quan ens han posat...' i ha corregit a 'Quan ens han fet mirar els collars'). No s'han detectat canvis en la seva versió ♦.",
         questions: [
-            { id: "q1", q: "Per què estàs tan nerviós?", a: "Perquè si t'equivoques, et maten. I si jo m'equivoco, també em maten." },
-            { id: "q2", q: "Estàs segur del que veus al meu coll?", a: "I tant... (empassa saliva) no jugaria pas amb la vida d'un altre." },
-            { id: "q3", q: "Creus que l'Usagi diu la veritat?", a: "No ho sé! Això és una bogeria, no puc pensar amb claredat!" }
+            { id: "q1", q: "Per què estàs tan nerviós?", a: "Perquè si t'equivoques, et maten. I perquè sé que jo podria estar en la teva situació." },
+            { id: "q2", q: "Per què hauria de creure't?", a: "No ho sé. Jo tampoc confiaria en mi si estigués al teu lloc." },
+            { id: "q3", q: "Què creus que està passant aquí?", a: "Que algú està intentant semblar més segur del que és. I no sé si ho fa perquè menteix o perquè té por." }
         ]
     },
     kuina: {
         name: "KUINA", suit: "♠", truth: false,
-        statements: ["El teu pal és ♠."],
-        observe: "Fa gestos de suport cap a l'Arisu i cap a tu quan sembles bloquejat. Manté una postura segura.",
-        investigate: "Manté el ♠. Es revela que anteriorment va preguntar a l'Arisu què faria si algú estigués mentint, fet ambigu.",
+        statements: ["És ♠. No sé si et servirà de res que t'ho digui, però és el que veig."],
+        observe: "Quan l'Arisu està nerviós, se'l mira. Quan el Chishiya domina la conversa, es concentra en tu. Quan sembles bloquejat, fa un petit gest per tranquil·litzar-te i somriu lleument. No intenta interrompre. Sembla més preocupada pel teu estat emocional que per les respostes.",
+        investigate: "Abans de començar ha preguntat a l'Arisu si tothom estava bé. Durant el joc intenta reduir la tensió quan algú sembla nerviós. Quan el Chishiya domina la conversa, deixa de participar durant uns instants. Mai canvia ♠. Abans de començar havia preguntat a l'Arisu què faria si algú estigués mentint.",
         questions: [
-            { id: "q1", q: "Com sé que no m'enganyes?", a: "Si vols saber què faria jo... miraria qui canvia més la seva història." },
-            { id: "q2", q: "Què hi guanyes tu mentint?", a: "Res. Jo només vull sortir d'aquí amb vida, igual que tu." },
-            { id: "q3", q: "Notes alguna cosa estranya en el Chishiya?", a: "Sempre té la mateixa cara. És impossible saber què pensa." }
+            { id: "q1", q: "Per què hauria de confiar en tu?", a: "No hauries de fer-ho. No perquè jo estigui mentint, sinó perquè no em coneixes. Però si vols saber què faria jo... miraria qui canvia més la seva història." },
+            { id: "q2", q: "Qui et sembla més sospitós?", a: "El Chishiya. Perquè sembla que ja sap què faràs abans que ho facis." },
+            { id: "q3", q: "Què creus que està fent l'Arisu?", a: "Intentant no equivocar-se. No sé si això el fa més o menys fiable." }
         ]
     },
     usagi: {
         name: "USAGI", truth: true, suit: "♥",
-        statements: ["El teu pal és ♥."],
-        observe: "Postura controlada, precisa. S'allunya lleugerament quan et veu confós sense intentar convèncer-te a la força.",
-        investigate: "Manté ♥ des de l'inici. Respon de manera directa, sense inventar dades addicionals i no acusa ni defensa a ningú.",
+        statements: ["És ♥. (Pausa). Això és el que veig."],
+        observe: "No intervé mentre els altres parlen. Mira breument a l'Arisu quan ell diu ♦ i observa al Chishiya quan ell parla. No mostra una reacció exagerada a la Kuina. Quan et mostres confós, fa un petit pas enrere. No intenta acostar-se ni convèncer-te. Pot mirar el teu collar durant uns segons i després tornar-te a mirar als ulls.",
+        investigate: "Ha mantingut ♥ des del principi. Respon les preguntes directament. No intenta canviar la teva opinió sobre els altres. Quan un altre jugador és qüestionat, no el defensa ni l'acusa. Quan se li demana confirmar una resposta, no afegeix informació que no pot saber. En una segona confirmació tarda uns segons més, però la resposta continua sent ♥.",
         questions: [
-            { id: "q1", q: "M'estàs dient la veritat?", a: "No ho hauries de fer perquè t'ho digui jo. Mira què fa cadascú i decideix-ho tu." },
-            { id: "q2", q: "Per què no intentes convèncer-me més?", a: "Si t'obligo a creure'm i et mors, serà culpa meva. La decisió és teva." },
-            { id: "q3", q: "Tens por de morir?", a: "Tothom en té. Però no deixaré que la por em faci mentir per matar un innocent." }
+            { id: "q1", q: "Per què hauria de creure't?", a: "No ho hauries de fer perquè t'ho digui jo. Mira què fa cadascú i decideix-ho tu." },
+            { id: "q2", q: "I si t'estàs equivocant?", a: "Llavors m'hauré equivocat. Però no et diré que he vist una altra cosa només perquè soni més segur." },
+            { id: "q3", q: "Qui et sembla més difícil de llegir?", a: "El Chishiya. Però això no vol dir que estigui mentint." }
         ]
     }
 };
