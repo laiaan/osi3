@@ -1,1 +1,115 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JOC 2 — LES CINC DECISIONS</title>
+  <!-- Tipografies estil thriller industrial -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-overlay"></div>
+  <div class="scanline"></div>
 
+  <div class="game-wrapper">
+    <!-- Capçalera Global -->
+    <header class="game-header">
+      <div class="brand">JOC 2</div>
+      <div class="subtitle">LES CINC DECISIONS</div>
+    </header>
+
+    <!-- Contenidor Principal de Pantalles -->
+    <main class="game-container">
+      
+      <!-- 1. Pantalla d'Inici -->
+      <section id="view-start" class="view active">
+        <div class="card start-card">
+          <h1 class="title-lg">GIMCANA D'ANIVERSARI</h1>
+          <p class="tagline">Prova Especial per a Marcel</p>
+          <div class="divider"></div>
+          <div class="rules-box">
+            <p class="rules-title">PROTOCOL DEL JOC:</p>
+            <ul>
+              <li>5 sales d'avaluació crítica.</li>
+              <li>5 minuts per sala (05:00).</li>
+              <li>3 opcions disponibles per decisió.</li>
+              <li>Cada decisió genera una pista.</li>
+              <li>Les decisions són definitives i irreversible.</li>
+            </ul>
+          </div>
+          <button id="btn-start" class="btn btn-primary btn-block">COMENÇAR EL JOC</button>
+        </div>
+      </section>
+
+      <!-- 2. Pantalla de Sala / Prova -->
+      <section id="view-room" class="view">
+        <div class="room-top-bar">
+          <div class="room-badge" id="room-badge">SALA 01 / 05</div>
+          <div class="timer-box" id="timer-box">
+            <span class="timer-label">TEMPS</span>
+            <span class="timer-digits" id="timer-display">05:00</span>
+          </div>
+        </div>
+
+        <div class="card room-card">
+          <h2 class="room-title" id="room-title">SALA 01</h2>
+          <div class="room-narrative" id="room-narrative">
+            <!-- Text narratiu dinamitzat per script.js -->
+          </div>
+          
+          <div class="options-container" id="options-container">
+            <!-- Botons d'opció dinamitzats per script.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Pantalla de Transició -->
+      <section id="view-transition" class="view">
+        <div class="transition-box">
+          <div class="pulse-loader"></div>
+          <div class="transition-text" id="transition-status">ELECCIÓ REGISTRADA</div>
+        </div>
+      </section>
+
+      <!-- 4. Pantalla de Pista Individual -->
+      <section id="view-clue" class="view">
+        <div class="card clue-card">
+          <div class="clue-header-badge" id="clue-room-title">SALA 01 — PISTA 01</div>
+          <div class="clue-content">
+            <p class="clue-text" id="clue-text-body">Carregant pista...</p>
+          </div>
+          <div class="clue-status-tag">PISTA REGISTRADA.</div>
+          <button id="btn-next-room" class="btn btn-primary btn-block">CONTINUAR</button>
+        </div>
+      </section>
+
+      <!-- 5. Pantalla Final (Les 5 Pistes) -->
+      <section id="view-final" class="view">
+        <div class="card final-card">
+          <h1 class="title-lg">LES CINC PISTES</h1>
+          <p class="subtitle-md">Resum d'informació acumulada</p>
+          <div class="divider"></div>
+          
+          <div class="final-clues-list" id="final-clues-list">
+            <!-- Les 5 pistes acumulades -->
+          </div>
+
+          <div class="final-note">
+            <p>Analitza les pistes obtingudes, recorda les teves decisions i dedueix quina informació és de confiança per trobar el regal.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="game-footer">
+      <span>LES CINC DECISIONS — MARCEL</span>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
