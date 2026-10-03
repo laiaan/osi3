@@ -103,7 +103,6 @@ const finalDecisionButton = $("final-decision-button");
 const submitDecisionButton = $("submit-decision");
 const secondChanceTimer = $("second-chance-timer");
 const reviewEvidenceButton = $("review-evidence");
-const reviewEvidenceButton2 = $("review-evidence-2");
 const changeDecisionButton = $("change-decision");
 
 const modalLayer = $("modal-layer");
@@ -191,7 +190,7 @@ function resetState() {
         state.evidence[key] = [];
     });
 
-    playerCollar.innerHTML = `EL TEU COLLAR: <span>?</span>`;
+    playerCollar.textContent = "?";
     submitDecisionButton.disabled = true;
 
     document.querySelectorAll("#truth-choice button, #suit-choice button").forEach(btn => btn.classList.remove("selected"));
@@ -224,14 +223,14 @@ function updateTimer() {
     const seconds = Math.max(0, state.timeLeft % 60);
     timer.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
-    timer.className = "timer";
+    timer.classList.remove("timer-warning", "timer-danger", "timer-critical");
     if (state.timeLeft <= 30) timer.classList.add("timer-critical");
     else if (state.timeLeft <= 120) timer.classList.add("timer-danger");
     else if (state.timeLeft <= 300) timer.classList.add("timer-warning");
 }
 
 /* =========================================================
-   CHARACTER MODAL
+   CHARACTER MODAL (PANEL INVESTIGACIÓN)
 ========================================================= */
 function openCharacterPanel(key) {
     const isReadOnly = state.secondChanceActive;
@@ -240,6 +239,7 @@ function openCharacterPanel(key) {
     
     if (!character) return;
 
+    // Mostrar les preguntes que ja ha fet (màxim 2)
     let askedQuestionsHTML = cState.askedQuestions.map(q => `
         <div class="action-result visible" style="margin-bottom:8px;">
             <strong>Tu:</strong> ${q.q}<br>
@@ -247,6 +247,7 @@ function openCharacterPanel(key) {
         </div>
     `).join('');
 
+    // Controls per seguir preguntant si no n'ha fet 2 encara
     let askControlsHTML = '';
     if (cState.questionsAskedCount < 2 && !isReadOnly) {
         let availableOptions = character.questions.filter(q => !cState.askedQuestions.some(aq => aq.id === q.id));
@@ -270,7 +271,7 @@ function openCharacterPanel(key) {
         <div class="panel-character-name">${character.name}</div>
         <div class="panel-character-suit">Afirma veure: ${character.suit}</div>
         
-        <div class="panel-statements" style="width: 100%;">
+        <div class="panel-statements">
             <h3>ACCIONS D'INVESTIGACIÓ</h3>
             
             <div class="action-group">
@@ -322,7 +323,7 @@ function executeCharacterAction(button, key) {
     }
     else if (action === 'ask') {
         const select = document.getElementById(`question-select-${key}`);
-        if (!select || !select.value) return; 
+        if (!select.value) return; 
         
         cState.questionsAskedCount++;
         const askedQ = character.questions.find(q => q.id === select.value);
@@ -390,7 +391,7 @@ function submitDecision() {
 function enterSecondChance() {
     clearInterval(state.timer);
     state.secondChanceActive = true;
-    state.timeLeft = 120; 
+    state.timeLeft = 120; // 02:00
 
     closeModal();
     closeCharacterPanel();
@@ -414,6 +415,10 @@ function updateSecondChanceTimer() {
     const minutes = Math.max(0, Math.floor(state.timeLeft / 60));
     const seconds = Math.max(0, state.timeLeft % 60);
     secondChanceTimer.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+    secondChanceTimer.classList.remove("timer-danger", "timer-critical");
+    if (state.timeLeft <= 30) secondChanceTimer.classList.add("timer-critical");
+    else if (state.timeLeft <= 60) secondChanceTimer.classList.add("timer-danger");
 }
 
 function changeDecision() {
@@ -422,7 +427,7 @@ function changeDecision() {
 }
 
 /* =========================================================
-   REVIEW EVIDENCE & MODALS
+   REVIEW EVIDENCE (MODAL)
 ========================================================= */
 function reviewEvidence() {
     let html = `<div class="modal-title">EVIDÈNCIES RECOPILADES</div>`;
@@ -431,7 +436,7 @@ function reviewEvidence() {
     );
 
     if (allEvidence.length === 0) {
-        html += `<p style="text-align: center; color: #888; padding: 20px;">No has recopilat cap prova.</p>`;
+        html += `<p class="modal-dialogue">No has recopilat cap prova.</p>`;
     } else {
         html += `<div class="evidence-list">`;
         allEvidence.forEach(item => {
@@ -445,9 +450,11 @@ function reviewEvidence() {
 function openModal(content) {
     modalContent.innerHTML = content;
     modalLayer.classList.add("active");
+    document.body.classList.add("modal-open");
 }
 function closeModal() {
     modalLayer.classList.remove("active");
+    document.body.classList.remove("modal-open");
 }
 
 /* =========================================================
@@ -459,19 +466,15 @@ function showSuccess() {
     closeModal();
     closeCharacterPanel();
 
-    playerCollar.innerHTML = `EL TEU COLLAR: <span>${SOLUTION.suit}</span>`;
+    playerCollar.textContent = SOLUTION.suit;
     resultScreen.classList.remove("game-over");
     resultSymbol.textContent = "♥";
     resultTitle.textContent = "GAME CLEAR";
     resultText.innerHTML = `
         <strong>L'Usagi</strong> deia la veritat.<br>El teu collar és el <strong>♥</strong>.<br><br>
         Has superat el joc...<br><br>
-        <span style="letter-spacing: 0.1em; color: #fff; font-size: 0.9rem;">TIME WAS NEVER ON YOUR SIDE.</span>
+        <span style="letter-spacing: 0.1em; color: #fff; font-size: 15px;">TIME WAS NEVER ON YOUR SIDE.</span>
     `;
-    
-    // Mostrem el botó per saltar a la Sala 2
-    document.getElementById("next-room-btn").classList.remove("hidden");
-
     showScreen(resultScreen);
 }
 
@@ -485,7 +488,6 @@ function showGameOver() {
     resultSymbol.textContent = "×";
     resultTitle.textContent = "GAME OVER";
     resultText.innerHTML = `No has aconseguit identificar correctament qui deia la veritat. El temps s'ha acabat.`;
-    document.getElementById("next-room-btn").classList.add("hidden");
     showScreen(resultScreen);
 }
 
@@ -493,8 +495,8 @@ function showGameOver() {
    EVENT LISTENERS INITIALIZATION
 ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
-    if (startButton) startButton.addEventListener("click", () => showScreen(rulesScreen));
-    if (beginInvestigationButton) beginInvestigationButton.addEventListener("click", () => {
+    startButton.addEventListener("click", () => showScreen(rulesScreen));
+    beginInvestigationButton.addEventListener("click", () => {
         resetState();
         showScreen(gameScreen);
         startMainTimer();
@@ -510,32 +512,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    if (finalDecisionButton) finalDecisionButton.addEventListener("click", showDecisionScreen);
-    if (submitDecisionButton) submitDecisionButton.addEventListener("click", submitDecision);
-    if (reviewEvidenceButton) reviewEvidenceButton.addEventListener("click", reviewEvidence);
-    if (reviewEvidenceButton2) reviewEvidenceButton2.addEventListener("click", reviewEvidence);
-    if (changeDecisionButton) changeDecisionButton.addEventListener("click", changeDecision);
-    if (characterPanelClose) characterPanelClose.addEventListener("click", closeCharacterPanel);
-    if (modalClose) modalClose.addEventListener("click", closeModal);
+    finalDecisionButton.addEventListener("click", showDecisionScreen);
+    submitDecisionButton.addEventListener("click", submitDecision);
+    reviewEvidenceButton.addEventListener("click", reviewEvidence);
+    changeDecisionButton.addEventListener("click", changeDecision);
+    characterPanelClose.addEventListener("click", closeCharacterPanel);
+    modalClose.addEventListener("click", closeModal);
     
-    if (restartButton) restartButton.addEventListener("click", () => {
+    restartButton.addEventListener("click", () => {
         resetState();
         showScreen(openingScreen);
     });
-    
-    // SALTA A LA SALA 2 DIRECTAMENT
-    const nextRoomBtn = document.getElementById("next-room-btn");
-    if (nextRoomBtn) {
-        nextRoomBtn.addEventListener("click", () => {
-            window.location.href = "../Sala2/";
-        });
-    }
 
-    if (modalLayer) {
-        modalLayer.addEventListener("click", (e) => {
-            if (e.target === modalLayer) closeModal();
-        });
-    }
+    modalLayer.addEventListener("click", (e) => {
+        if (e.target === modalLayer) closeModal();
+    });
 
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
