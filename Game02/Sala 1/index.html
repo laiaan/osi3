@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GAME 02 - SALA 01</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HUD (Sempre visible durant el joc) -->
+    <div id="hud" class="hidden">
+        <div class="hud-top">
+            <div class="hud-left">GAME 02 — ROUND 01</div>
+            <div id="timer" class="hud-center">05:00</div>
+            <div id="survivors-count" class="hud-right">SURVIVORS: 6</div>
+        </div>
+        <div id="light-indicator" class="light-indicator green">GREEN LIGHT</div>
+    </div>
+
+    <!-- DIÀLEGS -->
+    <div id="dialogue-container" class="hidden">
+        <div id="dialogue-name"></div>
+        <div id="dialogue-text"></div>
+    </div>
+
+    <!-- CANVAS DEL JOC -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- JOYSTICK (Només mòbil) -->
+    <div id="joystick-zone" class="hidden">
+        <div id="joystick-base">
+            <div id="joystick-stick"></div>
+        </div>
+    </div>
+
+    <!-- INTRO CINEMATOGRÀFICA -->
+    <div id="screen-intro" class="screen">
+        <div class="intro-content">
+            <h1 id="intro-title" class="fade-text">GAME 02</h1>
+            <h2 id="intro-subtitle" class="fade-text hidden">ROUND 01</h2>
+            <h3 id="intro-name" class="fade-text hidden">RED LIGHT / GREEN LIGHT</h3>
+            <div id="intro-rules" class="hidden">
+                <p>ARRIBA A LA PORTA ABANS QUE S'ACABI EL TEMPS.</p>
+                <p><span class="green-text">🟢 GREEN LIGHT</span><br>YOU MAY MOVE.</p>
+                <p><span class="red-text">🔴 RED LIGHT</span><br>DO NOT MOVE.</p>
+                <p>IF YOU ARE DETECTED MOVING, YOU WILL BE ELIMINATED.</p>
+                <button id="btn-start" class="btn">START [05:00]</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FEEDBACK DE DETECCIÓ -->
+    <div id="screen-detected" class="screen hidden">
+        <div class="glitch-text red-text huge-text">DETECTED</div>
+    </div>
+
+    <!-- GAME OVER -->
+    <div id="screen-gameover" class="screen hidden">
+        <div class="center-content">
+            <h1 class="red-text huge-text">ELIMINATED</h1>
+            <h2>ROUND 01</h2>
+            <p>YOU WERE DETECTED.</p>
+            <button id="btn-retry" class="btn mt-2">RETRY</button>
+        </div>
+    </div>
+
+    <!-- TIME UP -->
+    <div id="screen-timeup" class="screen hidden">
+        <div class="center-content">
+            <h1 class="red-text huge-text">TIME'S UP</h1>
+            <h2>ROUND 01</h2>
+            <p>YOU DID NOT REACH THE EXIT.</p>
+            <button id="btn-retry-time" class="btn mt-2">RETRY</button>
+        </div>
+    </div>
+
+    <!-- VICTÒRIA -->
+    <div id="screen-win" class="screen hidden">
+        <div class="center-content">
+            <h1 class="green-text huge-text">ROUND 01 COMPLETE</h1>
+            <h2 id="final-survivors">SURVIVORS: X</h2>
+            <p class="fade-text delay-2">THE GAME CONTINUES</p>
+            <button id="btn-continue" class="btn mt-2 hidden fade-text delay-3">CONTINUE</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
 
