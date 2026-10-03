@@ -2,83 +2,100 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GAME 02 — SALA 01</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA PARTIDA — Prova 02: La Taula</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- HUD Discret -->
+    <header id="hud">
+        <div class="hud-title">LA PARTIDA</div>
+        <div class="hud-stage">PROVA 02 / 03 — LA TAULA</div>
+        <button id="btn-reset" class="hud-btn" title="Reiniciar Partida">REINICIAR</button>
+    </header>
 
-    <!-- PANTALLA D'INICI DE CONNEXIÓ -->
-    <div id="start-screen" class="screen active">
-        <div class="center-content">
-            <h1>SISTEMA CONNECTAT</h1>
-            <button id="btn-init" class="btn">ENTRAR A LA SALA</button>
+    <!-- Escenari Principal: Sala Circular -->
+    <main class="room-container">
+        <!-- Pantalla de Fons amb Símbol -->
+        <div class="screen-background">
+            <div class="screen-symbol">Ⅱ</div>
+            <div id="screen-text" class="screen-message">AQUESTA PROVA NO COMENÇA QUAN PARLEU. COMENÇA QUAN DECIDIU.</div>
         </div>
-    </div>
 
-    <!-- ESCENA CINEMATOGRÀFICA INICIAL -->
-    <div id="intro-screen" class="screen hidden">
-        <div class="cinematic-bars top"></div>
-        <div id="cinematic-text" class="cinematic-text"></div>
-        <div class="cinematic-bars bottom"></div>
-        <div id="system-screen" class="system-screen hidden">
-            <h1 class="red-text">CINC SALES.</h1>
-            <h1 class="red-text">CINC PROVES.</h1>
-            <p>NOMÉS ELS QUE ARRIBIN AL FINAL PODRAN SORTIR.</p>
-            <h2 class="mt-2">SALA 01 / 05</h2>
+        <!-- Veu del Sistema -->
+        <div id="system-voice-container" class="system-voice-box hidden">
+            <span class="voice-label">SISTEMA</span>
+            <p id="system-voice-text"></p>
         </div>
-        <div id="voice-subtitles" class="voice-subtitles hidden"></div>
-    </div>
 
-    <!-- HUD (Durant el gameplay) -->
-    <div id="hud" class="hidden">
-        <div class="hud-top">
-            <div class="hud-left">
-                <div>SALA 01 / 05</div>
-                <!-- NOU: Indicador de metres -->
-                <div id="distance-meter" class="strikes-indicator" style="color: #2aff7b; font-size: 1.2rem; font-weight: bold;">DISTÀNCIA: 45m</div>
+        <!-- Taula Circular i Cadires dels Supervivents -->
+        <div class="table-stage">
+            <div id="chairs-container" class="chairs-grid">
+                <!-- Les cadires dels personatges es generen dinàmicament per JS -->
             </div>
-            <div id="timer" class="hud-center">05:00</div>
-            <div class="hud-right">
-                <div id="survivors-count">SUPERVIVENTS: 6</div>
-                <div id="strikes-count" class="strikes-indicator">INFRACCIONS: 0/3</div>
+
+            <div class="table-surface">
+                <!-- Objectes sobre la taula -->
+                <div id="bell-object" class="table-item bell" title="Campana metàl·lica"></div>
+
+                <div id="box-object" class="table-item box closed" title="Caixa Central">
+                    <div id="photo-evidence" class="photo-item hidden">
+                        <span>FOTOGRAFIA D'EL GRUP</span>
+                        <small>(Falta una persona)</small>
+                    </div>
+                </div>
+
+                <div id="tokens-group" class="tokens-container hidden">
+                    <button class="token-btn token-white" data-token="blanca">
+                        <span class="token-icon"></span>
+                        <span class="token-label">FITXA BLANCA</span>
+                    </button>
+                    <button class="token-btn token-black" data-token="negra">
+                        <span class="token-icon"></span>
+                        <span class="token-label">FITXA NEGRA</span>
+                    </button>
+                    <button class="token-btn token-red" data-token="vermella">
+                        <span class="token-icon"></span>
+                        <span class="token-label">FITXA VERMELLA</span>
+                    </button>
+                </div>
+
+                <div class="cards-group">
+                    <div class="card-item card-1"></div>
+                    <div class="card-item card-2"></div>
+                    <div class="card-item card-3"></div>
+                </div>
             </div>
         </div>
-        <div id="light-indicator" class="light-indicator green">🟢 LLUM VERDA</div>
-    </div>
 
-    <!-- INDICADOR DE DETECCIÓ A PANTALLA -->
-    <div id="detection-flash" class="detection-flash hidden">
-        <h1 id="detection-text">1/3 — DETECTAT</h1>
-    </div>
-
-    <!-- CANVAS DEL JOC -->
-    <canvas id="gameCanvas"></canvas>
-
-    <!-- JOYSTICK TÀCTIL -->
-    <div id="joystick-zone" class="hidden">
-        <div id="joystick-base">
-            <div id="joystick-stick"></div>
+        <!-- Bafarada de Diàleg dels Personatges -->
+        <div id="dialogue-box" class="dialogue-card hidden">
+            <div id="dialogue-speaker" class="speaker-name">CHISHIYA</div>
+            <div id="dialogue-text" class="speaker-text">"No miris la taula. Mira què volen que fem amb ella."</div>
+            <button id="dialogue-next" class="btn-next">CONTINUAR ►</button>
         </div>
-    </div>
 
-    <!-- RESULTATS: GAME OVER -->
-    <div id="screen-gameover" class="screen hidden">
-        <div class="center-content">
-            <h1 class="red-text huge-text">ELIMINAT</h1>
-            <p>NO HAS SUPERAT LA SALA 01.</p>
-            <button id="btn-retry" class="btn mt-2">TORNAR A INTENTAR-HO</button>
+        <!-- Panell de Decisions d'Acció -->
+        <div id="action-panel" class="action-panel hidden">
+            <button id="btn-action-a" class="action-btn">OPCIÓ A: OBRIR LA CAIXA COMPLETAMENT</button>
+            <button id="btn-action-b" class="action-btn">OPCIÓ B: DEIXAR-LA TANCADA</button>
         </div>
+    </main>
+
+    <!-- Transició d'Apagada de Llums (Ronda 3) -->
+    <div id="blackout-overlay" class="blackout-overlay hidden">
+        <div class="blackout-text">S'HAN APAGAT LES LLUMS...</div>
     </div>
 
-    <!-- RESULTATS: VICTÒRIA -->
-    <div id="screen-win" class="screen hidden">
-        <div class="center-content">
-            <h1 class="green-text huge-text">SALA 01 SUPERADA</h1>
-            <h2 id="final-survivors">SUPERVIVENTS: X</h2>
-            <p class="fade-text delay-2 mt-2">AIXÒ NOMÉS ERA LA PRIMERA PROVA.</p>
-            <h3 class="fade-text delay-3 mt-2">SALA 02</h3>
-            <button id="btn-continue" class="btn mt-2 hidden fade-text delay-4">CONTINUAR</button>
+    <!-- Modal de Confirmació de Reinici -->
+    <div id="reset-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>REINICIAR PARTIDA</h3>
+            <p>Es perdran les decisions preses fins ara. Vols tornar a començar?</p>
+            <div class="modal-actions">
+                <button id="btn-confirm-reset" class="btn-modal btn-danger">SÍ, REINICIA</button>
+                <button id="btn-cancel-reset" class="btn-modal">CANCEL·LAR</button>
+            </div>
         </div>
     </div>
 
