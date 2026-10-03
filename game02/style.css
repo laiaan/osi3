@@ -1,1 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+    --bg: #050505;
+    --text: #e0e0e0;
+    --red: #ff2a2a;
+    --green: #2aff7b;
+    --dark-red: #8b0000;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Courier Prime', monospace;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- HUD --- */
+#hud {
+    position: absolute;
+    top: 0; left: 0; width: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.hud-top {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+}
+
+.light-indicator {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 10px;
+    letter-spacing: 5px;
+    text-shadow: 0 0 10px currentColor;
+    transition: color 0.1s;
+}
+
+.light-indicator.green { color: var(--green); }
+.light-indicator.red { color: var(--red); }
+.hud-center { font-size: 1.5rem; letter-spacing: 2px; }
+.timer-warning { color: #ffaa00; animation: pulse 1s infinite; }
+.timer-danger { color: var(--red); animation: pulse 0.5s infinite; }
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* --- SCREENS --- */
+.screen {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.95);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.center-content {
+    max-width: 600px;
+    padding: 20px;
+}
+
+.huge-text { font-size: 3rem; letter-spacing: 5px; margin-bottom: 20px; }
+.red-text { color: var(--red); text-shadow: 0 0 15px var(--dark-red); }
+.green-text { color: var(--green); }
+.mt-2 { margin-top: 40px; }
+
+/* --- BOTONS --- */
+.btn {
+    background: transparent;
+    border: 1px solid var(--text);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 1.2rem;
+    padding: 15px 40px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.btn:hover {
+    background: var(--text);
+    color: var(--bg);
+}
+
+/* --- DIÀLEGS --- */
+#dialogue-container {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+#dialogue-name {
+    font-weight: bold;
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+}
+
+#dialogue-text {
+    font-size: 1.1rem;
+    background: rgba(0,0,0,0.7);
+    padding: 10px 20px;
+    border: 1px solid #333;
+    display: inline-block;
+}
+
+/* --- JOYSTICK --- */
+#joystick-zone {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 150px;
+    height: 150px;
+    z-index: 15;
+    touch-action: none;
+}
+
+#joystick-base {
+    width: 120px;
+    height: 120px;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    position: absolute;
+    top: 15px; left: 15px;
+}
+
+#joystick-stick {
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    position: absolute;
+    top: 35px; left: 35px;
+    pointer-events: none;
+}
+
+/* Efectes Glitch / Fade */
+.fade-text { animation: fadeIn 1.5s forwards; opacity: 0; }
+.delay-2 { animation-delay: 2s; }
+.delay-3 { animation-delay: 3.5s; }
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+#screen-detected {
+    background-color: rgba(255, 0, 0, 0.2);
+    z-index: 100;
+}
 
