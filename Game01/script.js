@@ -500,7 +500,7 @@ document.addEventListener("DOMContentLoaded", () => {
     submitDecisionButton.addEventListener("click", submitDecision);
     reviewEvidenceButton.addEventListener("click", reviewEvidence);
     changeDecisionButton.addEventListener("click", changeDecision);
-    characterPanelClose.addEventListener("click", closeCharacterPanel);
+    characterPanelClose.addEventListener("click", closeModal);
     modalClose.addEventListener("click", closeModal);
 
     restartButton.addEventListener("click", () => {
