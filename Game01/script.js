@@ -1,9 +1,7 @@
 "use strict";
-
 /* =========================================================
-   JACK OF HEARTS - MARCEL IN BORDERLAND
+   JACK OF HEARTS - MARCEL IN BORDERLAND DEFINITIU
    ========================================================= */
-
 const SOLUTION = { truth: "usagi", suit: "♥" };
 
 const characters = {
@@ -48,8 +46,8 @@ const characters = {
     },
     usagi: {
         name: "USAGI",
-        suit: "♥",
         truth: true,
+        suit: "♥",
         statements: ["És ♥. (Pausa). Això és el que veig."],
         observe: "Es manté al marge de les discussions. Fa un petit pas enrere si et veu molt angoixat, deixant-te espai personal. Et mira de manera directa i fixa als ulls, però sense fer cap gest per acostar-se.",
         investigate: "Continua dient ♥. No ha afegit cap explicació addicional ni ha posat cap excusa per donar suport a la seva resposta. Dóna frases molt curtes i no entra a valorar què diuen els seus companys.",
@@ -122,7 +120,7 @@ function showScreen(screen) {
     window.scrollTo({ top: 0, behavior: "instant" });
 }
 
-/* ========================================================= CHARACTER ART ========================================================= */
+/* ========================================================= CHARACTER ART & HAIR ========================================================= */
 function characterHair(key) {
     if (key === "chishiya") return `<div class="hair chishiya-hair"><span class="hair-main"></span><span class="hair-left"></span><span class="hair-right"></span></div>`;
     if (key === "arisu") return `<div class="hair arisu-hair"><span class="hair-main"></span><span class="spike spike-1"></span><span class="spike spike-2"></span><span class="spike spike-3"></span><span class="spike spike-4"></span></div>`;
@@ -147,8 +145,7 @@ function characterArt(key) {
             <div class="arm arm-left"></div><div class="arm arm-right"></div>
             <div class="hand hand-left"></div><div class="hand hand-right"></div>
             <div class="leg leg-left"></div><div class="leg leg-right"></div>
-        </div>
-    `;
+        </div>`;
 }
 
 function renderCharacters() {
@@ -156,7 +153,6 @@ function renderCharacters() {
         const key = stage.dataset.characterStage;
         const character = characters[key];
         if (!character) return;
-
         stage.innerHTML = `
             <div class="speech-bubble">
                 <div class="bubble-name">${character.name} Diu:</div>
@@ -171,7 +167,6 @@ function renderCharacters() {
 function resetState() {
     clearInterval(state.timer);
     clearInterval(state.secondChanceTimer);
-
     state.timeLeft = 15 * 60;
     state.secondChanceActive = false;
     state.firstAttemptFinished = false;
@@ -194,7 +189,6 @@ function startMainTimer() {
     clearInterval(state.timer);
     state.timeLeft = 15 * 60;
     updateTimer();
-
     state.timer = setInterval(() => {
         state.timeLeft--;
         updateTimer();
@@ -215,19 +209,17 @@ function updateTimer() {
     const minutes = Math.max(0, Math.floor(state.timeLeft / 60));
     const seconds = Math.max(0, state.timeLeft % 60);
     timer.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
     timer.classList.remove("timer-warning", "timer-danger", "timer-critical");
     if (state.timeLeft <= 30) timer.classList.add("timer-critical");
     else if (state.timeLeft <= 120) timer.classList.add("timer-danger");
     else if (state.timeLeft <= 300) timer.classList.add("timer-warning");
 }
 
-/* ========================================================= CHARACTER PANEL ========================================================= */
+/* ========================================================= CHARACTER MODAL ========================================================= */
 function openCharacterPanel(key) {
     const isReadOnly = state.secondChanceActive;
     const character = characters[key];
     const cState = characterStates[key];
-
     if (!character) return;
 
     let askedQuestionsHTML = cState.askedQuestions.map(q => `
@@ -235,12 +227,12 @@ function openCharacterPanel(key) {
             <strong>Tu:</strong> ${q.q}<br>
             <strong>${character.name}:</strong> ${q.a}
         </div>
-    `).join("");
+    `).join('');
 
-    let askControlsHTML = "";
+    let askControlsHTML = '';
     if (cState.questionsAskedCount < 2 && !isReadOnly) {
         let availableOptions = character.questions.filter(q => !cState.askedQuestions.some(aq => aq.id === q.id));
-        let optionsHTML = availableOptions.map(q => `<option value="${q.id}">${q.q}</option>`).join("");
+        let optionsHTML = availableOptions.map(q => `<option value="${q.id}">${q.q}</option>`).join('');
 
         askControlsHTML = `
             <select id="question-select-${key}" class="action-select">
@@ -259,15 +251,15 @@ function openCharacterPanel(key) {
         <div class="panel-character-art">${characterArt(key)}</div>
         <div class="panel-character-name">${character.name}</div>
         <div class="panel-character-suit">Afirma veure: ${character.suit}</div>
-        
+
         <div class="panel-statements">
             <h3>ACCIONS D'INVESTIGACIÓ</h3>
-            
+
             <div class="action-group">
-                <button class="action-button ${cState.observed || isReadOnly ? "completed" : ""}" data-action="observe" data-character="${key}" ${cState.observed || isReadOnly ? "disabled" : ""}>
+                <button class="action-button ${cState.observed || isReadOnly ? 'completed' : ''}" data-action="observe" data-character="${key}" ${cState.observed || isReadOnly ? 'disabled' : ''}>
                     👁 OBSERVAR
                 </button>
-                <div id="result-observe-${key}" class="action-result ${cState.observed ? "visible" : "hidden"}">${character.observe}</div>
+                <div id="result-observe-${key}" class="action-result ${cState.observed ? 'visible' : 'hidden'}">${character.observe}</div>
             </div>
 
             <div class="action-group">
@@ -276,16 +268,16 @@ function openCharacterPanel(key) {
             </div>
 
             <div class="action-group">
-                <button class="action-button ${cState.investigated || isReadOnly ? "completed" : ""}" data-action="investigate" data-character="${key}" ${cState.investigated || isReadOnly ? "disabled" : ""}>
+                <button class="action-button ${cState.investigated || isReadOnly ? 'completed' : ''}" data-action="investigate" data-character="${key}" ${cState.investigated || isReadOnly ? 'disabled' : ''}>
                     🔎 INVESTIGAR
                 </button>
-                <div id="result-investigate-${key}" class="action-result ${cState.investigated ? "visible" : "hidden"}">${character.investigate}</div>
+                <div id="result-investigate-${key}" class="action-result ${cState.investigated ? 'visible' : 'hidden'}">${character.investigate}</div>
             </div>
         </div>
     `;
 
-    characterPanelContent.querySelectorAll(".action-button:not(.completed)").forEach(btn => {
-        btn.addEventListener("click", (e) => executeCharacterAction(e.target, key));
+    characterPanelContent.querySelectorAll('.action-button:not(.completed)').forEach(btn => {
+        btn.addEventListener('click', (e) => executeCharacterAction(e.target, key));
     });
 
     characterPanel.classList.add("active");
@@ -295,49 +287,38 @@ function executeCharacterAction(button, key) {
     const action = button.dataset.action;
     const cState = characterStates[key];
     const character = characters[key];
-
-    if (action === "observe") {
+    if (action === 'observe') {
         cState.observed = true;
-        document.getElementById(`result-observe-${key}`).classList.replace("hidden", "visible");
+        document.getElementById(`result-observe-${key}`).classList.replace('hidden', 'visible');
         state.evidence[key].push(`👁 OBSERVACIÓ: ${character.observe}`);
         button.disabled = true;
-        button.classList.add("completed");
-    } 
-    else if (action === "investigate") {
+        button.classList.add('completed');
+    }
+    else if (action === 'investigate') {
         cState.investigated = true;
-        document.getElementById(`result-investigate-${key}`).classList.replace("hidden", "visible");
+        document.getElementById(`result-investigate-${key}`).classList.replace('hidden', 'visible');
         state.evidence[key].push(`🔎 INVESTIGACIÓ: ${character.investigate}`);
         button.disabled = true;
-        button.classList.add("completed");
+        button.classList.add('completed');
     }
-    else if (action === "ask") {
+    else if (action === 'ask') {
         const select = document.getElementById(`question-select-${key}`);
-        if (!select.value) return; 
-        
+        if (!select.value) return;
+
         cState.questionsAskedCount++;
         const askedQ = character.questions.find(q => q.id === select.value);
         cState.askedQuestions.push(askedQ);
         state.evidence[key].push(`💬 PREGUNTA: ${askedQ.q} -> R: ${askedQ.a}`);
-        
-        openCharacterPanel(key); 
+
+        openCharacterPanel(key);
     }
 }
 
-function closeCharacterPanel() {
-    characterPanel.classList.remove("active");
-}
+function closeCharacterPanel() { characterPanel.classList.remove("active"); }
 
 /* ========================================================= DECISION SCREEN ========================================================= */
-function showDecisionScreen() {
-    closeCharacterPanel();
-    closeModal();
-    showScreen(decisionScreen);
-    checkDecisionReady();
-}
-
-function checkDecisionReady() {
-    submitDecisionButton.disabled = !(state.truthChoice && state.suitChoice);
-}
+function showDecisionScreen() { closeCharacterPanel(); closeModal(); showScreen(decisionScreen); checkDecisionReady(); }
+function checkDecisionReady() { submitDecisionButton.disabled = !(state.truthChoice && state.suitChoice); }
 
 document.querySelectorAll("#truth-choice button").forEach((button) => {
     button.addEventListener("click", () => {
@@ -359,7 +340,6 @@ document.querySelectorAll("#suit-choice button").forEach((button) => {
 
 function submitDecision() {
     const correct = (state.truthChoice === SOLUTION.truth && state.suitChoice === SOLUTION.suit);
-
     if (correct) {
         showSuccess();
     } else {
@@ -377,7 +357,6 @@ function enterSecondChance() {
     clearInterval(state.timer);
     state.secondChanceActive = true;
     state.timeLeft = 120; // 02:00
-
     closeModal();
     closeCharacterPanel();
     showScreen(secondChanceScreen);
@@ -400,16 +379,12 @@ function updateSecondChanceTimer() {
     const minutes = Math.max(0, Math.floor(state.timeLeft / 60));
     const seconds = Math.max(0, state.timeLeft % 60);
     secondChanceTimer.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
     secondChanceTimer.classList.remove("timer-danger", "timer-critical");
     if (state.timeLeft <= 30) secondChanceTimer.classList.add("timer-critical");
     else if (state.timeLeft <= 60) secondChanceTimer.classList.add("timer-danger");
 }
 
-function changeDecision() {
-    closeModal();
-    showDecisionScreen();
-}
+function changeDecision() { closeModal(); showDecisionScreen(); }
 
 /* ========================================================= REVIEW EVIDENCE ========================================================= */
 function reviewEvidence() {
@@ -417,7 +392,6 @@ function reviewEvidence() {
     const allEvidence = Object.entries(state.evidence).flatMap(([key, evs]) =>
         evs.map(text => ({ character: characters[key].name, text }))
     );
-
     if (allEvidence.length === 0) {
         html += `<p class="modal-dialogue">No has recopilat cap prova.</p>`;
     } else {
@@ -430,16 +404,8 @@ function reviewEvidence() {
     openModal(html);
 }
 
-function openModal(content) {
-    modalContent.innerHTML = content;
-    modalLayer.classList.add("active");
-    document.body.classList.add("modal-open");
-}
-
-function closeModal() {
-    modalLayer.classList.remove("active");
-    document.body.classList.remove("modal-open");
-}
+function openModal(content) { modalContent.innerHTML = content; modalLayer.classList.add("active"); document.body.classList.add("modal-open"); }
+function closeModal() { modalLayer.classList.remove("active"); document.body.classList.remove("modal-open"); }
 
 /* ========================================================= SUCCESS & GAME OVER ========================================================= */
 function showSuccess() {
@@ -447,7 +413,6 @@ function showSuccess() {
     clearInterval(state.secondChanceTimer);
     closeModal();
     closeCharacterPanel();
-
     playerCollar.textContent = SOLUTION.suit;
     resultScreen.classList.remove("game-over");
     resultSymbol.textContent = "♥";
@@ -458,7 +423,7 @@ function showSuccess() {
         <span style="letter-spacing: 0.1em; color: #fff; font-size: 15px;">TIME WAS NEVER ON YOUR SIDE.</span>
     `;
 
-    // Mostrem el botó per saltar al Joc 2
+    // El botó es fa visible al guanyar
     document.getElementById("next-room-btn").classList.remove("hidden");
 
     showScreen(resultScreen);
@@ -469,7 +434,6 @@ function showGameOver() {
     clearInterval(state.secondChanceTimer);
     closeModal();
     closeCharacterPanel();
-
     resultScreen.classList.add("game-over");
     resultSymbol.textContent = "×";
     resultTitle.textContent = "GAME OVER";
@@ -477,15 +441,14 @@ function showGameOver() {
     showScreen(resultScreen);
 }
 
-/* ========================================================= INITIALIZATION ========================================================= */
-document.addEventListener("DOMContentLoaded", () => {
+/* ========================================================= EVENT LISTENERS INITIALIZATION ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener("click", () => showScreen(rulesScreen));
     beginInvestigationButton.addEventListener("click", () => {
         resetState();
         showScreen(gameScreen);
         startMainTimer();
     });
-
     document.querySelectorAll(".character-card").forEach((card) => {
         card.addEventListener("click", () => openCharacterPanel(card.dataset.character));
         card.addEventListener("keydown", (e) => {
@@ -500,7 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
     submitDecisionButton.addEventListener("click", submitDecision);
     reviewEvidenceButton.addEventListener("click", reviewEvidence);
     changeDecisionButton.addEventListener("click", changeDecision);
-    characterPanelClose.addEventListener("click", closeModal);
+    characterPanelClose.addEventListener("click", closeCharacterPanel);
     modalClose.addEventListener("click", closeModal);
 
     restartButton.addEventListener("click", () => {
@@ -508,11 +471,11 @@ document.addEventListener("DOMContentLoaded", () => {
         showScreen(openingScreen);
     });
 
-    // REDIRECCIÓ DIRECTA AL JOC 2 DINS DE LA CARPETA Game02
+    // Funció per saltar de sala un cop polsem "NEXT ROOM"
     const nextRoomBtn = document.getElementById("next-room-btn");
     if (nextRoomBtn) {
         nextRoomBtn.addEventListener("click", () => {
-            window.location.href = "https://laiaan.github.io/osi3/Game02/";
+            window.location.href = "../Game02/Sala%201/";
         });
     }
 
