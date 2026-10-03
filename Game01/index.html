@@ -1,188 +1,532 @@
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JACK OF HEARTS — MARCEL IN BORDERLAND</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div id="app">
+"use strict";
 
-<!-- ESCENA 1: INTRO -->
-<section id="opening-screen" class="screen active">
-    <div class="opening-background"></div>
-    <div class="opening-content">
-        <div class="game-symbol">♥</div>
-        <h1>JACK OF HEARTS</h1>
-        <div class="opening-line"></div>
-        <p class="opening-subtitle">MARCEL IN BORDERLAND</p>
-        <p class="opening-description">Un joc de confiança, mentides i supervivència.</p>
-        <button id="start-button" class="main-button">ENTRAR</button>
-    </div>
-</section>
+/* =========================================================
+   JACK OF HEARTS - MARCEL IN BORDERLAND
+   ========================================================= */
 
-<!-- ESCENA 2: REGLES -->
-<section id="rules-screen" class="screen">
-    <div class="opening-background"></div>
-    <div class="opening-content rules-content">
-        <div class="game-symbol" style="font-size: 60px; margin-bottom: 10px;">♥</div>
-        <h2>REGLES DEL JOC</h2>
-        <div class="opening-line"></div>
-        <p class="opening-description" style="text-align: left; line-height: 1.6; font-size: 13px;">
-            Portes un collar invisible al coll amb un pal de la baralla (♥, ♦, ♣ o ♠). Tu no el pots veure.<br><br>
-            Davant teu tens 4 participants que veuen el teu símbol. <strong>Només 1 diu la veritat, els altres 3 menteixen.</strong><br><br>
-            Disposes de 15 minuts per investigar els seus comportaments, fer-los preguntes i deduir quin és el teu pal real. 
-        </p>
-        <button id="begin-investigation-button" class="main-button" style="margin-top: 15px;">COMENÇAR</button>
-    </div>
-</section>
+const SOLUTION = { truth: "usagi", suit: "♥" };
 
-<!-- ESCENA 3: SALA PRINCIPAL -->
-<section id="game-screen" class="screen">
-    <header class="game-header">
-        <div class="header-title">
-            <span class="header-symbol">♥</span> JACK OF HEARTS
-        </div>
-        <div id="timer" class="timer">15:00</div>
-    </header>
+const characters = {
+    chishiya: {
+        name: "CHISHIYA",
+        suit: "♣",
+        truth: false,
+        statements: ["És ♣. Ja tens quatre respostes. Una és correcta. No necessites que jo et faci la feina."],
+        observe: "Roman assegut i relaxat. Els seus ulls van d'un jugador a l'altre. Quan et mira, et sosté la mirada amb total calma, sense mostrar cap indici d'urgència tot i que el temps s'acaba.",
+        investigate: "Manté el ♣. No ha donat cap detall per justificar per què ho sap. Quan se li demana més informació, respon amb una altra pregunta o dirigeix l'atenció cap al comportament dels altres jugadors.",
+        questions: [
+            { id: "q1", q: "Per què t'hauria de creure?", a: "Tots tenim un motiu per mentir per salvar-nos. Pregunta't quin és el meu. Jo no hi guanyo res si tu mors ara." },
+            { id: "q2", q: "Qui et sembla més sospitós?", a: "No és la pregunta correcta. Hauries de preguntar-te qui necessita que desconfiïs dels altres." },
+            { id: "q3", q: "Què estàs intentant fer?", a: "Sobreviure, com tots. Però jo no necessito posar-me a tremolar o fingir pena per aconseguir-ho." }
+        ]
+    },
+    arisu: {
+        name: "ARISU",
+        suit: "♦",
+        truth: false,
+        statements: ["És ♦. Ho sento. Sé que no és gaire útil dir-t'ho així, però és el que estic veient."],
+        observe: "Es frega les mans i evita el contacte visual prolongat amb tu. Té la respiració agitada. Quan els altres parlen, obre la boca com si volgués intervenir, però es mossega el llavi i s'atura.",
+        investigate: "Reafirma el ♦ molt ràpid quan se li pregunta directament. No obstant, en explicar la situació, s'ha entrebancat i ha corregit una paraula de la seva pròpia frase. Sembla estar sota una pressió emocional immensa.",
+        questions: [
+            { id: "q1", q: "Per què estàs tan nerviós?", a: "Em posa dels nervis saber que la teva vida depèn del que jo et digui ara mateix. És massa pressió, d'acord?" },
+            { id: "q2", q: "Per què hauria de creure't?", a: "Mira els meus ulls. Si t'estigués mentint a la cara sabent que t'explotarà el coll d'aquí a uns minuts... creus que podria suportar-ho?" },
+            { id: "q3", q: "Què creus que està passant aquí?", a: "No ho entenc. Si tots veiem el mateix, per què donen respostes diferents? Què hi guanyen? No té cap sentit!" }
+        ]
+    },
+    kuina: {
+        name: "KUINA",
+        suit: "♠",
+        truth: false,
+        statements: ["És ♠. No sé si et servirà de res que t'ho digui, però és el que veig."],
+        observe: "Manté una postura oberta i et dedica somriures lleus per tranquil·litzar-te. Quan la tensió puja a l'habitació, el seu to de veu és el més suau. Et busca constantment amb la mirada.",
+        investigate: "No es mou del ♠. En lloc de donar arguments clars sobre el que veu al teu coll, centra les seves intervencions en preguntar com et sents o en assenyalar l'estat de nervis de la resta del grup.",
+        questions: [
+            { id: "q1", q: "Com sé que no m'enganyes?", a: "(Somriu i respira fons). Jo no jugo amb les vides de la gent. Concentra't i confia en el teu instint." },
+            { id: "q2", q: "Qui et sembla més sospitós?", a: "El Chishiya. Perquè sembla que ja sap què faràs abans que ho facis." },
+            { id: "q3", q: "Què creus que està fent l'Arisu?", a: "Pateix molt per la pressió. Però alerta... a vegades els que semblen més inofensius són els que tenen més por a dir la veritat." }
+        ]
+    },
+    usagi: {
+        name: "USAGI",
+        suit: "♥",
+        truth: true,
+        statements: ["És ♥. (Pausa). Això és el que veig."],
+        observe: "Es manté al marge de les discussions. Fa un petit pas enrere si et veu molt angoixat, deixant-te espai personal. Et mira de manera directa i fixa als ulls, però sense fer cap gest per acostar-se.",
+        investigate: "Continua dient ♥. No ha afegit cap explicació addicional ni ha posat cap excusa per donar suport a la seva resposta. Dóna frases molt curtes i no entra a valorar què diuen els seus companys.",
+        questions: [
+            { id: "q1", q: "Per què hauria de creure't?", a: "Creure'm és la teva responsabilitat, no la meva. Jo no m'esforçaré en convèncer-te si decideixes dubtar de la meva paraula." },
+            { id: "q2", q: "I si t'estàs equivocant?", a: "Llavors m'hauré equivocat. Però no et diré que he vist una altra cosa només perquè soni més segur." },
+            { id: "q3", q: "Qui et sembla més difícil de llegir?", a: "Cadascú té la seva pròpia estratègia de supervivència basada en la por. Cap d'ells m'inspira una confiança cega, la veritat." }
+        ]
+    }
+};
 
-    <div class="game-content">
-        <!-- PLAYER -->
-        <div class="player-area">
-            <div class="player-card">
-                <div class="player-card-title">TU</div>
-                <div id="player-collar" class="player-collar">?</div>
-                <div class="player-warning">NO POTS VEURE EL TEU PAL</div>
+/* ========================================================= STATE ========================================================= */
+const state = {
+    timeLeft: 15 * 60,
+    timer: null,
+    secondChanceTimer: null,
+    secondChanceActive: false,
+    firstAttemptFinished: false,
+    truthChoice: null,
+    suitChoice: null,
+    evidence: { chishiya: [], arisu: [], kuina: [], usagi: [] }
+};
+
+const characterStates = {
+    chishiya: { observed: false, questionsAskedCount: 0, askedQuestions: [], investigated: false },
+    arisu: { observed: false, questionsAskedCount: 0, askedQuestions: [], investigated: false },
+    kuina: { observed: false, questionsAskedCount: 0, askedQuestions: [], investigated: false },
+    usagi: { observed: false, questionsAskedCount: 0, askedQuestions: [], investigated: false }
+};
+
+/* ========================================================= DOM ELEMENTS ========================================================= */
+const \$ = (id) => document.getElementById(id);
+const openingScreen = \$("opening-screen");
+const rulesScreen = \$("rules-screen");
+const gameScreen = \$("game-screen");
+const decisionScreen = \$("decision-screen");
+const secondChanceScreen = \$("second-chance-screen");
+const resultScreen = \$("result-screen");
+
+const startButton = \$("start-button");
+const beginInvestigationButton = \$("begin-investigation-button");
+const timer = \$("timer");
+
+const characterPanel = \$("character-panel");
+const characterPanelContent = \$("character-panel-content");
+const characterPanelClose = \$("character-panel-close");
+
+const finalDecisionButton = \$("final-decision-button");
+const submitDecisionButton = \$("submit-decision");
+const secondChanceTimer = \$("second-chance-timer");
+const reviewEvidenceButton = \$("review-evidence");
+const changeDecisionButton = \$("change-decision");
+
+const modalLayer = \$("modal-layer");
+const modalContent = \$("modal-content");
+const modalClose = \$("modal-close");
+
+const resultSymbol = \$("result-symbol");
+const resultTitle = \$("result-title");
+const resultText = \$("result-text");
+const restartButton = \$("restart-button");
+const playerCollar = \$("player-collar");
+
+/* ========================================================= SCREEN MANAGEMENT ========================================================= */
+function showScreen(screen) {
+    document.querySelectorAll(".screen").forEach((element) => {
+        element.classList.remove("active");
+    });
+    screen.classList.add("active");
+    window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+/* ========================================================= CHARACTER ART ========================================================= */
+function characterHair(key) {
+    if (key === "chishiya") return `<div class="hair chishiya-hair"><span class="hair-main"></span><span class="hair-left"></span><span class="hair-right"></span></div>`;
+    if (key === "arisu") return `<div class="hair arisu-hair"><span class="hair-main"></span><span class="spike spike-1"></span><span class="spike spike-2"></span><span class="spike spike-3"></span><span class="spike spike-4"></span></div>`;
+    if (key === "kuina") return `<div class="hair kuina-hair"><span class="kuina-top"></span><span class="kuina-front-strand"></span><span class="braid braid-1"></span><span class="braid braid-2"></span><span class="braid braid-3"></span><span class="braid braid-4"></span><span class="braid braid-5"></span><span class="braid braid-6"></span><span class="braid braid-7"></span></div>`;
+    if (key === "usagi") return `<div class="hair usagi-hair"><span class="usagi-bob"></span><span class="usagi-bang bang-left"></span><span class="usagi-bang bang-center"></span><span class="usagi-bang bang-right"></span></div>`;
+    return "";
+}
+
+function characterArt(key) {
+    const mouthClass = { chishiya: "calm", arisu: "nervous", kuina: "smile", usagi: "neutral" }[key];
+    return `
+        <div class="stick-person ${key}-person">
+            <div class="head">
+                ${characterHair(key)}
+                <div class="face">
+                    <span class="eye left"></span><span class="eye right"></span>
+                    <span class="nose"></span><span class="mouth ${mouthClass}"></span>
+                </div>
             </div>
+            <div class="neck"></div>
+            <div class="body"><div class="shirt-detail"></div></div>
+            <div class="arm arm-left"></div><div class="arm arm-right"></div>
+            <div class="hand hand-left"></div><div class="hand hand-right"></div>
+            <div class="leg leg-left"></div><div class="leg leg-right"></div>
         </div>
+    `;
+}
 
-        <!-- CHARACTERS -->
-        <div class="characters-grid">
-            <!-- CHISHIYA -->
-            <article class="character-card" data-character="chishiya" tabindex="0">
-                <div class="character-stage" data-character-stage="chishiya"></div>
-                <div class="character-info">
-                    <div class="character-name">CHISHIYA</div>
-                    <div class="character-suit">♣</div>
-                </div>
-            </article>
+function renderCharacters() {
+    document.querySelectorAll("[data-character-stage]").forEach((stage) => {
+        const key = stage.dataset.characterStage;
+        const character = characters[key];
+        if (!character) return;
 
-            <!-- ARISU -->
-            <article class="character-card" data-character="arisu" tabindex="0">
-                <div class="character-stage" data-character-stage="arisu"></div>
-                <div class="character-info">
-                    <div class="character-name">ARISU</div>
-                    <div class="character-suit">♦</div>
-                </div>
-            </article>
-
-            <!-- KUINA -->
-            <article class="character-card" data-character="kuina" tabindex="0">
-                <div class="character-stage" data-character-stage="kuina"></div>
-                <div class="character-info">
-                    <div class="character-name">KUINA</div>
-                    <div class="character-suit">♠</div>
-                </div>
-            </article>
-
-            <!-- USAGI -->
-            <article class="character-card" data-character="usagi" tabindex="0">
-                <div class="character-stage" data-character-stage="usagi"></div>
-                <div class="character-info">
-                    <div class="character-name">USAGI</div>
-                    <div class="character-suit">♥</div>
-                </div>
-            </article>
-        </div>
-
-        <!-- BOTTOM -->
-        <div class="game-bottom">
-            <button id="final-decision-button" type="button" class="decision-button">PRENDRE DECISIÓ FINAL</button>
-        </div>
-    </div>
-</section>
-
-<!-- ESCENA 4: FITXA DE PERSONATGE -->
-<aside id="character-panel" class="character-panel">
-    <button id="character-panel-close" type="button" class="panel-close" aria-label="Tancar">×</button>
-    <div id="character-panel-content"></div>
-</aside>
-
-<!-- ESCENA 5: DECISIÓ FINAL -->
-<section id="decision-screen" class="screen">
-    <div class="decision-container">
-        <div class="decision-heading">
-            <div class="decision-symbol">♥</div>
-            <h2>DECISIÓ FINAL</h2>
-            <p>Només una persona diu la veritat.</p>
-        </div>
-
-        <div class="decision-section">
-            <h3>QUI DIU LA VERITAT?</h3>
-            <div id="truth-choice" class="decision-options">
-                <button type="button" data-character="chishiya">CHISHIYA</button>
-                <button type="button" data-character="arisu">ARISU</button>
-                <button type="button" data-character="kuina">KUINA</button>
-                <button type="button" data-character="usagi">USAGI</button>
+        stage.innerHTML = `
+            <div class="speech-bubble">
+                <div class="bubble-name">${character.name} Diu:</div>
+                <div class="bubble-text">“${character.statements}”</div>
             </div>
+            <div class="character-art">${characterArt(key)}</div>
+        `;
+    });
+}
+
+/* ========================================================= TIMERS & FLOW ========================================================= */
+function resetState() {
+    clearInterval(state.timer);
+    clearInterval(state.secondChanceTimer);
+
+    state.timeLeft = 15 * 60;
+    state.secondChanceActive = false;
+    state.firstAttemptFinished = false;
+    state.truthChoice = null;
+    state.suitChoice = null;
+
+    Object.keys(characterStates).forEach(key => {
+        characterStates[key] = { observed: false, questionsAskedCount: 0, askedQuestions: [], investigated: false };
+        state.evidence[key] = [];
+    });
+
+    playerCollar.textContent = "?";
+    submitDecisionButton.disabled = true;
+
+    document.querySelectorAll("#truth-choice button, #suit-choice button").forEach(btn => btn.classList.remove("selected"));
+    timer.className = "timer";
+}
+
+function startMainTimer() {
+    clearInterval(state.timer);
+    state.timeLeft = 15 * 60;
+    updateTimer();
+
+    state.timer = setInterval(() => {
+        state.timeLeft--;
+        updateTimer();
+
+        if (state.timeLeft <= 0) {
+            clearInterval(state.timer);
+            if (!state.firstAttemptFinished) {
+                state.firstAttemptFinished = true;
+                enterSecondChance();
+            } else {
+                showGameOver();
+            }
+        }
+    }, 1000);
+}
+
+function updateTimer() {
+    const minutes = Math.max(0, Math.floor(state.timeLeft / 60));
+    const seconds = Math.max(0, state.timeLeft % 60);
+    timer.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+    timer.classList.remove("timer-warning", "timer-danger", "timer-critical");
+    if (state.timeLeft <= 30) timer.classList.add("timer-critical");
+    else if (state.timeLeft <= 120) timer.classList.add("timer-danger");
+    else if (state.timeLeft <= 300) timer.classList.add("timer-warning");
+}
+
+/* ========================================================= CHARACTER PANEL ========================================================= */
+function openCharacterPanel(key) {
+    const isReadOnly = state.secondChanceActive;
+    const character = characters[key];
+    const cState = characterStates[key];
+
+    if (!character) return;
+
+    let askedQuestionsHTML = cState.askedQuestions.map(q => `
+        <div class="action-result visible" style="margin-bottom:8px;">
+            <strong>Tu:</strong> ${q.q}<br>
+            <strong>${character.name}:</strong> ${q.a}
         </div>
+    `).join("");
 
-        <div class="decision-section">
-            <h3>QUIN ÉS EL TEU PAL?</h3>
-            <div id="suit-choice" class="decision-options suit-options">
-                <button type="button" data-suit="♥">♥</button>
-                <button type="button" data-suit="♦">♦</button>
-                <button type="button" data-suit="♣">♣</button>
-                <button type="button" data-suit="♠">♠</button>
-            </div>
-        </div>
+    let askControlsHTML = "";
+    if (cState.questionsAskedCount < 2 && !isReadOnly) {
+        let availableOptions = character.questions.filter(q => !cState.askedQuestions.some(aq => aq.id === q.id));
+        let optionsHTML = availableOptions.map(q => `<option value="${q.id}">${q.q}</option>`).join("");
 
-        <button id="submit-decision" type="button" class="main-button submit-button" disabled>CONFIRMAR DECISIÓ</button>
-    </div>
-</section>
+        askControlsHTML = `
+            <select id="question-select-${key}" class="action-select">
+                <option value="" disabled selected>Escull una pregunta... (${2 - cState.questionsAskedCount} restants)</option>
+                ${optionsHTML}
+            </select>
+            <button class="action-button" data-action="ask" data-character="${key}">💬 PREGUNTAR</button>
+        `;
+    } else if (cState.questionsAskedCount >= 2) {
+        askControlsHTML = `<button class="action-button completed" disabled>💬 PREGUNTES ESGOTADES</button>`;
+    } else if (isReadOnly) {
+        askControlsHTML = `<button class="action-button completed" disabled>💬 PREGUNTAR</button>`;
+    }
 
-<!-- ESCENA 6: SEGONA OPORTUNITAT -->
-<section id="second-chance-screen" class="screen">
-    <div class="second-chance-container">
-        <div class="second-chance-symbol">♥</div>
-        <h2>INCORRECTE</h2>
-        <div class="second-chance-line"></div>
-        <p class="second-chance-warning">PERÒ ENCARA NO HAS PERDUT.</p>
-        <p>ÚLTIMA OPORTUNITAT. No pots tornar a investigar, només pots revisar les evidències i canviar la teva decisió.</p>
+    characterPanelContent.innerHTML = `
+        <div class="panel-character-art">${characterArt(key)}</div>
+        <div class="panel-character-name">${character.name}</div>
+        <div class="panel-character-suit">Afirma veure: ${character.suit}</div>
         
-        <div id="second-chance-timer" class="second-chance-timer">02:00</div>
-        
-        <div class="second-chance-buttons">
-            <button id="review-evidence" type="button" class="secondary-button">REVISAR EVIDÈNCIES</button>
-            <button id="change-decision" type="button" class="main-button">CANVIAR DECISIÓ</button>
+        <div class="panel-statements">
+            <h3>ACCIONS D'INVESTIGACIÓ</h3>
+            
+            <div class="action-group">
+                <button class="action-button ${cState.observed || isReadOnly ? "completed" : ""}" data-action="observe" data-character="${key}" ${cState.observed || isReadOnly ? "disabled" : ""}>
+                    👁 OBSERVAR
+                </button>
+                <div id="result-observe-${key}" class="action-result ${cState.observed ? "visible" : "hidden"}">${character.observe}</div>
+            </div>
+
+            <div class="action-group">
+                ${askedQuestionsHTML}
+                ${askControlsHTML}
+            </div>
+
+            <div class="action-group">
+                <button class="action-button ${cState.investigated || isReadOnly ? "completed" : ""}" data-action="investigate" data-character="${key}" ${cState.investigated || isReadOnly ? "disabled" : ""}>
+                    🔎 INVESTIGAR
+                </button>
+                <div id="result-investigate-${key}" class="action-result ${cState.investigated ? "visible" : "hidden"}">${character.investigate}</div>
+            </div>
         </div>
-    </div>
-</section>
+    `;
 
-<!-- ESCENA 7 i 8: RESULTAT (GAME CLEAR / GAME OVER) -->
-<section id="result-screen" class="screen">
-    <div class="result-container">
-        <div id="result-symbol" class="result-symbol">♥</div>
-        <h2 id="result-title">RESULTAT</h2>
-        <p id="result-text"></p>
-        <button id="restart-button" type="button" class="main-button">TORNAR A JUGAR</button>
-        <button id="next-room-btn" type="button" class="main-button hidden" style="margin-top: 15px;">ANAR AL JOC 2: LES CINC DECISIONS</button>
-    </div>
-</section>
+    characterPanelContent.querySelectorAll(".action-button:not(.completed)").forEach(btn => {
+        btn.addEventListener("click", (e) => executeCharacterAction(e.target, key));
+    });
 
-<!-- MODAL GLOBAL -->
-<div id="modal-layer" class="modal-layer">
-    <div class="modal-box">
-        <button id="modal-close" type="button" class="modal-close" aria-label="Tancar">×</button>
-        <div id="modal-content"></div>
-    </div>
-</div>
+    characterPanel.classList.add("active");
+}
 
-</div>
-<script src="script.js"></script>
-</body>
-</html>
+function executeCharacterAction(button, key) {
+    const action = button.dataset.action;
+    const cState = characterStates[key];
+    const character = characters[key];
+
+    if (action === "observe") {
+        cState.observed = true;
+        document.getElementById(`result-observe-${key}`).classList.replace("hidden", "visible");
+        state.evidence[key].push(`👁 OBSERVACIÓ: ${character.observe}`);
+        button.disabled = true;
+        button.classList.add("completed");
+    } 
+    else if (action === "investigate") {
+        cState.investigated = true;
+        document.getElementById(`result-investigate-${key}`).classList.replace("hidden", "visible");
+        state.evidence[key].push(`🔎 INVESTIGACIÓ: ${character.investigate}`);
+        button.disabled = true;
+        button.classList.add("completed");
+    }
+    else if (action === "ask") {
+        const select = document.getElementById(`question-select-${key}`);
+        if (!select.value) return; 
+        
+        cState.questionsAskedCount++;
+        const askedQ = character.questions.find(q => q.id === select.value);
+        cState.askedQuestions.push(askedQ);
+        state.evidence[key].push(`💬 PREGUNTA: ${askedQ.q} -> R: ${askedQ.a}`);
+        
+        openCharacterPanel(key); 
+    }
+}
+
+function closeCharacterPanel() {
+    characterPanel.classList.remove("active");
+}
+
+/* ========================================================= DECISION SCREEN ========================================================= */
+function showDecisionScreen() {
+    closeCharacterPanel();
+    closeModal();
+    showScreen(decisionScreen);
+    checkDecisionReady();
+}
+
+function checkDecisionReady() {
+    submitDecisionButton.disabled = !(state.truthChoice && state.suitChoice);
+}
+
+document.querySelectorAll("#truth-choice button").forEach((button) => {
+    button.addEventListener("click", () => {
+        state.truthChoice = button.dataset.character;
+        document.querySelectorAll("#truth-choice button").forEach(btn => btn.classList.remove("selected"));
+        button.classList.add("selected");
+        checkDecisionReady();
+    });
+});
+
+document.querySelectorAll("#suit-choice button").forEach((button) => {
+    button.addEventListener("click", () => {
+        state.suitChoice = button.dataset.suit;
+        document.querySelectorAll("#suit-choice button").forEach(btn => btn.classList.remove("selected"));
+        button.classList.add("selected");
+        checkDecisionReady();
+    });
+});
+
+function submitDecision() {
+    const correct = (state.truthChoice === SOLUTION.truth && state.suitChoice === SOLUTION.suit);
+
+    if (correct) {
+        showSuccess();
+    } else {
+        if (state.secondChanceActive) {
+            showGameOver();
+        } else {
+            state.firstAttemptFinished = true;
+            enterSecondChance();
+        }
+    }
+}
+
+/* ========================================================= SECOND CHANCE ========================================================= */
+function enterSecondChance() {
+    clearInterval(state.timer);
+    state.secondChanceActive = true;
+    state.timeLeft = 120; // 02:00
+
+    closeModal();
+    closeCharacterPanel();
+    showScreen(secondChanceScreen);
+
+    updateSecondChanceTimer();
+    clearInterval(state.secondChanceTimer);
+
+    state.secondChanceTimer = setInterval(() => {
+        state.timeLeft--;
+        updateSecondChanceTimer();
+
+        if (state.timeLeft <= 0) {
+            clearInterval(state.secondChanceTimer);
+            showGameOver();
+        }
+    }, 1000);
+}
+
+function updateSecondChanceTimer() {
+    const minutes = Math.max(0, Math.floor(state.timeLeft / 60));
+    const seconds = Math.max(0, state.timeLeft % 60);
+    secondChanceTimer.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+    secondChanceTimer.classList.remove("timer-danger", "timer-critical");
+    if (state.timeLeft <= 30) secondChanceTimer.classList.add("timer-critical");
+    else if (state.timeLeft <= 60) secondChanceTimer.classList.add("timer-danger");
+}
+
+function changeDecision() {
+    closeModal();
+    showDecisionScreen();
+}
+
+/* ========================================================= REVIEW EVIDENCE ========================================================= */
+function reviewEvidence() {
+    let html = `<div class="modal-title">EVIDÈNCIES RECOPILADES</div>`;
+    const allEvidence = Object.entries(state.evidence).flatMap(([key, evs]) =>
+        evs.map(text => ({ character: characters[key].name, text }))
+    );
+
+    if (allEvidence.length === 0) {
+        html += `<p class="modal-dialogue">No has recopilat cap prova.</p>`;
+    } else {
+        html += `<div class="evidence-list">`;
+        allEvidence.forEach(item => {
+            html += `<div class="evidence-item"><strong>${item.character}</strong><span>${item.text}</span></div>`;
+        });
+        html += `</div>`;
+    }
+    openModal(html);
+}
+
+function openModal(content) {
+    modalContent.innerHTML = content;
+    modalLayer.classList.add("active");
+    document.body.classList.add("modal-open");
+}
+
+function closeModal() {
+    modalLayer.classList.remove("active");
+    document.body.classList.remove("modal-open");
+}
+
+/* ========================================================= SUCCESS & GAME OVER ========================================================= */
+function showSuccess() {
+    clearInterval(state.timer);
+    clearInterval(state.secondChanceTimer);
+    closeModal();
+    closeCharacterPanel();
+
+    playerCollar.textContent = SOLUTION.suit;
+    resultScreen.classList.remove("game-over");
+    resultSymbol.textContent = "♥";
+    resultTitle.textContent = "GAME CLEAR";
+    resultText.innerHTML = `
+        <strong>L'Usagi</strong> deia la veritat.<br>El teu collar és el <strong>♥</strong>.<br><br>
+        Has superat el joc...<br><br>
+        <span style="letter-spacing: 0.1em; color: #fff; font-size: 15px;">TIME WAS NEVER ON YOUR SIDE.</span>
+    `;
+
+    // Mostrem el botó per saltar al Joc 2
+    document.getElementById("next-room-btn").classList.remove("hidden");
+
+    showScreen(resultScreen);
+}
+
+function showGameOver() {
+    clearInterval(state.timer);
+    clearInterval(state.secondChanceTimer);
+    closeModal();
+    closeCharacterPanel();
+
+    resultScreen.classList.add("game-over");
+    resultSymbol.textContent = "×";
+    resultTitle.textContent = "GAME OVER";
+    resultText.innerHTML = `No has aconseguit identificar correctament qui deia la veritat. El temps s'ha acabat.`;
+    showScreen(resultScreen);
+}
+
+/* ========================================================= INITIALIZATION ========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+    startButton.addEventListener("click", () => showScreen(rulesScreen));
+    beginInvestigationButton.addEventListener("click", () => {
+        resetState();
+        showScreen(gameScreen);
+        startMainTimer();
+    });
+
+    document.querySelectorAll(".character-card").forEach((card) => {
+        card.addEventListener("click", () => openCharacterPanel(card.dataset.character));
+        card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openCharacterPanel(card.dataset.character);
+            }
+        });
+    });
+
+    finalDecisionButton.addEventListener("click", showDecisionScreen);
+    submitDecisionButton.addEventListener("click", submitDecision);
+    reviewEvidenceButton.addEventListener("click", reviewEvidence);
+    changeDecisionButton.addEventListener("click", changeDecision);
+    characterPanelClose.addEventListener("click", closeCharacterPanel);
+    modalClose.addEventListener("click", closeModal);
+
+    restartButton.addEventListener("click", () => {
+        resetState();
+        showScreen(openingScreen);
+    });
+
+    // REDIRECCIÓ DIRECTA AL JOC 2 DINS DE LA CARPETA Game02
+    const nextRoomBtn = document.getElementById("next-room-btn");
+    if (nextRoomBtn) {
+        nextRoomBtn.addEventListener("click", () => {
+            window.location.href = "../Game02/";
+        });
+    }
+
+    modalLayer.addEventListener("click", (e) => {
+        if (e.target === modalLayer) closeModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            closeModal();
+            closeCharacterPanel();
+        }
+    });
+
+    renderCharacters();
+    showScreen(openingScreen);
+});
