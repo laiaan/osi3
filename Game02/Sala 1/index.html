@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <!-- PANTALLA D'INICI DE CONNEXIÓ (Necessari per activar l'àudio als navegadors) -->
+    <!-- PANTALLA D'INICI DE CONNEXIÓ -->
     <div id="start-screen" class="screen active">
         <div class="center-content">
             <h1>SISTEMA CONNECTAT</h1>
@@ -33,7 +33,11 @@
     <!-- HUD (Durant el gameplay) -->
     <div id="hud" class="hidden">
         <div class="hud-top">
-            <div class="hud-left">SALA 01 / 05</div>
+            <div class="hud-left">
+                <div>SALA 01 / 05</div>
+                <!-- NOU: Indicador de metres -->
+                <div id="distance-meter" class="strikes-indicator" style="color: #2aff7b; font-size: 1.2rem; font-weight: bold;">DISTÀNCIA: 45m</div>
+            </div>
             <div id="timer" class="hud-center">05:00</div>
             <div class="hud-right">
                 <div id="survivors-count">SUPERVIVENTS: 6</div>
