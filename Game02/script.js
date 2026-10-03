@@ -235,7 +235,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function handleTimeout() {
     if (isTransitioning) return;
     const currentRoom = ROOMS_DATA[currentRoomIndex];
-    // Selecciona automàticament l'opció predeterminada
     selectOption(currentRoom.defaultOptionIndex, true);
   }
 
