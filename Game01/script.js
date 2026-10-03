@@ -47,7 +47,7 @@ const characters = {
         name: "USAGI", truth: true, suit: "♥",
         statements: ["És ♥. (Pausa). Això és el que veig."],
         observe: "Es manté al marge de les discussions. Fa un petit pas enrere si et veu molt angoixat, deixant-te espai personal. Et mira de manera directa i fixa als ulls, però sense fer cap gest per acostar-se.",
-        investigate: "Continua dient ♥. No ha afegit cap explicació addicional ni ha posat cap excusa per donar suport a la seva resposta. Dóna frases molt curtes i no entra a valorar què diuen els seus companys.",
+        investigate: "Continua diciendo ♥. No ha afegit cap explicació addicional ni ha posat cap excusa per donar suport a la seva resposta. Dóna frases molt curtes i no entra a valorar què diuen els seus companys.",
         questions: [
             { id: "q1", q: "Per què hauria de creure't?", a: "Creure'm és la teva responsabilitat, no la meva. Jo no m'esforçaré en convèncer-te si decideixes dubtar de la meva paraula." },
             { id: "q2", q: "I si t'estàs equivocant?", a: "Llavors m'hauré equivocat. Però no et diré que he vist una altra cosa només perquè soni més segur." },
@@ -475,6 +475,10 @@ function showSuccess() {
         Has superat el joc...<br><br>
         <span style="letter-spacing: 0.1em; color: #fff; font-size: 15px;">TIME WAS NEVER ON YOUR SIDE.</span>
     `;
+    
+    // El botó es fa visible al guanyar
+    document.getElementById("next-room-btn").classList.remove("hidden");
+
     showScreen(resultScreen);
 }
 
@@ -523,6 +527,14 @@ document.addEventListener('DOMContentLoaded', () => {
         resetState();
         showScreen(openingScreen);
     });
+    
+    // Funció per saltar de sala un cop polsem "NEXT ROOM"
+    const nextRoomBtn = document.getElementById("next-room-btn");
+    if (nextRoomBtn) {
+        nextRoomBtn.addEventListener("click", () => {
+            window.location.href = "../game02/sala01/";
+        });
+    }
 
     modalLayer.addEventListener("click", (e) => {
         if (e.target === modalLayer) closeModal();
@@ -538,4 +550,3 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCharacters();
     showScreen(openingScreen);
 });
-
