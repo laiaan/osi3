@@ -109,7 +109,7 @@ function startCinematic() {
         document.getElementById('system-screen').classList.remove('hidden');
     }, 23000);
 
-    // Veu del sistema
+    // Veu del sistema (Versió Corregida amb subtítols basats en temps)
     setTimeout(() => {
         document.getElementById('system-screen').classList.add('hidden');
         document.getElementById('intro-screen').style.backgroundColor = "rgba(0,0,0,0.8)";
@@ -117,6 +117,7 @@ function startCinematic() {
     }, 28000);
 }
 
+// ARREGLAT: Ara utilitza temps infal·lible en comptes de l'API de veu que bloquejava el joc.
 function playSystemVoice() {
     const lines = [
         "Benvinguts a la primera prova.",
@@ -145,30 +146,13 @@ function playSystemVoice() {
         let text = lines[currentLine];
         subtitleEl.textContent = text;
 
-        if ('speechSynthesis' in window) {
-            let utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'ca-ES';
-            utterance.pitch = 0.8; // Veu més greu i freda
-            utterance.rate = 0.95;
-            
-            utterance.onend = () => {
-                currentLine++;
-                setTimeout(speakNext, 500);
-            };
-            
-            // Fallback per si l'API falla o no té la veu
-            utterance.onerror = () => {
-                setTimeout(() => { currentLine++; speakNext(); }, 3500);
-            };
-            
-            window.speechSynthesis.speak(utterance);
-        } else {
-            // Fallback sense veu
-            setTimeout(() => {
-                currentLine++;
-                speakNext();
-            }, 3500);
-        }
+        // Calculem el temps de lectura (Més curt per donar dinamisme, no es bloqueja mai)
+        let readTime = (text.length * 60) + 1000;
+
+        setTimeout(() => {
+            currentLine++;
+            speakNext();
+        }, readTime);
     }
     
     speakNext();
