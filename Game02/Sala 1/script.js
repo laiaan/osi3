@@ -15,7 +15,7 @@ const gameState = {
 // ==========================================
 // 2. CONFIGURACIÓ DE LA SALA I NPCs
 // ==========================================
-const TRACK_LENGTH = 6000; // Pista llarga, 45-50 metres equivalents
+const TRACK_LENGTH = 6000; 
 const TRACK_WIDTH = 1200;
 const FINISH_Y = 300; 
 const START_Y = TRACK_LENGTH - 300;
@@ -34,7 +34,7 @@ const npcData = {
 let canvas, ctx;
 let lastTime = 0;
 let isPlaying = false;
-let timeRemaining = 300; // 05:00
+let timeRemaining = 300; 
 let timerInterval;
 
 let lightState = "GREEN";
@@ -44,14 +44,12 @@ let cycleCount = 0;
 
 let entities = [];
 let player;
-let figureRotation = 0; // 0 = esquena (Verd), 1 = girada (Vermell)
+let figureRotation = 0; 
 
-// Inputs i Càmera
 let keys = { w: false, a: false, s: false, d: false };
 let joystick = { active: false, dx: 0, dy: 0 };
 let camera = { x: 0, y: 0 };
 
-// Diàlegs flotants
 let floatingDialogues = []; 
 let lastDialogueTime = { Chishiya: 0, Niragi: 0, Ann: 0, Kuina: 0, Aguni: 0 };
 
@@ -76,14 +74,17 @@ function resizeCanvas() {
 }
 
 function startCinematic() {
-    document.getElementById('start-screen').classList.remove('active');
+    // CORRECCIÓ DEL BUCLE: Desactivem el botó i amaguem completament la pantalla d'inici
+    const startBtn = document.getElementById('btn-init');
+    if (startBtn) startBtn.disabled = true;
+    
+    document.getElementById('start-screen').classList.add('hidden');
     document.getElementById('intro-screen').classList.remove('hidden');
     
-    // Configurar els personatges per a la visualització de fons
     setupEntities();
     camera.x = 0; 
     camera.y = START_Y - canvas.height * 0.4;
-    drawGame(true); // Dibuixar un frame estàtic de fons
+    drawGame(true); 
 
     const dialogues = [
         { char: "Kuina", text: "On som?", delay: 2000 },
@@ -103,13 +104,11 @@ function startCinematic() {
         }, d.delay);
     });
 
-    // Pantalla del sistema
     setTimeout(() => {
         cineText.innerHTML = "";
         document.getElementById('system-screen').classList.remove('hidden');
     }, 23000);
 
-    // Veu del sistema (Versió Corregida amb subtítols basats en temps)
     setTimeout(() => {
         document.getElementById('system-screen').classList.add('hidden');
         document.getElementById('intro-screen').style.backgroundColor = "rgba(0,0,0,0.8)";
@@ -117,7 +116,6 @@ function startCinematic() {
     }, 28000);
 }
 
-// ARREGLAT: Ara utilitza temps infal·lible en comptes de l'API de veu que bloquejava el joc.
 function playSystemVoice() {
     const lines = [
         "Benvinguts a la primera prova.",
@@ -145,8 +143,6 @@ function playSystemVoice() {
 
         let text = lines[currentLine];
         subtitleEl.textContent = text;
-
-        // Calculem el temps de lectura (Més curt per donar dinamisme, no es bloqueja mai)
         let readTime = (text.length * 60) + 1000;
 
         setTimeout(() => {
@@ -245,10 +241,9 @@ function startGame() {
     document.getElementById('hud').classList.remove('hidden');
     updateSurvivorsHUD();
     
-    // Primer cicle fixat per aprendre
     lightState = "GREEN";
     updateLightHUD();
-    nextLightChange = performance.now() + 4500; // 4.5s de Verd
+    nextLightChange = performance.now() + 4500; 
     
     timeRemaining = 300;
     timerInterval = setInterval(tickTimer, 1000);
@@ -279,7 +274,6 @@ function updateGame(dt) {
 
     if(performance.now() > nextLightChange) toggleLight();
 
-    // Transició suau de la figura
     let targetRot = (lightState === "RED") ? 1 : 0;
     figureRotation += (targetRot - figureRotation) * 15 * dt;
 
@@ -295,9 +289,8 @@ function updateGame(dt) {
         checkDetection(ent);
     });
 
-    // Càmera: segueix al jugador però mira cap amunt (porta)
     camera.x += (player.x - camera.x) * 5 * dt;
-    let targetCamY = player.y - window.innerHeight * 0.35; // Deixa un 65% de visió per davant
+    let targetCamY = player.y - window.innerHeight * 0.35; 
     camera.y += (targetCamY - camera.y) * 5 * dt;
 
     updateDialogues(dt);
@@ -307,7 +300,6 @@ function updateGame(dt) {
 // 8. FÍSIQUES I IA
 // ==========================================
 function updatePlayer(p, dt) {
-    // Si està rebent una infracció, congelat 1 segon
     if (p.freezeTimer > 0) {
         p.freezeTimer -= dt;
         p.vx = 0; p.vy = 0;
@@ -330,7 +322,7 @@ function updatePlayer(p, dt) {
     if(len > 1) { inputX /= len; inputY /= len; }
 
     const accel = 2500;
-    const friction = 0.80; // Frena molt ràpid al deixar l'input (Important per la mecànica)
+    const friction = 0.80; 
 
     p.vx += inputX * accel * dt;
     p.vy += inputY * accel * dt;
@@ -342,7 +334,6 @@ function updatePlayer(p, dt) {
         p.vx = (p.vx / currentSpeed) * p.speed;
         p.vy = (p.vy / currentSpeed) * p.speed;
     }
-    // Parada absoluta si la velocitat és molt baixa
     if(currentSpeed < 5 && inputX === 0 && inputY === 0) { p.vx = 0; p.vy = 0; }
 
     p.x += p.vx * dt;
@@ -371,7 +362,6 @@ function updateNPC(npc, dt) {
         npc.stopTimer += dt * 1000;
         let delayBeforeStop = npc.reaction + (Math.random() * npc.risk * 400); 
         
-        // Risc d'error
         if(Math.random() < (npc.risk * 0.003)) delayBeforeStop += 800;
 
         if(npc.stopTimer < delayBeforeStop) {
@@ -396,27 +386,24 @@ function toggleLight() {
     timeSinceLightChange = 0;
     cycleCount++;
 
-    // Resetear deteccions per cicle
     entities.forEach(e => e.detectedThisCycle = false);
 
     if(lightState === "GREEN") {
         lightState = "RED";
-        // Durada Vermell: 2 a 4 segons
         let dur = 2000 + Math.random() * 2000; 
-        if(cycleCount === 1) dur = 3000; // Primer cicle fix
+        if(cycleCount === 1) dur = 3000; 
         nextLightChange = performance.now() + dur;
         
         updateLightHUD();
-        playBeep(300, 'sawtooth', 0.5); // So aspre
+        playBeep(300, 'sawtooth', 0.5); 
     } else {
         lightState = "GREEN";
-        // Durada Verd: 3 a 5 segons
         let dur = 3000 + Math.random() * 2000;
         if(cycleCount === 2) dur = 4000; 
         nextLightChange = performance.now() + dur;
 
         updateLightHUD();
-        playBeep(600, 'sine', 0.2); // So net
+        playBeep(600, 'sine', 0.2); 
     }
 }
 
@@ -436,19 +423,15 @@ function updateLightHUD() {
 // ==========================================
 function checkDetection(ent) {
     if(lightState === "GREEN") return;
-    
-    // Finestra de reacció (0.20 segons)
     if(timeSinceLightChange < 200) return; 
-    
-    if(ent.detectedThisCycle) return; // Només 1 infracció per fase vermella
+    if(ent.detectedThisCycle) return; 
 
     let currentSpeed = Math.sqrt(ent.vx*ent.vx + ent.vy*ent.vy);
     
-    // Llindar estricte però just
     if(currentSpeed > 30) {
         ent.detectedThisCycle = true;
         ent.strikes++;
-        ent.freezeTimer = 1.0; // Es queda parat pel xoc
+        ent.freezeTimer = 1.0; 
         
         if(ent.isPlayer) {
             handlePlayerStrike();
@@ -460,7 +443,7 @@ function checkDetection(ent) {
 
 function handlePlayerStrike() {
     updateStrikesHUD();
-    playBeep(150, 'square', 0.4); // So elèctric
+    playBeep(150, 'square', 0.4); 
     
     if (player.strikes >= 3) {
         isPlaying = false;
@@ -469,7 +452,6 @@ function handlePlayerStrike() {
             document.getElementById('screen-gameover').classList.remove('hidden');
         }, 1000);
     } else {
-        // Flash visual d'advertència
         const flash = document.getElementById('detection-flash');
         document.getElementById('detection-text').textContent = `${player.strikes}/3 — DETECTAT`;
         flash.classList.remove('hidden');
@@ -483,13 +465,11 @@ function handleNPCStrike(npc) {
         gameState.survivors = gameState.survivors.filter(n => n !== npc.name);
         gameState.eliminated.push(npc.name);
         updateSurvivorsHUD();
-        playBeep(100, 'square', 0.6); // So de mort pesat
+        playBeep(100, 'square', 0.6); 
 
-        // Reacció d'altres
         if(Math.random() > 0.5) addFloatingDialogue("Kuina", "No...");
         else addFloatingDialogue("Ann", "No ha frenat a temps.");
     } else {
-        // Reacció a la pròpia infracció
         if(npc.name === "Niragi" && npc.strikes === 1) addFloatingDialogue("Niragi", "Només ha estat un error.");
     }
 }
@@ -506,7 +486,6 @@ function updateSurvivorsHUD() {
 // 11. SISTEMA DE DIÀLEGS FLOTANTS
 // ==========================================
 function addFloatingDialogue(charName, text) {
-    // Evitar spam del mateix personatge
     let now = performance.now();
     if(now - lastDialogueTime[charName] < 5000) return;
     lastDialogueTime[charName] = now;
@@ -514,7 +493,7 @@ function addFloatingDialogue(charName, text) {
     floatingDialogues.push({
         charName: charName,
         text: text,
-        timeLeft: 2.5 // Dura 2.5 segons
+        timeLeft: 2.5 
     });
 }
 
@@ -528,7 +507,6 @@ function updateDialogues(dt) {
 }
 
 function checkNPCDialogue(npc) {
-    // Diàlegs contextuals esporàdics
     if(Math.random() < 0.001) {
         if(npc.name === "Chishiya" && cycleCount > 2) addFloatingDialogue("Chishiya", "Els intervals estan canviant.");
         if(npc.name === "Niragi" && lightState === "GREEN") addFloatingDialogue("Niragi", "VINGA! MOVEU-VOS!");
@@ -585,14 +563,11 @@ function drawGame(isStatic = false) {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
-    // Centrar càmera en X, i col·locar Y segons el jugador
     ctx.translate(canvas.width / 2 - camera.x, canvas.height / 2 - camera.y);
 
-    // Dibuixar Pista (Terra)
     ctx.fillStyle = '#111111';
     ctx.fillRect(-TRACK_WIDTH/2, FINISH_Y - 200, TRACK_WIDTH, START_Y - FINISH_Y + 600);
     
-    // Línies laterals (canvien de color segons la llum)
     ctx.strokeStyle = lightState === "GREEN" ? 'rgba(42, 255, 123, 0.3)' : 'rgba(255, 42, 42, 0.3)';
     ctx.lineWidth = 4;
     ctx.beginPath();
@@ -600,7 +575,6 @@ function drawGame(isStatic = false) {
     ctx.moveTo(TRACK_WIDTH/2 - 20, FINISH_Y); ctx.lineTo(TRACK_WIDTH/2 - 20, START_Y + 500);
     ctx.stroke();
 
-    // Dibuixar Meta (Porta / Línia)
     ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
     ctx.fillRect(-TRACK_WIDTH/2, FINISH_Y, TRACK_WIDTH, 40);
     ctx.fillStyle = '#fff';
@@ -608,38 +582,32 @@ function drawGame(isStatic = false) {
     ctx.textAlign = 'center';
     ctx.fillText("SORTIDA", 0, FINISH_Y - 20);
 
-    // Dibuixar Figura de Control
     drawController();
 
-    // Dibuixar Entitats
-    entities.sort((a,b) => a.y - b.y); // Profunditat Z
+    entities.sort((a,b) => a.y - b.y); 
 
     entities.forEach(ent => {
-        // Ombra
         ctx.fillStyle = 'rgba(0,0,0,0.5)';
         ctx.beginPath(); ctx.ellipse(ent.x, ent.y + 10, 15, 5, 0, 0, Math.PI*2); ctx.fill();
 
-        // Cos
         ctx.beginPath();
         ctx.arc(ent.x, ent.y, ent.radius, 0, Math.PI * 2);
         if(ent.state === 'dead') {
-            ctx.fillStyle = 'rgba(150, 0, 0, 0.5)'; // Cadàver fosc
+            ctx.fillStyle = 'rgba(150, 0, 0, 0.5)'; 
         } else {
             ctx.fillStyle = ent.color;
             if(ent.isPlayer) {
-                ctx.shadowColor = '#fff'; ctx.shadowBlur = 10; // Destacar Marcel
+                ctx.shadowColor = '#fff'; ctx.shadowBlur = 10; 
             }
         }
         ctx.fill(); ctx.shadowBlur = 0;
 
-        // Indicador d'infraccions a sobre del personatge (opcional per feedback)
         if(ent.state === 'alive' && ent.strikes > 0) {
             ctx.fillStyle = '#ff2a2a';
             ctx.font = '10px Courier Prime';
             ctx.fillText("X".repeat(ent.strikes), ent.x, ent.y - 25);
         }
 
-        // Nom
         if(ent.state === 'alive') {
             ctx.fillStyle = ent.isPlayer ? '#fff' : '#666';
             ctx.font = '12px Courier Prime';
@@ -647,7 +615,6 @@ function drawGame(isStatic = false) {
         }
     });
 
-    // Dibuixar Diàlegs Flotants
     if (!isStatic) {
         floatingDialogues.forEach(dialogue => {
             let ent = entities.find(e => e.name === dialogue.charName);
@@ -674,7 +641,6 @@ function drawGame(isStatic = false) {
 
     ctx.restore();
 
-    // Vinyeta visual (foscor a les vores)
     let grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, canvas.height*0.3, canvas.width/2, canvas.height/2, canvas.height);
     grad.addColorStop(0, 'rgba(0,0,0,0)');
     grad.addColorStop(1, lightState === "RED" ? 'rgba(50,0,0,0.5)' : 'rgba(0,0,0,0.8)');
@@ -685,7 +651,6 @@ function drawGame(isStatic = false) {
 function drawController() {
     let ctrlY = FINISH_Y - 150;
     
-    // Focus de llum
     if(lightState === "RED") {
         let grad = ctx.createRadialGradient(0, ctrlY, 20, 0, ctrlY, 600);
         grad.addColorStop(0, `rgba(255, 0, 0, 0.4)`);
@@ -694,18 +659,15 @@ function drawController() {
         ctx.fillRect(-600, ctrlY - 300, 1200, 1200);
     }
 
-    // Base figura
     ctx.fillStyle = '#222';
     ctx.fillRect(-30, ctrlY, 60, 40);
 
-    // Cap (Gira segons figureRotation: 0 = amagat, 1 = mira endavant)
     ctx.fillStyle = '#111';
     ctx.beginPath(); ctx.arc(0, ctrlY, 25, 0, Math.PI*2); ctx.fill();
 
     if (figureRotation > 0.1) {
         ctx.fillStyle = `rgba(255, 42, 42, ${figureRotation})`;
         ctx.shadowColor = '#ff2a2a'; ctx.shadowBlur = 15;
-        // Ulls mecànics
         ctx.fillRect(-12, ctrlY + 5, 8, 4);
         ctx.fillRect(4, ctrlY + 5, 8, 4);
         ctx.shadowBlur = 0;
@@ -735,14 +697,9 @@ function playBeep(freq, type, vol) {
 }
 
 // ==========================================
-// 15. TRANSICIÓ (Preparat per al futur)
+// 15. TRANSICIÓ
 // ==========================================
 function goToNextRoom() {
-    // Guarda l'estat en localStorage per recuperar-lo a la Sala 02
     localStorage.setItem("game02_state", JSON.stringify(gameState));
-    
-    // Quan existeixi la Sala 02, l'enllaç anirà aquí:
-    // window.location.href = "../sala02/index.html";
-    
     alert(`Redirigint a SALA 02...\nSupervivents guardats: ${gameState.survivors.join(", ")}\nAquesta funció està llesta per connectar el següent arxiu.`);
 }
