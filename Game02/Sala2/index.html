@@ -1,1 +1,90 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GAME 02 — SALA 02: EL CAÇADOR</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- PANTALLA D'INICI DE CONNEXIÓ -->
+    <div id="start-screen" class="screen active">
+        <div class="center-content">
+            <h1>SISTEMA CONNECTAT</h1>
+            <p>SALA 02 — EL CAÇADOR</p>
+            <button id="btn-init" class="btn mt-2">ENTRAR AL COMPLEX</button>
+        </div>
+    </div>
+
+    <!-- ESCENA CINEMATOGRÀFICA INICIAL -->
+    <div id="intro-screen" class="screen hidden">
+        <div class="cinematic-bars top"></div>
+        <div id="cinematic-text" class="cinematic-text"></div>
+        <div class="cinematic-bars bottom"></div>
+        <div id="system-screen" class="system-screen hidden">
+            <h1 class="red-text">PROVA 02</h1>
+            <div id="system-subtitles" class="mt-2"></div>
+        </div>
+    </div>
+
+    <!-- HUD -->
+    <div id="hud" class="hidden">
+        <div class="hud-top">
+            <div class="hud-left">
+                <div>SALA 02 / 05</div>
+                <div id="timer" class="mt-1 timer-normal">05:00</div>
+            </div>
+            <div class="hud-right">
+                <div id="survivors-count">SUPERVIVENTS: -</div>
+                <div id="stealth-indicator" class="stealth-indicator mt-1 hidden">SIGIL ACTIU</div>
+            </div>
+        </div>
+        <!-- Compte enrere de la sortida -->
+        <div id="exit-timer-container" class="exit-timer hidden">
+            <p>ACTIVANT SORTIDA</p>
+            <h1 id="exit-timer-text">10</h1>
+        </div>
+    </div>
+
+    <!-- NOTIFICACIONS AL MIG DE LA PANTALLA -->
+    <div id="center-notification" class="center-notification hidden">
+        <h2 id="notification-text"></h2>
+    </div>
+
+    <!-- CANVAS DEL JOC -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- CONTROLS TÀCTILS -->
+    <div id="touch-controls" class="hidden">
+        <div id="joystick-zone">
+            <div id="joystick-base"><div id="joystick-stick"></div></div>
+        </div>
+        <div id="action-zone">
+            <button id="btn-stealth" class="touch-btn">SIGIL</button>
+        </div>
+    </div>
+
+    <!-- PANTALLES DE RESULTAT -->
+    <div id="screen-gameover" class="screen hidden">
+        <div class="center-content">
+            <h1 class="red-text huge-text">ELIMINAT</h1>
+            <p>EL CAÇADOR T'HA TROBAT.</p>
+            <button id="btn-retry" class="btn mt-2">TORNAR A INTENTAR-HO</button>
+        </div>
+    </div>
+
+    <div id="screen-win" class="screen hidden">
+        <div class="center-content">
+            <h1 class="green-text huge-text">PROVA 02 SUPERADA</h1>
+            <h2 id="final-survivors" class="mt-2">SUPERVIVENTS: X</h2>
+            <h3 id="final-eliminated" class="red-text mt-1">ELIMINATS: X</h3>
+            <p class="fade-text delay-2 mt-2">DUES PROVES SUPERADES.</p>
+            <button id="btn-continue" class="btn mt-2 hidden fade-text delay-4">PROVA 03 — PRÒXIMAMENT</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
 
