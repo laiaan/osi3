@@ -1,1 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+:root {
+    --bg-color: #0b0c10;
+    --text-color: #c5c6c7;
+    --red: #ff3333;
+    --green: #45a29e;
+    --cyan: #66fcf1;
+    --dark-grey: #1f2833;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Courier Prime', monospace;
+    overflow: hidden;
+    width: 100vw; height: 100vh;
+}
+
+canvas { display: block; position: absolute; top: 0; left: 0; z-index: 1; }
+
+.hidden { display: none !important; }
+.mt-1 { margin-top: 10px; }
+.mt-2 { margin-top: 30px; }
+
+.screen {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: var(--bg-color); z-index: 20;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+}
+
+.center-content { max-width: 600px; padding: 20px; }
+
+.huge-text { font-size: 3rem; letter-spacing: 5px; }
+.red-text { color: var(--red); text-shadow: 0 0 10px rgba(255,0,0,0.5); }
+.green-text { color: var(--green); }
+.timer-normal { font-size: 1.5rem; font-weight: bold; }
+.timer-danger { font-size: 1.5rem; font-weight: bold; color: var(--red); animation: pulse 1s infinite; }
+
+.btn {
+    background: transparent; border: 1px solid var(--text-color); color: var(--text-color);
+    font-family: inherit; font-size: 1.2rem; padding: 15px 40px; cursor: pointer;
+    letter-spacing: 3px; transition: all 0.3s; text-transform: uppercase;
+}
+.btn:hover { background: var(--text-color); color: var(--bg-color); }
+
+/* HUD */
+#hud { position: absolute; top: 0; left: 0; width: 100%; z-index: 10; pointer-events: none; }
+.hud-top {
+    display: flex; justify-content: space-between; padding: 20px 30px;
+    font-weight: bold; font-size: 1.1rem; text-shadow: 1px 1px 3px #000;
+}
+.hud-right { text-align: right; }
+.stealth-indicator { color: var(--cyan); letter-spacing: 2px; }
+
+.exit-timer {
+    position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
+    text-align: center; color: var(--cyan); text-shadow: 0 0 10px var(--cyan);
+}
+#exit-timer-text { font-size: 4rem; margin-top: 10px; }
+
+.center-notification {
+    position: absolute; top: 25%; left: 50%; transform: translateX(-50%);
+    text-align: center; background: rgba(0,0,0,0.8); padding: 10px 30px; border-radius: 5px;
+    border: 1px solid var(--red); color: var(--red); letter-spacing: 2px;
+}
+
+/* CINEMATICA */
+.cinematic-bars { position: absolute; width: 100%; height: 12%; background: #000; z-index: 5; }
+.cinematic-bars.top { top: 0; }
+.cinematic-bars.bottom { bottom: 0; }
+.cinematic-text {
+    position: absolute; bottom: 15%; width: 100%; text-align: center;
+    font-size: 1.2rem; z-index: 10; background: rgba(0,0,0,0.8); padding: 15px;
+}
+.system-screen {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; z-index: 15; display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+#system-subtitles { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 5px #fff; }
+
+/* TACTIL */
+#touch-controls { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 15; }
+#joystick-zone { position: absolute; bottom: 30px; left: 30px; width: 140px; height: 140px; pointer-events: auto; }
+#joystick-base { width: 120px; height: 120px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; position: absolute; top: 10px; left: 10px; }
+#joystick-stick { width: 50px; height: 50px; background: rgba(255,255,255,0.6); border-radius: 50%; position: absolute; top: 35px; left: 35px; pointer-events: none; }
+#action-zone { position: absolute; bottom: 40px; right: 40px; pointer-events: auto; }
+.touch-btn {
+    width: 80px; height: 80px; border-radius: 50%; background: rgba(0,0,0,0.5);
+    border: 2px solid var(--text-color); color: var(--text-color); font-family: inherit; font-weight: bold;
+}
+.touch-btn:active { background: rgba(255,255,255,0.3); }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+.fade-text { animation: fadeIn 1.5s forwards; opacity: 0; }
+.delay-2 { animation-delay: 2s; }
+.delay-4 { animation-delay: 4s; }
+@keyframes fadeIn { to { opacity: 1; } }
 
