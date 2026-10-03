@@ -1,7 +1,7 @@
 "use strict";
 
 // ==========================================
-// 1. ESTAT GLOBAL (Preparat per Sala 02)
+// 1. ESTAT GLOBAL 
 // ==========================================
 const gameState = {
     gameId: "GAME_02",
@@ -15,17 +15,18 @@ const gameState = {
 // ==========================================
 // 2. CONFIGURACIÓ DE LA SALA I NPCs
 // ==========================================
-const TRACK_LENGTH = 6000; 
+const TRACK_LENGTH = 5000; // Representa ~50 metres
 const TRACK_WIDTH = 1200;
 const FINISH_Y = 300; 
 const START_Y = TRACK_LENGTH - 300;
 
+// Els personatges ara són més visibles
 const npcData = {
     Chishiya: { speed: 280, risk: 0.1, reaction: 120, color: "#e0e0e0" },
-    Niragi:   { speed: 360, risk: 0.8, reaction: 300, color: "#8b0000" },
+    Niragi:   { speed: 360, risk: 0.8, reaction: 300, color: "#ff4444" },
     Ann:      { speed: 290, risk: 0.05, reaction: 100, color: "#88ccff" },
     Kuina:    { speed: 310, risk: 0.3, reaction: 200, color: "#ff88cc" },
-    Aguni:    { speed: 300, risk: 0.15, reaction: 150, color: "#555555" }
+    Aguni:    { speed: 300, risk: 0.15, reaction: 150, color: "#aaaaaa" }
 };
 
 // ==========================================
@@ -64,7 +65,10 @@ window.onload = () => {
     setupInputs();
 
     document.getElementById('btn-init').addEventListener('click', startCinematic);
-    document.getElementById('btn-retry').addEventListener('click', () => location.reload());
+    
+    // NOU: El botó de retry ara reinicia directament a la pista sense passar per l'intro
+    document.getElementById('btn-retry').addEventListener('click', quickRestart);
+    
     document.getElementById('btn-continue').addEventListener('click', goToNextRoom);
 };
 
@@ -74,7 +78,6 @@ function resizeCanvas() {
 }
 
 function startCinematic() {
-    // CORRECCIÓ DEL BUCLE: Desactivem el botó i amaguem completament la pantalla d'inici
     const startBtn = document.getElementById('btn-init');
     if (startBtn) startBtn.disabled = true;
     
@@ -100,7 +103,7 @@ function startCinematic() {
     
     dialogues.forEach(d => {
         setTimeout(() => {
-            cineText.innerHTML = `<span style="color:#aaa; font-size:0.9em;">${d.char}</span><br>«${d.text}»`;
+            cineText.innerHTML = `<span style="color:#aaa; font-size:1.1em;">${d.char}</span><br><br>«${d.text}»`;
         }, d.delay);
     });
 
@@ -143,7 +146,7 @@ function playSystemVoice() {
 
         let text = lines[currentLine];
         subtitleEl.textContent = text;
-        let readTime = (text.length * 60) + 1000;
+        let readTime = (text.length * 55) + 1000;
 
         setTimeout(() => {
             currentLine++;
@@ -152,6 +155,33 @@ function playSystemVoice() {
     }
     
     speakNext();
+}
+
+// NOU: Funció de Reinici Ràpid (sense intro)
+function quickRestart() {
+    document.getElementById('screen-gameover').classList.add('hidden');
+    
+    // Resetejar llista completa de supervivents
+    gameState.survivors = ["Marcel", "Chishiya", "Niragi", "Kuina", "Aguni", "Ann"];
+    gameState.eliminated = [];
+    
+    setupEntities(); // Recrea els personatges a la línia de sortida
+    
+    lightState = "GREEN";
+    cycleCount = 0;
+    updateLightHUD();
+    nextLightChange = performance.now() + 4500; 
+    
+    timeRemaining = 300;
+    updateStrikesHUD();
+    updateSurvivorsHUD();
+    
+    clearInterval(timerInterval);
+    timerInterval = setInterval(tickTimer, 1000);
+    
+    isPlaying = true;
+    lastTime = performance.now();
+    requestAnimationFrame(gameLoop);
 }
 
 // ==========================================
@@ -218,8 +248,8 @@ function setupEntities() {
     entities = [];
     player = {
         name: "Marcel", x: 0, y: START_Y, vx: 0, vy: 0,
-        speed: 350, radius: 16, isPlayer: true, state: 'alive',
-        color: '#ffffff', strikes: 0, detectedThisCycle: false
+        speed: 350, radius: 22, isPlayer: true, state: 'alive',
+        color: '#ffffff', strikes: 0, detectedThisCycle: false, freezeTimer: 0
     };
     entities.push(player);
 
@@ -230,8 +260,8 @@ function setupEntities() {
             name: name, x: startOffset, y: START_Y + (Math.random()*60 - 30), vx: 0, vy: 0,
             speed: npcData[name].speed, risk: npcData[name].risk, reaction: npcData[name].reaction,
             isPlayer: false, state: 'alive', stopTimer: 0,
-            color: npcData[name].color, radius: 15, targetX: startOffset + (Math.random()*100-50),
-            strikes: 0, detectedThisCycle: false
+            color: npcData[name].color, radius: 22, targetX: startOffset + (Math.random()*100-50),
+            strikes: 0, detectedThisCycle: false, freezeTimer: 0
         });
         startOffset += 150;
     }
@@ -282,6 +312,11 @@ function updateGame(dt) {
         if(ent.isPlayer) {
             updatePlayer(ent, dt);
             checkWin(ent);
+            
+            // NOU: Càlcul de distància a la meta (escala de 100 unitats = 1 metre)
+            let distanceMeters = Math.max(0, Math.floor((ent.y - FINISH_Y) / 100));
+            document.getElementById('distance-meter').textContent = `DISTÀNCIA: ${distanceMeters}m`;
+            
         } else {
             updateNPC(ent, dt);
             checkNPCDialogue(ent);
@@ -322,7 +357,7 @@ function updatePlayer(p, dt) {
     if(len > 1) { inputX /= len; inputY /= len; }
 
     const accel = 2500;
-    const friction = 0.80; 
+    const friction = 0.65; // ARREGLAT: Frena en sec més ràpidament per evitar morts injustes
 
     p.vx += inputX * accel * dt;
     p.vy += inputY * accel * dt;
@@ -423,7 +458,10 @@ function updateLightHUD() {
 // ==========================================
 function checkDetection(ent) {
     if(lightState === "GREEN") return;
-    if(timeSinceLightChange < 200) return; 
+    
+    // ARREGLAT: Et dona un marge més generós (350ms) perquè tinguis temps humà per reaccionar.
+    if(timeSinceLightChange < 350) return; 
+    
     if(ent.detectedThisCycle) return; 
 
     let currentSpeed = Math.sqrt(ent.vx*ent.vx + ent.vy*ent.vy);
@@ -559,59 +597,64 @@ function tickTimer() {
 // 13. RENDERITZAT (CANVAS)
 // ==========================================
 function drawGame(isStatic = false) {
-    ctx.fillStyle = '#070707';
+    // ARREGLAT: El fons ara és gris fosc, no totalment negre, permetent veure molt millor el joc.
+    ctx.fillStyle = '#181818';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
     ctx.translate(canvas.width / 2 - camera.x, canvas.height / 2 - camera.y);
 
-    ctx.fillStyle = '#111111';
+    // Terra de la pista més clar
+    ctx.fillStyle = '#252525';
     ctx.fillRect(-TRACK_WIDTH/2, FINISH_Y - 200, TRACK_WIDTH, START_Y - FINISH_Y + 600);
     
-    ctx.strokeStyle = lightState === "GREEN" ? 'rgba(42, 255, 123, 0.3)' : 'rgba(255, 42, 42, 0.3)';
+    ctx.strokeStyle = lightState === "GREEN" ? 'rgba(42, 255, 123, 0.6)' : 'rgba(255, 42, 42, 0.6)';
     ctx.lineWidth = 4;
     ctx.beginPath();
     ctx.moveTo(-TRACK_WIDTH/2 + 20, FINISH_Y); ctx.lineTo(-TRACK_WIDTH/2 + 20, START_Y + 500);
     ctx.moveTo(TRACK_WIDTH/2 - 20, FINISH_Y); ctx.lineTo(TRACK_WIDTH/2 - 20, START_Y + 500);
     ctx.stroke();
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-    ctx.fillRect(-TRACK_WIDTH/2, FINISH_Y, TRACK_WIDTH, 40);
+    // La Meta ara destaca molt més visualment
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+    ctx.fillRect(-TRACK_WIDTH/2, FINISH_Y, TRACK_WIDTH, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 40px Courier Prime';
+    ctx.font = 'bold 50px Courier Prime';
     ctx.textAlign = 'center';
-    ctx.fillText("SORTIDA", 0, FINISH_Y - 20);
+    ctx.fillText("SORTIDA", 0, FINISH_Y + 45);
 
     drawController();
 
     entities.sort((a,b) => a.y - b.y); 
 
     entities.forEach(ent => {
-        ctx.fillStyle = 'rgba(0,0,0,0.5)';
-        ctx.beginPath(); ctx.ellipse(ent.x, ent.y + 10, 15, 5, 0, 0, Math.PI*2); ctx.fill();
+        // Ombra del personatge
+        ctx.fillStyle = 'rgba(0,0,0,0.7)';
+        ctx.beginPath(); ctx.ellipse(ent.x, ent.y + 15, 20, 8, 0, 0, Math.PI*2); ctx.fill();
 
+        // Cos del personatge
         ctx.beginPath();
         ctx.arc(ent.x, ent.y, ent.radius, 0, Math.PI * 2);
         if(ent.state === 'dead') {
-            ctx.fillStyle = 'rgba(150, 0, 0, 0.5)'; 
+            ctx.fillStyle = 'rgba(100, 0, 0, 0.8)'; 
         } else {
             ctx.fillStyle = ent.color;
             if(ent.isPlayer) {
-                ctx.shadowColor = '#fff'; ctx.shadowBlur = 10; 
+                ctx.shadowColor = '#fff'; ctx.shadowBlur = 15; 
             }
         }
         ctx.fill(); ctx.shadowBlur = 0;
 
         if(ent.state === 'alive' && ent.strikes > 0) {
             ctx.fillStyle = '#ff2a2a';
-            ctx.font = '10px Courier Prime';
-            ctx.fillText("X".repeat(ent.strikes), ent.x, ent.y - 25);
+            ctx.font = '14px Courier Prime';
+            ctx.fillText("X".repeat(ent.strikes), ent.x, ent.y - 30);
         }
 
         if(ent.state === 'alive') {
-            ctx.fillStyle = ent.isPlayer ? '#fff' : '#666';
-            ctx.font = '12px Courier Prime';
-            ctx.fillText(ent.name, ent.x, ent.y - 12);
+            ctx.fillStyle = ent.isPlayer ? '#ffffff' : '#aaaaaa';
+            ctx.font = 'bold 14px Courier Prime';
+            ctx.fillText(ent.name, ent.x, ent.y - 15);
         }
     });
 
@@ -619,33 +662,33 @@ function drawGame(isStatic = false) {
         floatingDialogues.forEach(dialogue => {
             let ent = entities.find(e => e.name === dialogue.charName);
             if (ent && ent.state === 'alive') {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-                ctx.strokeStyle = '#555';
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+                ctx.strokeStyle = '#fff';
                 ctx.lineWidth = 1;
                 
                 let textWidth = ctx.measureText("«" + dialogue.text + "»").width;
-                let boxW = textWidth + 20;
-                let boxH = 25;
+                let boxW = textWidth + 24;
+                let boxH = 30;
                 let boxX = ent.x - boxW/2;
-                let boxY = ent.y - 55;
+                let boxY = ent.y - 65;
 
                 ctx.fillRect(boxX, boxY, boxW, boxH);
                 ctx.strokeRect(boxX, boxY, boxW, boxH);
 
                 ctx.fillStyle = '#fff';
-                ctx.font = '12px Courier Prime';
-                ctx.fillText("«" + dialogue.text + "»", ent.x, boxY + 16);
+                ctx.font = '14px Courier Prime';
+                ctx.fillText("«" + dialogue.text + "»", ent.x, boxY + 20);
             }
         });
     }
 
     ctx.restore();
 
-    let grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, canvas.height*0.3, canvas.width/2, canvas.height/2, canvas.height);
-    grad.addColorStop(0, 'rgba(0,0,0,0)');
-    grad.addColorStop(1, lightState === "RED" ? 'rgba(50,0,0,0.5)' : 'rgba(0,0,0,0.8)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // ARREGLAT: S'ha eliminat la vinyeta negra asfixiant perquè puguis veure sempre l'objectiu
+    if (lightState === "RED") {
+        ctx.fillStyle = 'rgba(50,0,0,0.15)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 }
 
 function drawController() {
@@ -659,23 +702,23 @@ function drawController() {
         ctx.fillRect(-600, ctrlY - 300, 1200, 1200);
     }
 
-    ctx.fillStyle = '#222';
-    ctx.fillRect(-30, ctrlY, 60, 40);
+    ctx.fillStyle = '#333';
+    ctx.fillRect(-40, ctrlY, 80, 50);
 
-    ctx.fillStyle = '#111';
-    ctx.beginPath(); ctx.arc(0, ctrlY, 25, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#222';
+    ctx.beginPath(); ctx.arc(0, ctrlY, 35, 0, Math.PI*2); ctx.fill();
 
     if (figureRotation > 0.1) {
         ctx.fillStyle = `rgba(255, 42, 42, ${figureRotation})`;
-        ctx.shadowColor = '#ff2a2a'; ctx.shadowBlur = 15;
-        ctx.fillRect(-12, ctrlY + 5, 8, 4);
-        ctx.fillRect(4, ctrlY + 5, 8, 4);
+        ctx.shadowColor = '#ff2a2a'; ctx.shadowBlur = 20;
+        ctx.fillRect(-15, ctrlY + 5, 10, 5);
+        ctx.fillRect(5, ctrlY + 5, 10, 5);
         ctx.shadowBlur = 0;
     }
 }
 
 // ==========================================
-// 14. ÀUDIO SINTÈTIC (Sense dependències)
+// 14. ÀUDIO SINTÈTIC
 // ==========================================
 let actx;
 function playBeep(freq, type, vol) {
