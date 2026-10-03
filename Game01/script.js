@@ -532,7 +532,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextRoomBtn = document.getElementById("next-room-btn");
     if (nextRoomBtn) {
         nextRoomBtn.addEventListener("click", () => {
-            window.location.href = "../game02/sala01/";
+            window.location.href = "../Game02/Sala%201/";
         });
     }
 
