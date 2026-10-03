@@ -52,7 +52,7 @@ const characters = {
         truth: true,
         statements: ["És ♥. (Pausa). Això és el que veig."],
         observe: "Es manté al marge de les discussions. Fa un petit pas enrere si et veu molt angoixat, deixant-te espai personal. Et mira de manera directa i fixa als ulls, però sense fer cap gest per acostar-se.",
-        investigate: "Continua disant ♥. No ha afegit cap explicació addicional ni ha posat cap excusa per donar suport a la seva resposta. Dóna frases molt curtes i no entra a valorar què diuen els seus companys.",
+        investigate: "Continua dient ♥. No ha afegit cap explicació addicional ni ha posat cap excusa per donar suport a la seva resposta. Dóna frases molt curtes i no entra a valorar què diuen els seus companys.",
         questions: [
             { id: "q1", q: "Per què hauria de creure't?", a: "Creure'm és la teva responsabilitat, no la meva. Jo no m'esforçaré en convèncer-te si decideixes dubtar de la meva paraula." },
             { id: "q2", q: "I si t'estàs equivocant?", a: "Llavors m'hauré equivocat. Però no et diré que he vist una altra cosa només perquè soni més segur." },
@@ -235,12 +235,12 @@ function openCharacterPanel(key) {
             <strong>Tu:</strong> ${q.q}<br>
             <strong>${character.name}:</strong> ${q.a}
         </div>
-    `).join('');
+    `).join("");
 
-    let askControlsHTML = '';
+    let askControlsHTML = "";
     if (cState.questionsAskedCount < 2 && !isReadOnly) {
         let availableOptions = character.questions.filter(q => !cState.askedQuestions.some(aq => aq.id === q.id));
-        let optionsHTML = availableOptions.map(q => `<option value="${q.id}">${q.q}</option>`).join('');
+        let optionsHTML = availableOptions.map(q => `<option value="${q.id}">${q.q}</option>`).join("");
 
         askControlsHTML = `
             <select id="question-select-${key}" class="action-select">
@@ -264,10 +264,10 @@ function openCharacterPanel(key) {
             <h3>ACCIONS D'INVESTIGACIÓ</h3>
             
             <div class="action-group">
-                <button class="action-button ${cState.observed || isReadOnly ? 'completed' : ''}" data-action="observe" data-character="${key}" ${cState.observed || isReadOnly ? 'disabled' : ''}>
+                <button class="action-button ${cState.observed || isReadOnly ? "completed" : ""}" data-action="observe" data-character="${key}" ${cState.observed || isReadOnly ? "disabled" : ""}>
                     👁 OBSERVAR
                 </button>
-                <div id="result-observe-${key}" class="action-result ${cState.observed ? 'visible' : 'hidden'}">${character.observe}</div>
+                <div id="result-observe-${key}" class="action-result ${cState.observed ? "visible" : "hidden"}">${character.observe}</div>
             </div>
 
             <div class="action-group">
@@ -276,16 +276,16 @@ function openCharacterPanel(key) {
             </div>
 
             <div class="action-group">
-                <button class="action-button ${cState.investigated || isReadOnly ? 'completed' : ''}" data-action="investigate" data-character="${key}" ${cState.investigated || isReadOnly ? 'disabled' : ''}>
+                <button class="action-button ${cState.investigated || isReadOnly ? "completed" : ""}" data-action="investigate" data-character="${key}" ${cState.investigated || isReadOnly ? "disabled" : ""}>
                     🔎 INVESTIGAR
                 </button>
-                <div id="result-investigate-${key}" class="action-result ${cState.investigated ? 'visible' : 'hidden'}">${character.investigate}</div>
+                <div id="result-investigate-${key}" class="action-result ${cState.investigated ? "visible" : "hidden"}">${character.investigate}</div>
             </div>
         </div>
     `;
 
-    characterPanelContent.querySelectorAll('.action-button:not(.completed)').forEach(btn => {
-        btn.addEventListener('click', (e) => executeCharacterAction(e.target, key));
+    characterPanelContent.querySelectorAll(".action-button:not(.completed)").forEach(btn => {
+        btn.addEventListener("click", (e) => executeCharacterAction(e.target, key));
     });
 
     characterPanel.classList.add("active");
@@ -296,21 +296,21 @@ function executeCharacterAction(button, key) {
     const cState = characterStates[key];
     const character = characters[key];
 
-    if (action === 'observe') {
+    if (action === "observe") {
         cState.observed = true;
-        document.getElementById(`result-observe-${key}`).classList.replace('hidden', 'visible');
+        document.getElementById(`result-observe-${key}`).classList.replace("hidden", "visible");
         state.evidence[key].push(`👁 OBSERVACIÓ: ${character.observe}`);
         button.disabled = true;
-        button.classList.add('completed');
+        button.classList.add("completed");
     } 
-    else if (action === 'investigate') {
+    else if (action === "investigate") {
         cState.investigated = true;
-        document.getElementById(`result-investigate-${key}`).classList.replace('hidden', 'visible');
+        document.getElementById(`result-investigate-${key}`).classList.replace("hidden", "visible");
         state.evidence[key].push(`🔎 INVESTIGACIÓ: ${character.investigate}`);
         button.disabled = true;
-        button.classList.add('completed');
+        button.classList.add("completed");
     }
-    else if (action === 'ask') {
+    else if (action === "ask") {
         const select = document.getElementById(`question-select-${key}`);
         if (!select.value) return; 
         
@@ -478,7 +478,7 @@ function showGameOver() {
 }
 
 /* ========================================================= INITIALIZATION ========================================================= */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
     startButton.addEventListener("click", () => showScreen(rulesScreen));
     beginInvestigationButton.addEventListener("click", () => {
         resetState();
@@ -508,7 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen(openingScreen);
     });
 
-    // REDIRECCIÓ DIRECTA AL JOC 2 DINYS DE LA CARPETA Game02
+    // REDIRECCIÓ DIRECTA AL JOC 2 DINS DE LA CARPETA Game02
     const nextRoomBtn = document.getElementById("next-room-btn");
     if (nextRoomBtn) {
         nextRoomBtn.addEventListener("click", () => {
