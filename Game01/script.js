@@ -528,13 +528,14 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen(openingScreen);
     });
     
-    // Funció per saltar de sala un cop polsem "NEXT ROOM"
-    const nextRoomBtn = document.getElementById("next-room-btn");
-    if (nextRoomBtn) {
-        nextRoomBtn.addEventListener("click", () => {
-            window.location.href = "../Game02/Sala%201/";
-        });
-    }
+    // Funció per saltar de sala un cop es guanya el Joc 1
+const nextRoomBtn = document.getElementById("next-room-btn");
+if (nextRoomBtn) {
+    nextRoomBtn.addEventListener("click", () => {
+        // Enllaç directe al Joc 2 a GitHub Pages
+        window.location.href = "https://laiaan.github.io/Game02/";
+    });
+}
 
     modalLayer.addEventListener("click", (e) => {
         if (e.target === modalLayer) closeModal();
