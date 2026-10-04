@@ -1,114 +1,1999 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JOC 2 — LES CINC DECISIONS</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>ARXIU — Cinc Sales</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        background: #080808;
+        color: #e8e8e8;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+    button {
+        font-family: inherit;
+    }
+
+    .screen {
+        display: none;
+        min-height: 100vh;
+        width: 100%;
+        padding: 24px 18px 40px;
+    }
+
+    .screen.active {
+        display: block;
+    }
+
+    .center-screen {
+        display: none;
+        min-height: 100vh;
+        width: 100%;
+        padding: 25px 18px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .center-screen.active {
+        display: flex;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 920px;
+        margin: 0 auto;
+    }
+
+    /* =========================
+       INTRO
+       ========================= */
+
+    .intro {
+        text-align: center;
+        max-width: 760px;
+        margin: 0 auto;
+    }
+
+    .glitch-small {
+        color: #777;
+        font-size: 11px;
+        letter-spacing: 5px;
+        margin-bottom: 24px;
+        text-transform: uppercase;
+    }
+
+    .main-title {
+        font-size: clamp(38px, 9vw, 82px);
+        line-height: .9;
+        letter-spacing: -3px;
+        font-weight: 900;
+        margin: 0 0 20px;
+        text-transform: uppercase;
+    }
+
+    .main-title span {
+        display: block;
+    }
+
+    .red {
+        color: #b20d0d;
+    }
+
+    .subtitle {
+        color: #aaa;
+        font-size: 14px;
+        line-height: 1.7;
+        max-width: 620px;
+        margin: 0 auto 35px;
+    }
+
+    .warning-box {
+        border: 1px solid #303030;
+        background: #0d0d0d;
+        padding: 20px;
+        margin: 0 auto 28px;
+        text-align: left;
+    }
+
+    .warning-box .label {
+        color: #8c8c8c;
+        font-size: 10px;
+        letter-spacing: 3px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .warning-box p {
+        margin: 0;
+        color: #d5d5d5;
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .start-btn,
+    .continue-btn,
+    .archive-btn,
+    .restart-btn {
+        border: 1px solid #8e0b0b;
+        background: #170707;
+        color: #eee;
+        padding: 15px 28px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 700;
+        transition: .2s;
+    }
+
+    .start-btn:hover,
+    .continue-btn:hover,
+    .archive-btn:hover,
+    .restart-btn:hover {
+        background: #8e0b0b;
+        color: #fff;
+    }
+
+    /* =========================
+       GAME HEADER
+       ========================= */
+
+    .game-header {
+        max-width: 920px;
+        margin: 0 auto 25px;
+        border-bottom: 1px solid #262626;
+        padding-bottom: 15px;
+    }
+
+    .top-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .room-label {
+        font-size: 11px;
+        letter-spacing: 4px;
+        color: #777;
+        text-transform: uppercase;
+    }
+
+    .timer {
+        font-variant-numeric: tabular-nums;
+        font-size: 28px;
+        font-weight: 900;
+        letter-spacing: 2px;
+        color: #eee;
+        min-width: 75px;
+        text-align: right;
+    }
+
+    .timer.warning {
+        color: #b48b24;
+    }
+
+    .timer.danger {
+        color: #b20d0d;
+        animation: timerPulse .8s infinite;
+    }
+
+    @keyframes timerPulse {
+        50% {
+            opacity: .45;
+        }
+    }
+
+    .progress {
+        display: flex;
+        gap: 5px;
+        margin-top: 14px;
+    }
+
+    .progress-piece {
+        height: 3px;
+        flex: 1;
+        background: #222;
+    }
+
+    .progress-piece.done {
+        background: #8c0c0c;
+    }
+
+    .progress-piece.current {
+        background: #555;
+    }
+
+    /* =========================
+       ROOM CONTENT
+       ========================= */
+
+    .room {
+        max-width: 920px;
+        margin: 0 auto;
+    }
+
+    .room-number {
+        color: #9b0e0e;
+        font-size: 12px;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .room-title {
+        font-size: clamp(28px, 7vw, 52px);
+        margin: 0 0 28px;
+        line-height: 1;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+    }
+
+    .case-title {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin: 0 0 20px;
+    }
+
+    .description {
+        color: #c8c8c8;
+        font-size: 14px;
+        line-height: 1.8;
+        margin-bottom: 28px;
+    }
+
+    .description p {
+        margin: 0 0 12px;
+    }
+
+    .info-box {
+        border-left: 2px solid #4b4b4b;
+        background: #0d0d0d;
+        padding: 17px 18px;
+        margin-bottom: 15px;
+    }
+
+    .info-box h3 {
+        margin: 0 0 10px;
+        font-size: 15px;
+        letter-spacing: 1px;
+    }
+
+    .info-box p {
+        color: #aaa;
+        margin: 4px 0;
+        line-height: 1.55;
+        font-size: 13px;
+    }
+
+    .separator {
+        height: 1px;
+        background: #222;
+        margin: 28px 0;
+    }
+
+    .instruction {
+        color: #ddd;
+        font-weight: 700;
+        line-height: 1.6;
+        margin-bottom: 18px;
+    }
+
+    /* =========================
+       OPTIONS
+       ========================= */
+
+    .options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .option {
+        min-height: 150px;
+        background: #0d0d0d;
+        border: 1px solid #292929;
+        color: #eee;
+        padding: 20px;
+        text-align: left;
+        cursor: pointer;
+        transition: .2s;
+        position: relative;
+    }
+
+    .option:hover {
+        border-color: #777;
+        background: #121212;
+    }
+
+    .option:active {
+        transform: scale(.985);
+    }
+
+    .option-letter {
+        font-size: 11px;
+        color: #777;
+        letter-spacing: 3px;
+        margin-bottom: 13px;
+    }
+
+    .option-title {
+        font-weight: 900;
+        font-size: 18px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .option-text {
+        color: #aaa;
+        font-size: 12px;
+        line-height: 1.55;
+    }
+
+    .color-option.red-option {
+        border-top: 3px solid #9f1010;
+    }
+
+    .color-option.yellow-option {
+        border-top: 3px solid #aa8a16;
+    }
+
+    .color-option.blue-option {
+        border-top: 3px solid #214f9d;
+    }
+
+    /* =========================
+       SALA 3
+       ========================= */
+
+    .buttons-wall {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 30px 0;
+    }
+
+    .wall-button {
+        width: 90px;
+        height: 70px;
+        border: 2px solid #222;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+
+    .wall-red {
+        background: #260707;
+        border-color: #8e1111;
+        color: #d45454;
+    }
+
+    .wall-yellow {
+        background: #292407;
+        border-color: #9c8515;
+        color: #d4bb3e;
+    }
+
+    .wall-blue {
+        background: #071529;
+        border-color: #244f92;
+        color: #5f8ddc;
+    }
+
+    .statement {
+        border: 1px solid #242424;
+        background: #0b0b0b;
+        padding: 20px;
+        margin-bottom: 12px;
+    }
+
+    .statement-label {
+        color: #777;
+        font-size: 10px;
+        letter-spacing: 3px;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+    }
+
+    .statement p {
+        color: #d0d0d0;
+        font-size: 14px;
+        line-height: 1.8;
+        margin: 0;
+    }
+
+    .logic-warning {
+        color: #777;
+        font-size: 11px;
+        line-height: 1.6;
+        margin-bottom: 22px;
+        font-style: italic;
+    }
+
+    /* =========================
+       SALA 4
+       ========================= */
+
+    .containers {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 28px 0;
+    }
+
+    .container-choice {
+        min-height: 220px;
+        border: 1px solid #292929;
+        background: #0d0d0d;
+        padding: 20px;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    .container-choice:hover {
+        border-color: #777;
+        background: #121212;
+    }
+
+    .container-number {
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .container-visual {
+        height: 75px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 34px;
+    }
+
+    .metal {
+        border: 3px solid #777;
+        width: 55px;
+        height: 60px;
+        background: #181818;
+    }
+
+    .transparent {
+        border: 2px solid #8d8d8d;
+        width: 60px;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: .8;
+    }
+
+    .wood {
+        width: 70px;
+        height: 55px;
+        border: 3px solid #62462c;
+        background: #1b1108;
+    }
+
+    .container-choice h3 {
+        font-size: 15px;
+        margin: 0 0 8px;
+    }
+
+    .container-choice p {
+        color: #888;
+        font-size: 12px;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* =========================
+       SALA 5
+       ========================= */
+
+    .switches {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 30px 0;
+    }
+
+    .switch {
+        min-height: 170px;
+        border: 1px solid #292929;
+        background: #0d0d0d;
+        padding: 20px;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    .switch:hover {
+        background: #121212;
+        border-color: #777;
+    }
+
+    .switch-symbol {
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
+
+    .switch h3 {
+        margin: 0 0 10px;
+        font-size: 16px;
+        text-transform: uppercase;
+    }
+
+    .switch p {
+        color: #888;
+        font-size: 12px;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .indicator-row {
+        display: flex;
+        gap: 25px;
+        justify-content: center;
+        margin: 25px 0;
+        flex-wrap: wrap;
+    }
+
+    .indicator {
+        font-size: 11px;
+        letter-spacing: 1px;
+        color: #777;
+    }
+
+    .light {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 6px;
+        background: #555;
+    }
+
+    .stable {
+        background: #aaa;
+    }
+
+    .blink {
+        animation: blink .8s infinite;
+        background: #777;
+    }
+
+    @keyframes blink {
+        50% {
+            opacity: .15;
+        }
+    }
+
+    .off {
+        background: #151515;
+        border: 1px solid #333;
+    }
+
+    .wall-quote {
+        margin: 30px auto;
+        max-width: 650px;
+        border-top: 1px solid #2b2b2b;
+        border-bottom: 1px solid #2b2b2b;
+        padding: 24px 10px;
+        text-align: center;
+        font-size: 17px;
+        line-height: 1.7;
+        color: #d7d7d7;
+    }
+
+    /* =========================
+       DECISION RESULT
+       ========================= */
+
+    .decision-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.94);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .decision-overlay.active {
+        display: flex;
+    }
+
+    .decision-card {
+        width: 100%;
+        max-width: 620px;
+        border: 1px solid #383838;
+        background: #090909;
+        padding: 35px 25px;
+        text-align: center;
+    }
+
+    .decision-card .small {
+        color: #777;
+        letter-spacing: 4px;
+        font-size: 10px;
+        margin-bottom: 18px;
+        text-transform: uppercase;
+    }
+
+    .decision-card h2 {
+        margin: 0 0 22px;
+        font-size: clamp(25px, 7vw, 40px);
+        text-transform: uppercase;
+    }
+
+    .decision-card .clue-label {
+        color: #777;
+        font-size: 10px;
+        letter-spacing: 3px;
+        margin-bottom: 12px;
+    }
+
+    .clue {
+        border: 1px solid #272727;
+        background: #0d0d0d;
+        padding: 22px;
+        font-size: 17px;
+        line-height: 1.7;
+        color: #ddd;
+        margin-bottom: 25px;
+    }
+
+    /* =========================
+       ARCHIVE
+       ========================= */
+
+    .archive-title {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: clamp(30px, 8vw, 60px);
+        letter-spacing: -2px;
+        text-transform: uppercase;
+    }
+
+    .archive-subtitle {
+        text-align: center;
+        color: #777;
+        font-size: 12px;
+        line-height: 1.7;
+        max-width: 620px;
+        margin: 0 auto 30px;
+    }
+
+    .archive-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .archive-item {
+        border: 1px solid #292929;
+        background: #0c0c0c;
+        padding: 20px;
+    }
+
+    .archive-item-header {
+        color: #777;
+        font-size: 10px;
+        letter-spacing: 3px;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+    }
+
+    .archive-item p {
+        margin: 0;
+        color: #ddd;
+        font-size: 15px;
+        line-height: 1.65;
+    }
+
+    .final-note {
+        border: 1px solid #5b0b0b;
+        background: #120707;
+        padding: 22px;
+        margin-top: 25px;
+        color: #bbb;
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .final-note strong {
+        color: #ddd;
+    }
+
+    .archive-actions {
+        text-align: center;
+        margin-top: 28px;
+    }
+
+    /* =========================
+       TIMEOUT
+       ========================= */
+
+    .timeout-message {
+        text-align: center;
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .timeout-message h1 {
+        font-size: clamp(38px, 10vw, 70px);
+        margin: 0 0 20px;
+        color: #a20d0d;
+        text-transform: uppercase;
+    }
+
+    .timeout-message p {
+        color: #999;
+        line-height: 1.7;
+        margin-bottom: 28px;
+    }
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @media (max-width: 700px) {
+
+        .screen,
+        .center-screen {
+            padding-left: 14px;
+            padding-right: 14px;
+        }
+
+        .options,
+        .containers,
+        .switches {
+            grid-template-columns: 1fr;
+        }
+
+        .option,
+        .container-choice,
+        .switch {
+            min-height: auto;
+        }
+
+        .container-choice {
+            min-height: 175px;
+        }
+
+        .top-line {
+            align-items: flex-start;
+        }
+
+        .room-title {
+            margin-bottom: 22px;
+        }
+
+        .buttons-wall {
+            gap: 6px;
+        }
+
+        .wall-button {
+            width: 75px;
+            height: 60px;
+        }
+
+        .decision-card {
+            padding: 28px 18px;
+        }
+
+        .clue {
+            font-size: 15px;
+        }
+    }
+</style>
 </head>
+
 <body>
-  <div class="background-overlay"></div>
-  <div class="scanline"></div>
 
-  <div class="game-wrapper">
-    <!-- Capçalera Global -->
-    <header class="game-header">
-      <div class="brand">JOC 2</div>
-      <div class="subtitle">LES CINC DECISIONS</div>
-    </header>
+<!-- =========================================================
+     INTRO
+     ========================================================= -->
 
-    <!-- Contenidor Principal de Pantalles -->
-    <main class="game-container">
-      
-      <!-- 1. Pantalla d'Inici -->
-      <section id="view-start" class="view active">
-        <div class="card start-card">
-          <h1 class="title-lg">GIMCANA D'ANIVERSARI</h1>
-          <p class="tagline">Prova Especial per a Marcel</p>
-          <div class="divider"></div>
-          <div class="rules-box">
-            <p class="rules-title">PROTOCOL DEL JOC:</p>
-            <ul>
-              <li>5 sales d'avaluació crítica.</li>
-              <li>5 minuts per sala (05:00).</li>
-              <li>3 opcions disponibles per decisió.</li>
-              <li>Cada decisió genera una pista.</li>
-              <li>Les decisions són definitives i irreversibles.</li>
-            </ul>
-          </div>
-          <button id="btn-start" class="btn btn-primary btn-block">COMENÇAR EL JOC</button>
-        </div>
-      </section>
+<section id="introScreen" class="center-screen active">
+    <div class="intro">
 
-      <!-- 2. Pantalla de Sala / Prova -->
-      <section id="view-room" class="view">
-        <div class="room-top-bar">
-          <div class="room-badge" id="room-badge">SALA 01 / 05</div>
-          <div class="timer-box" id="timer-box">
-            <span class="timer-label">TEMPS</span>
-            <span class="timer-digits" id="timer-display">05:00</span>
-          </div>
+        <div class="glitch-small">ARXIU // PROTOCOL 05</div>
+
+        <h1 class="main-title">
+            <span>CINC</span>
+            <span class="red">SALES</span>
+        </h1>
+
+        <p class="subtitle">
+            Cinc situacions. Cinc decisions.
+            Cap confirmació.
+            La informació que rebràs després de cada decisió
+            haurà de ser interpretada més endavant.
+        </p>
+
+        <div class="warning-box">
+            <div class="label">ADVERTÈNCIA</div>
+            <p>
+                No sabràs si les teves decisions han estat correctes.
+                Cada sala conservarà el seu resultat fins al final.
+                No hi ha cap indicador de resposta bona, intermèdia o dolenta.
+            </p>
         </div>
 
-        <div class="card room-card">
-          <h2 class="room-title" id="room-title">SALA 01</h2>
-          <div class="room-narrative" id="room-narrative">
-            <!-- Text narratiu dinamitzat per script.js -->
-          </div>
-          
-          <div class="options-container" id="options-container">
-            <!-- Botons d'opció dinamitzats per script.js -->
-          </div>
+        <button class="start-btn" onclick="startGame()">
+            INICIAR PROTOCOL
+        </button>
+
+    </div>
+</section>
+
+
+<!-- =========================================================
+     SALA 1
+     ========================================================= -->
+
+<section id="room1" class="screen">
+    <div class="game-header">
+        <div class="top-line">
+            <div class="room-label">SALA 01 / EL VEREDICTE</div>
+            <div id="timer1" class="timer">05:00</div>
         </div>
-      </section>
 
-      <!-- 3. Pantalla de Transició -->
-      <section id="view-transition" class="view">
-        <div class="transition-box">
-          <div class="pulse-loader"></div>
-          <div class="transition-text" id="transition-status">ELECCIÓ REGISTRADA</div>
+        <div class="progress">
+            <div class="progress-piece current"></div>
+            <div class="progress-piece"></div>
+            <div class="progress-piece"></div>
+            <div class="progress-piece"></div>
+            <div class="progress-piece"></div>
         </div>
-      </section>
+    </div>
 
-      <!-- 4. Pantalla de Pista Individual -->
-      <section id="view-clue" class="view">
-        <div class="card clue-card">
-          <div class="clue-header-badge" id="clue-room-title">SALA 01 — PISTA 01</div>
-          <div class="clue-content">
-            <p class="clue-text" id="clue-text-body">Carregant pista...</p>
-          </div>
-          <div class="clue-status-tag">PISTA REGISTRADA.</div>
-          <button id="btn-next-room" class="btn btn-primary btn-block">CONTINUAR</button>
+    <div class="room">
+
+        <div class="room-number">CAS 017 — HOMICIDI</div>
+        <h1 class="room-title">EL VEREDICTE</h1>
+
+        <div class="description">
+            <p>
+                Ahir a les 23:40, Adrià Vidal, de 58 anys,
+                va ser trobat mort a casa seva.
+            </p>
+
+            <p>
+                La policia ha identificat dues persones com a principals sospitoses.
+            </p>
+
+            <p>
+                Només una d’elles és culpable.
+                No hi ha proves suficients per demostrar-ho.
+            </p>
+
+            <p>
+                Tens cinc minuts per decidir a qui envies a la presó.
+            </p>
         </div>
-      </section>
 
-      <!-- 5. Pantalla Final (Les 5 Pistes) -->
-      <section id="view-final" class="view">
-        <div class="card final-card">
-          <h1 class="title-lg">LES CINC PISTES</h1>
-          <p class="subtitle-md">Resum d'informació acumulada</p>
-          <div class="divider"></div>
-          
-          <div class="final-clues-list" id="final-clues-list">
-            <!-- Les 5 pistes acumulades -->
-          </div>
+        <div class="separator"></div>
 
-          <div class="final-note">
-            <p>Analitza les pistes obtingudes, recorda les teves decisions i dedueix quina informació és de confiança per trobar el regal.</p>
-          </div>
+        <div class="info-box">
+            <h3>SOSPITOSA 01 — CLARA VIDAL</h3>
+            <p>49 anys · esposa de la víctima</p>
+            <p>Casada amb Adrià des de fa 26 anys.</p>
+            <p>Tenen dos fills, de 21 i 24 anys.</p>
+            <p>Actualment no treballa i es dedica principalment a la família.</p>
+            <p>Vivia amb Adrià a la casa on es va produir el crim.</p>
+            <p>Provenia d’una família de classe mitjana.</p>
+            <p>Adrià provenia d’una família molt rica i havia heretat una part important del patrimoni familiar.</p>
+            <p>Segons familiars i amics, el matrimoni havia estat especialment estable durant els últims anys.</p>
+            <p>Una amiga íntima de Clara descriu la relació com “un matrimoni d’aquells que semblen estar fets l’un per l’altre”.</p>
+            <p>Els fills afirmen que els seus pares tenien una relació molt propera.</p>
+            <p>Si Adrià morís, Clara podria quedar-se amb una part important del patrimoni.</p>
         </div>
-      </section>
 
-    </main>
+        <div class="info-box">
+            <h3>SOSPITÓS 02 — YASSIN EL MANSOURI</h3>
+            <p>35 anys · jardiner</p>
+            <p>Va néixer al Marroc i viu aquí des de fa més d’una dècada.</p>
+            <p>No està casat i no té fills.</p>
+            <p>Viu sol.</p>
+            <p>Treballava per a Adrià des de feia tres anys.</p>
+            <p>No pertany a cap família coneguda de la ciutat.</p>
+            <p>Els seus ingressos són baixos i té diversos deutes.</p>
+            <p>Adrià era el seu principal client.</p>
+            <p>Segons altres treballadors, la relació entre tots dos no sempre era bona.</p>
+            <p>Un veí afirma que els havia vist discutir diverses vegades.</p>
+            <p>Yassin havia demanat a Adrià un augment de sou unes setmanes abans.</p>
+            <p>Si perdés aquella feina, la seva situació econòmica empitjoraria considerablement.</p>
+        </div>
 
-    <footer class="game-footer">
-      <span>LES CINC DECISIONS — MARCEL</span>
-    </footer>
-  </div>
+        <div class="separator"></div>
 
-  <script src="script.js"></script>
+        <div class="instruction">
+            QUI ENVIES A LA PRESÓ?
+        </div>
+
+        <div class="options">
+
+            <button class="option" onclick="choose(1, 'A')">
+                <div class="option-letter">OPCIÓ A</div>
+                <div class="option-title">Clara Vidal</div>
+                <div class="option-text">
+                    L’esposa de la víctima.
+                </div>
+            </button>
+
+            <button class="option" onclick="choose(1, 'B')">
+                <div class="option-letter">OPCIÓ B</div>
+                <div class="option-title">Cap dels dos</div>
+                <div class="option-text">
+                    No acusar cap dels dos sospitosos.
+                </div>
+            </button>
+
+            <button class="option" onclick="choose(1, 'C')">
+                <div class="option-letter">OPCIÓ C</div>
+                <div class="option-title">Yassin El Mansouri</div>
+                <div class="option-text">
+                    El jardiner.
+                </div>
+            </button>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     SALA 2
+     ========================================================= -->
+
+<section id="room2" class="screen">
+    <div class="game-header">
+        <div class="top-line">
+            <div class="room-label">SALA 02 / EL RASTRE</div>
+            <div id="timer2" class="timer">05:00</div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-piece done"></div>
+            <div class="progress-piece current"></div>
+            <div class="progress-piece"></div>
+            <div class="progress-piece"></div>
+            <div class="progress-piece"></div>
+        </div>
+    </div>
+
+    <div class="room">
+
+        <div class="room-number">INCIDENTE 041</div>
+        <h1 class="room-title">EL RASTRE</h1>
+
+        <div class="description">
+            <p>
+                Hi ha hagut un accident en un edifici.
+                Una persona ha resultat ferida.
+            </p>
+
+            <p>
+                Quan investiguen l’escena, troben un petit rastre de sang
+                en una zona propera a l’accident.
+            </p>
+
+            <p>
+                La sang no és de la víctima.
+                Només pot ser del culpable.
+            </p>
+
+            <p>
+                Cap de les tres persones presents té cap ferida visible.
+            </p>
+
+            <p>
+                Un d’ells ha provocat l’accident.
+                Només un pot sortir.
+            </p>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="info-box">
+            <h3>POL — 34 ANYS</h3>
+            <p>Treballa de tècnic de manteniment.</p>
+            <p>Objecte que porta: un encenedor metàl·lic.</p>
+        </div>
+
+        <div class="info-box">
+            <h3>MARC — 38 ANYS</h3>
+            <p>Havia tingut una discussió amb la persona que ha resultat ferida.</p>
+            <p>Objecte que porta: un clauer metàl·lic amb petita fulla.</p>
+        </div>
+
+        <div class="info-box">
+            <h3>LAIA — 29 ANYS</h3>
+            <p>Havia estat amb les altres persones durant la tarda.</p>
+            <p>Objecte que porta: una motxilla.</p>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="instruction">
+            QUI DEIXES SORTIR?
+        </div>
+
+        <div class="options">
+
+            <button class="option" onclick="choose(2, 'A')">
+                <div class="option-letter">OPCIÓ A</div>
+                <div class="option-title">Laia</div>
+                <div class="option-text">
+                    Motxilla amb roba.
+                </div>
+            </button>
+
+            <button class="option" onclick="choose(2, 'B')">
+                <div class="option-letter">OPCIÓ B</div>
+                <div class="option-title">Marc</div>
+                <div class="option-text">
+                    Clauer metàl·lic amb petita fulla.
+                </div>
+            </button>
+
+            <button class="option" onclick="choose(2, 'C')">
+                <div class="option-letter">OPCIÓ C</div>
+                <div class="option-title">Pol</div>
+                <div class="option-text">
+                    Encenedor metàl·lic.
+                </div>
+            </button>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     SALA 3
+     ========================================================= -->
+
+<section id="room3" class="screen">
+    <div class="game-header">
+        <div class="top-line">
+            <div class="room-label">SALA 03 / ELS TRES BOTONS</div>
+            <div id="timer3" class="timer">05:00</div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-piece done"></div>
+            <div class="progress-piece done"></div>
+            <div class="progress-piece current"></div>
+            <div class="progress-piece"></div>
+            <div class="progress-piece"></div>
+        </div>
+    </div>
+
+    <div class="room">
+
+        <div class="room-number">PROTOCOL 003</div>
+        <h1 class="room-title">ELS TRES BOTONS</h1>
+
+        <div class="buttons-wall">
+            <div class="wall-button wall-red">VERMELL</div>
+            <div class="wall-button wall-yellow">GROC</div>
+            <div class="wall-button wall-blue">BLAU</div>
+        </div>
+
+        <div class="description">
+            <p>
+                Només una de les tres opcions pot correspondre
+                al botó que busques.
+            </p>
+
+            <p>
+                Les tres afirmacions següents són certes.
+            </p>
+        </div>
+
+        <div class="logic-warning">
+            No intentis interpretar-les per separat.
+            Algunes coses només poden considerar-se certes si una altra
+            possibilitat ho és abans; d’altres deixen de tenir sentit
+            precisament quan aquella possibilitat queda descartada.
+        </div>
+
+        <div class="statement">
+            <div class="statement-label">AFIRMACIÓ I</div>
+            <p>
+                «No seria coherent mantenir que l’opció central conserva
+                la possibilitat de ser l’elecció definitiva si, per tal que
+                aquesta mateixa possibilitat pogués mantenir-se, hagués de
+                resultar admissible també aquella que l’ordre de les opcions
+                situa abans d’ella.»
+            </p>
+        </div>
+
+        <div class="statement">
+            <div class="statement-label">AFIRMACIÓ II</div>
+            <p>
+                «No pot considerar-se preservada l’opció inicial com a
+                candidata definitiva si la seva conservació exigeix que la
+                possibilitat immediatament posterior a aquesta deixi de ser
+                exclosa quan totes dues haurien de ser incompatibles amb
+                l’existència d’una única elecció.»
+            </p>
+        </div>
+
+        <div class="statement">
+            <div class="statement-label">AFIRMACIÓ III</div>
+            <p>
+                «Si l’única possibilitat que encara no hagués estat obligada
+                a compartir la seva condició amb cap de les altres dues
+                deixés de ser considerada, la possibilitat central passaria
+                a adquirir una condició que les dues afirmacions anteriors
+                no permeten conservar simultàniament.»
+            </p>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="instruction">
+            TRIA UNA OPCIÓ.
+        </div>
+
+        <div class="options">
+
+            <button class="option color-option red-option" onclick="choose(3, 'R')">
+                <div class="option-letter">OPCIÓ</div>
+                <div class="option-title">Vermell</div>
+                <div class="option-text">
+                    Activar el botó vermell.
+                </div>
+            </button>
+
+            <button class="option color-option yellow-option" onclick="choose(3, 'G')">
+                <div class="option-letter">OPCIÓ</div>
+                <div class="option-title">Groc</div>
+                <div class="option-text">
+                    Activar el botó groc.
+                </div>
+            </button>
+
+            <button class="option color-option blue-option" onclick="choose(3, 'B')">
+                <div class="option-letter">OPCIÓ</div>
+                <div class="option-title">Blau</div>
+                <div class="option-text">
+                    Activar el botó blau.
+                </div>
+            </button>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     SALA 4
+     ========================================================= -->
+
+<section id="room4" class="screen">
+    <div class="game-header">
+        <div class="top-line">
+            <div class="room-label">SALA 04 / EL REPARTIMENT</div>
+            <div id="timer4" class="timer">05:00</div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-piece done"></div>
+            <div class="progress-piece done"></div>
+            <div class="progress-piece done"></div>
+            <div class="progress-piece current"></div>
+            <div class="progress-piece"></div>
+        </div>
+    </div>
+
+    <div class="room">
+
+        <div class="room-number">OBJECTE 004</div>
+        <h1 class="room-title">EL REPARTIMENT</h1>
+
+        <div class="description">
+            <p>
+                Sobre una taula hi ha tres recipients tancats.
+            </p>
+
+            <p>
+                <strong>NOMÉS UN CONTÉ LA CLAU.</strong>
+            </p>
+
+            <p>
+                No pots obrir-los tots.
+                Només pots escollir-ne un.
+            </p>
+
+            <p>
+                La persona que va preparar la sala sabia que intentaries
+                escollir el recipient més evident.
+            </p>
+        </div>
+
+        <div class="containers">
+
+            <button class="container-choice" onclick="choose(4, '1')">
+                <div class="container-number">RECIPIENT 01</div>
+
+                <div class="container-visual">
+                    <div class="metal"></div>
+                </div>
+
+                <h3>METÀL·LIC</h3>
+
+                <p>
+                    Gran, pesant, metàl·lic.
+                    A fora hi ha escrit:
+                    «NO OBRIR».
+                </p>
+            </button>
+
+            <button class="container-choice" onclick="choose(4, '2')">
+                <div class="container-number">RECIPIENT 02</div>
+
+                <div class="container-visual">
+                    <div class="transparent">🔑</div>
+                </div>
+
+                <h3>TRANSPARENT</h3>
+
+                <p>
+                    Petit, transparent.
+                    A dins es veu una cosa que sembla una clau.
+                </p>
+            </button>
+
+            <button class="container-choice" onclick="choose(4, '3')">
+                <div class="container-number">RECIPIENT 03</div>
+
+                <div class="container-visual">
+                    <div class="wood"></div>
+                </div>
+
+                <h3>FUSTA</h3>
+
+                <p>
+                    Una capsa de fusta completament normal.
+                    Sense cap inscripció.
+                </p>
+            </button>
+
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="description">
+            <p>
+                Només un dels recipients mostra el seu contingut real.
+            </p>
+
+            <p>
+                La clau falsa és exactament igual a la verdadera.
+            </p>
+        </div>
+
+        <div class="instruction">
+            QUIN RECIPIENT TRIES?
+        </div>
+
+    </div>
+</section>
+
+
+<!-- =========================================================
+     SALA 5
+     ========================================================= -->
+
+<section id="room5" class="screen">
+    <div class="game-header">
+        <div class="top-line">
+            <div class="room-label">SALA 05 / LA DECISIÓ FINAL</div>
+            <div id="timer5" class="timer">05:00</div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-piece done"></div>
+            <div class="progress-piece done"></div>
+            <div class="progress-piece done"></div>
+            <div class="progress-piece done"></div>
+            <div class="progress-piece current"></div>
+        </div>
+    </div>
+
+    <div class="room">
+
+        <div class="room-number">PROTOCOL FINAL</div>
+        <h1 class="room-title">LA DECISIÓ FINAL</h1>
+
+        <div class="description">
+            <p>
+                Entres en una habitació completament blanca.
+            </p>
+
+            <p>
+                Al centre hi ha tres interruptors.
+            </p>
+
+            <p>
+                No són A, B i C.
+                Tenen tres noms.
+            </p>
+        </div>
+
+        <div class="switches">
+
+            <button class="switch" onclick="choose(5, 'SORTIR')">
+                <div class="switch-symbol">🟥</div>
+                <h3>SORTIR</h3>
+                <p>
+                    La porta principal s’obrirà immediatament.
+                </p>
+            </button>
+
+            <button class="switch" onclick="choose(5, 'ESPERAR')">
+                <div class="switch-symbol">🟨</div>
+                <h3>ESPERAR</h3>
+                <p>
+                    La sala proporcionarà informació addicional
+                    abans de permetre sortir.
+                </p>
+            </button>
+
+            <button class="switch" onclick="choose(5, 'ARRISCAR')">
+                <div class="switch-symbol">🟦</div>
+                <h3>ARRISCAR</h3>
+                <p>
+                    El sistema intentarà obrir una segona sortida.
+                </p>
+            </button>
+
+        </div>
+
+        <div class="indicator-row">
+            <div class="indicator">
+                <span class="light stable"></span>
+                SORTIR · ESTABLE
+            </div>
+
+            <div class="indicator">
+                <span class="light blink"></span>
+                ESPERAR · INTERMITENT
+            </div>
+
+            <div class="indicator">
+                <span class="light off"></span>
+                ARRISCAR · APAGADA
+            </div>
+        </div>
+
+        <div class="wall-quote">
+            «Quan tot funciona, no necessites prendre una decisió.»
+        </div>
+
+        <div class="description">
+            <p>
+                Només tens una oportunitat.
+            </p>
+
+            <p>
+                La informació que has obtingut fins ara pot ajudar-te.
+            </p>
+
+            <p>
+                Però no sabràs si has pres la decisió correcta fins després d’escollir.
+            </p>
+        </div>
+
+        <div class="instruction">
+            PREN LA DECISIÓ.
+        </div>
+
+    </div>
+</section>
+
+
+<!-- =========================================================
+     DECISION OVERLAY
+     ========================================================= -->
+
+<div id="decisionOverlay" class="decision-overlay">
+
+    <div class="decision-card">
+
+        <div class="small">PROTOCOL REGISTRAT</div>
+
+        <h2>DECISIÓ REGISTRADA.</h2>
+
+        <div class="clue-label" id="clueRoomLabel">
+            INFORMACIÓ RECUPERADA
+        </div>
+
+        <div class="clue" id="clueText"></div>
+
+        <button class="continue-btn" onclick="continueGame()">
+            CONTINUAR
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     TIMEOUT
+     ========================================================= -->
+
+<section id="timeoutScreen" class="center-screen">
+    <div class="timeout-message">
+
+        <div class="glitch-small">PROTOCOL TEMPORAL</div>
+
+        <h1>Temps esgotat.</h1>
+
+        <p>
+            La sala ha tancat abans que poguessis registrar una decisió.
+            El protocol continuarà amb el resultat corresponent.
+        </p>
+
+        <button class="continue-btn" onclick="handleTimeout()">
+            ACCEPTAR
+        </button>
+
+    </div>
+</section>
+
+
+<!-- =========================================================
+     ARXIU FINAL
+     ========================================================= -->
+
+<section id="archiveScreen" class="screen">
+
+    <div class="container">
+
+        <div class="glitch-small" style="text-align:center;">
+            PROTOCOL COMPLETAT
+        </div>
+
+        <h1 class="archive-title">
+            ARXIU FINAL
+        </h1>
+
+        <p class="archive-subtitle">
+            Has completat les cinc sales.
+            Les decisions ja no poden ser modificades.
+            Ara tens tota la informació obtinguda.
+        </p>
+
+        <div id="archiveList" class="archive-list"></div>
+
+        <div class="final-note">
+            <strong>IMPORTANT.</strong><br><br>
+            Cap de les pistes indica si la decisió que les ha generat
+            ha estat correcta, intermèdia o incorrecta.
+            Aquesta informació no forma part de l’arxiu.
+            Si alguna pista sembla poc útil, contradictòria o sospitosa,
+            hauràs de decidir tu mateix fins a quin punt confiar-hi.
+        </div>
+
+        <div class="archive-actions">
+            <button class="restart-btn" onclick="location.reload()">
+                Reiniciar protocol
+            </button>
+        </div>
+
+    </div>
+</section>
+
+
+<script>
+
+/* =========================================================
+   CONFIGURACIÓ INTERNA DEL JOC
+   =========================================================
+
+   IMPORTANT:
+   Aquestes dades NO es mostren al jugador.
+
+   Cada sala té:
+   - good = pista verdadera
+   - neutral = pista inútil
+   - bad = pista falsa
+
+   Les etiquetes good / neutral / bad només existeixen
+   internament per determinar quina pista rep el jugador.
+
+   El jugador MAI veu aquesta classificació.
+   ========================================================= */
+
+const rooms = {
+
+    1: {
+        good: "C",
+        neutral: "B",
+        bad: "A",
+
+        clues: {
+            good: "No busquis la recompensa entre les coses que has rebut avui.",
+            neutral: "La recompensa és més petita del que imagines.",
+            bad: "La recompensa es troba en un lloc on acostumes a deixar coses quan arribes a casa."
+        }
+    },
+
+    2: {
+        good: "B",
+        neutral: "C",
+        bad: "A",
+
+        clues: {
+            good: "La recompensa es troba en un lloc on no vas a buscar entreteniment.",
+            neutral: "No necessitaràs cap eina per trobar-la.",
+            bad: "Busca en un lloc on guardes coses que utilitzes sovint."
+        }
+    },
+
+    3: {
+        good: "B",
+        neutral: "G",
+        bad: "R",
+
+        clues: {
+            good: "Busca allà on les coses que no necessites ara mateix esperen fins que les necessitis.",
+            neutral: "La recompensa ha estat amagada abans que comencés la partida.",
+            bad: "La recompensa es troba a prop d’alguna cosa que fas servir pràcticament cada dia."
+        }
+    },
+
+    4: {
+        good: "3",
+        neutral: "1",
+        bad: "2",
+
+        clues: {
+            good: "No hauràs de moure cap objecte gran per trobar-la.",
+            neutral: "No caldrà trencar res per aconseguir-la.",
+            bad: "No busquis en un lloc on normalment guardaries coses que només utilitzes de tant en tant."
+        }
+    },
+
+    5: {
+        good: "ARRISCAR",
+        neutral: "SORTIR",
+        bad: "ESPERAR",
+
+        clues: {
+            good: "La recompensa es troba entre coses que no esperaries trobar en una caça del tresor.",
+            neutral: "La recompensa continua exactament on va ser deixada.",
+            bad: "La recompensa es troba en un lloc que ja has utilitzat avui."
+        }
+    }
+
+};
+
+
+/* =========================================================
+   ESTAT DEL JOC
+   ========================================================= */
+
+let currentRoom = 0;
+
+let decisions = {
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null
+};
+
+let cluesReceived = {
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null
+};
+
+let timers = {
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null
+};
+
+let timeLeft = 300;
+
+let pendingNextRoom = null;
+
+
+/* =========================================================
+   INICIAR
+   ========================================================= */
+
+function startGame() {
+
+    currentRoom = 1;
+
+    showScreen("room1");
+
+    startTimer(1);
+}
+
+
+/* =========================================================
+   MOSTRAR PANTALLA
+   ========================================================= */
+
+function showScreen(id) {
+
+    document.querySelectorAll(".screen, .center-screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    const target = document.getElementById(id);
+
+    if (target) {
+        target.classList.add("active");
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+}
+
+
+/* =========================================================
+   TEMPORITZADOR
+   ========================================================= */
+
+function startTimer(roomNumber) {
+
+    stopAllTimers();
+
+    timeLeft = 300;
+
+    updateTimerDisplay(roomNumber);
+
+    timers[roomNumber] = setInterval(() => {
+
+        timeLeft--;
+
+        updateTimerDisplay(roomNumber);
+
+        if (timeLeft <= 0) {
+
+            clearInterval(timers[roomNumber]);
+            timers[roomNumber] = null;
+
+            timeoutRoom(roomNumber);
+        }
+
+    }, 1000);
+}
+
+
+function updateTimerDisplay(roomNumber) {
+
+    const timer = document.getElementById("timer" + roomNumber);
+
+    if (!timer) return;
+
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+
+    timer.textContent =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+
+    timer.classList.remove("warning", "danger");
+
+    if (timeLeft <= 60 && timeLeft > 20) {
+        timer.classList.add("warning");
+    }
+
+    if (timeLeft <= 20) {
+        timer.classList.add("danger");
+    }
+}
+
+
+function stopAllTimers() {
+
+    Object.keys(timers).forEach(key => {
+
+        if (timers[key]) {
+            clearInterval(timers[key]);
+            timers[key] = null;
+        }
+
+    });
+}
+
+
+/* =========================================================
+   ELECCIÓ
+   ========================================================= */
+
+function choose(roomNumber, choice) {
+
+    /*
+       Evitem dobles clics.
+    */
+
+    if (decisions[roomNumber] !== null) {
+        return;
+    }
+
+    decisions[roomNumber] = choice;
+
+    stopAllTimers();
+
+    const room = rooms[roomNumber];
+
+    let clueType;
+
+    if (choice === room.good) {
+
+        clueType = "good";
+
+    } else if (choice === room.neutral) {
+
+        clueType = "neutral";
+
+    } else {
+
+        clueType = "bad";
+    }
+
+    /*
+       Guardem NOMÉS la pista.
+
+       No guardem ni mostrem al jugador
+       si és good / neutral / bad.
+    */
+
+    cluesReceived[roomNumber] = room.clues[clueType];
+
+    pendingNextRoom = roomNumber + 1;
+
+    /*
+       El missatge sempre és idèntic.
+       Això evita qualsevol pista visual.
+    */
+
+    document.getElementById("clueRoomLabel").textContent =
+        "INFORMACIÓ RECUPERADA · SALA " + roomNumber;
+
+    document.getElementById("clueText").textContent =
+        cluesReceived[roomNumber];
+
+    document.getElementById("decisionOverlay").classList.add("active");
+}
+
+
+/* =========================================================
+   CONTINUAR DESPRÉS DE LA PISTA
+   ========================================================= */
+
+function continueGame() {
+
+    document.getElementById("decisionOverlay").classList.remove("active");
+
+    if (pendingNextRoom <= 5) {
+
+        currentRoom = pendingNextRoom;
+
+        showScreen("room" + currentRoom);
+
+        startTimer(currentRoom);
+
+    } else {
+
+        openArchive();
+    }
+}
+
+
+/* =========================================================
+   TEMPS ESGOTAT
+   ========================================================= */
+
+let timeoutRoomNumber = null;
+
+function timeoutRoom(roomNumber) {
+
+    timeoutRoomNumber = roomNumber;
+
+    /*
+       Si no ha triat cap opció, no inventem una elecció.
+       La sala queda registrada com a temps esgotat.
+
+       Com que el jugador no ha triat cap de les tres opcions,
+       no rep una pista associada a una decisió.
+       Per mantenir el sistema de 5 pistes, utilitzem la pista
+       inútil de la sala com a resultat temporal del protocol.
+       
+       Això no revela que sigui inútil: per al jugador continua
+       sent una pista sense classificació.
+    */
+
+    decisions[roomNumber] = "TIMEOUT";
+
+    cluesReceived[roomNumber] = rooms[roomNumber].clues.neutral;
+
+    showScreen("timeoutScreen");
+}
+
+
+function handleTimeout() {
+
+    if (timeoutRoomNumber < 5) {
+
+        currentRoom = timeoutRoomNumber + 1;
+
+        timeoutRoomNumber = null;
+
+        showScreen("room" + currentRoom);
+
+        startTimer(currentRoom);
+
+    } else {
+
+        timeoutRoomNumber = null;
+
+        openArchive();
+    }
+}
+
+
+/* =========================================================
+   ARXIU FINAL
+   ========================================================= */
+
+function openArchive() {
+
+    stopAllTimers();
+
+    const archive = document.getElementById("archiveList");
+
+    archive.innerHTML = "";
+
+    for (let i = 1; i <= 5; i++) {
+
+        const item = document.createElement("div");
+
+        item.className = "archive-item";
+
+        item.innerHTML = `
+            <div class="archive-item-header">
+                PISTA ${i} · SALA ${i}
+            </div>
+
+            <p>${escapeHTML(
+                cluesReceived[i] ||
+                "No s’ha recuperat cap informació."
+            )}</p>
+        `;
+
+        archive.appendChild(item);
+    }
+
+    showScreen("archiveScreen");
+}
+
+
+/* =========================================================
+   SEGURETAT DE TEXT
+   ========================================================= */
+
+function escapeHTML(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+}
+
+
+/* =========================================================
+   PREVENCIÓ DEL BOTÓ ENRERE DURANT EL JOC
+   ========================================================= */
+
+history.pushState(null, "", location.href);
+
+window.addEventListener("popstate", function() {
+
+    history.pushState(null, "", location.href);
+
+});
+
+
+/* =========================================================
+   EVITAR SELECCIÓ ACCIDENTAL DE TEXT EN BOTONS
+   ========================================================= */
+
+document.addEventListener("contextmenu", function(e) {
+
+    if (e.target.closest("button")) {
+        e.preventDefault();
+    }
+
+});
+
+
+/* =========================================================
+   VISIBILITAT DE LA PÀGINA
+   ========================================================= */
+
+document.addEventListener("visibilitychange", function() {
+
+    /*
+       No parem el temporitzador quan surt de la pestanya.
+       Així no pot congelar el temps simplement canviant
+       d’aplicació o de pestanya.
+    */
+
+});
+
+
+/* =========================================================
+   TECLA ENTER / ESPAI
+
+   No permetem activar opcions accidentalment quan
+   s'està mostrant el resultat.
+   ========================================================= */
+
+document.addEventListener("keydown", function(e) {
+
+    if (
+        e.key === "Enter" ||
+        e.key === " "
+    ) {
+
+        const overlay =
+            document.getElementById("decisionOverlay");
+
+        if (
+            overlay &&
+            overlay.classList.contains("active")
+        ) {
+            return;
+        }
+    }
+
+});
+
+</script>
+
 </body>
 </html>
