@@ -537,4 +537,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderCharacters();
     showScreen(openingScreen);
-});
+}); 
